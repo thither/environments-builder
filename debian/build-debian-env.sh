@@ -1056,6 +1056,20 @@ exit 1
 
 
 
+
+
+
+
+
+
+
+
+# DRAFTS #######################################################################
+
+
+
+
+
 apt-get -y install rrdtool #apt-get -y install nodejs-dev
 
 TMP_NAME=hypertable; 
