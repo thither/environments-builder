@@ -33,7 +33,7 @@
   ```
  *  or 
  2. The same format os the _do_build function's case, add a bash file in SCRIPTS_PATH directory with the filename named-source.sh
-  * First applied, if exists, the source filename
+   * First applies, if exists, the source filename
 
 ## Logging:
 Logs are created in the BUILDS_LOG_PATH in a folder of date-time stage number and source-name 
