@@ -11,15 +11,16 @@
      * --verbose
      * --stage N
      
-## Directories Configurations:
-  * CUST_INST_PREFIX=/usr/local
+## Directories Configurations: 
+  *  ```CUST_INST_PREFIX=/usr/local ```
     * equal to the configure --prefix
-  * BUILDS_ROOT=~/builds
-  * SCRIPTS_PATH=$BUILDS_ROOT/scripts
-  * DOWNLOAD_PATH=$BUILDS_ROOT/downloads
-  * BUILDS_PATH=$BUILDS_ROOT/sources
-  * BUILDS_LOG_PATH=$BUILDS_ROOT/logs/$( date  +"%Y-%m-%d_%H-%M-%S")
-  * BUILTS_PATH=$BUILDS_ROOT/builts
+ 
+  *  ```BUILDS_ROOT=~/builds ```
+  *  ```SCRIPTS_PATH=$BUILDS_ROOT/scripts ```
+  *  ```DOWNLOAD_PATH=$BUILDS_ROOT/downloads ```
+  *  ```BUILDS_PATH=$BUILDS_ROOT/sources ```
+  *  ```BUILDS_LOG_PATH=$BUILDS_ROOT/logs/$( date  +"%Y-%m-%d_%H-%M-%S") ```
+  *  ```BUILTS_PATH=$BUILDS_ROOT/builts ```
 
 ## Source Configuration:
  * Add in the function _do_build() to add a named-source case in follow structure:
