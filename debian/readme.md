@@ -12,8 +12,7 @@
      * --stage N
      
 ## Directories Configurations: 
-  *  ```CUST_INST_PREFIX=/usr/local ```
-    * equal to the configure --prefix
+  *  ```CUST_INST_PREFIX=/usr/local ``` (equal to the configure --prefix)
  
   *  ```BUILDS_ROOT=~/builds ```
   *  ```SCRIPTS_PATH=$BUILDS_ROOT/scripts ```
