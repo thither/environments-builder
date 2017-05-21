@@ -780,7 +780,7 @@ rm -r  $CUST_INST_PREFIX/$sn
 mv ../$sn $CUST_INST_PREFIX/;
 
 if [ -f $CUST_INST_PREFIX/$sn/bin/javac ] &&  [ -f $CUST_INST_PREFIX/$sn/jre/bin/java ]; then
-	echo "JAVA_HOME=$CUST_INST_PREFIX/$sn" > /usr/local/etc/environment.d/$sn.conf
+	echo "export JAVA_HOME=$CUST_INST_PREFIX/$sn" > /usr/local/etc/environment.d/$sn.conf
 	update-alternatives --install /usr/bin/javac javac $CUST_INST_PREFIX/$sn/bin/javac 60
 	update-alternatives --install /usr/bin/java java $CUST_INST_PREFIX/$sn/jre/bin/java 60
 fi
@@ -790,7 +790,7 @@ fi
 fn='apache-ant-1.10.1-src.tar.gz'; tn='apache-ant-1.10.1'; url='https://www.apache.org/dist/ant/source/apache-ant-1.10.1-src.tar.gz';
 set_source 'tar' 
 ./build.sh install -Ddist.dir=$CUST_INST_PREFIX/$sn -Dant.install=$CUST_INST_PREFIX/$sn
-echo "ANT_HOME=$CUST_INST_PREFIX/$sn" > /usr/local/etc/environment.d/$sn.conf
+echo "export ANT_HOME=$CUST_INST_PREFIX/$sn" > /usr/local/etc/environment.d/$sn.conf
 		shift;;	
 
 'apache-maven')	
@@ -799,8 +799,8 @@ set_source 'tar'
 rm -r  $CUST_INST_PREFIX/$sn
 mv ../$sn $CUST_INST_PREFIX/;
 if [ -f $CUST_INST_PREFIX/$sn/bin/mvn ]; then
-	echo "MAVEN_HOME=$CUST_INST_PREFIX/$sn" > /usr/local/etc/environment.d/$sn.conf
-	echo "PATH=$PATH:$CUST_INST_PREFIX/$sn/bin" >> /usr/local/etc/environment.d/$sn.conf
+	echo "export MAVEN_HOME=$CUST_INST_PREFIX/$sn" > /usr/local/etc/environment.d/$sn.conf
+	echo "export PATH=$PATH:$CUST_INST_PREFIX/$sn/bin" >> /usr/local/etc/environment.d/$sn.conf
 
 fi
 		shift;;	
@@ -837,15 +837,15 @@ make;make install;
 		shift;;	
 			
 'apache-hadoop')
-fn='hadoop-2.8.0.tar.gz'; tn='hadoop-2.8.0'; url='http://www.apache.org/dyn/closer.cgi/hadoop/common/hadoop-2.8.0/hadoop-2.8.0.tar.gz';
+fn='hadoop-2.8.0.tar.gz'; tn='hadoop-2.8.0'; url='http://apache.crihan.fr/dist/hadoop/common/hadoop-2.8.0/hadoop-2.8.0.tar.gz';
 set_source 'tar' 
 rm $CUST_INST_PREFIX/$sn;mv ../$sn $CUST_INST_PREFIX/$sn;
 ln -s  $CUST_INST_PREFIX/$sn/etc/hadoop /etc/hadoop
 
-echo "HADOOP_HOME=$CUST_INST_PREFIX/$sn" > /usr/local/etc/environment.d/$sn.conf
-echo "HADOOP_CONF_DIR=$CUST_INST_PREFIX/$sn/etc/hadoop" >> /usr/local/etc/environment.d/$sn.conf
-echo "HADOOP_VERSION=2.8.2" >> /usr/local/etc/environment.d/$sn.conf
-echo "PATH=$PATH:$CUST_INST_PREFIX/$sn/bin" >> /usr/local/etc/environment.d/$sn.conf
+echo "export HADOOP_HOME=$CUST_INST_PREFIX/$sn" > /usr/local/etc/environment.d/$sn.conf
+echo "export HADOOP_CONF_DIR=$CUST_INST_PREFIX/$sn/etc/hadoop" >> /usr/local/etc/environment.d/$sn.conf
+echo "export HADOOP_VERSION=2.8.2" >> /usr/local/etc/environment.d/$sn.conf
+echo "export PATH=$PATH:$CUST_INST_PREFIX/$sn/bin" >> /usr/local/etc/environment.d/$sn.conf
 		shift;;	
 		
 'nodejs')
@@ -923,8 +923,8 @@ compile_and_install(){
 		do_install libjansson libxml2 libxslt libuv libcares 
 	
 		do_install python
-		do_install openjdk apache-ant apache-maven sigar berkeley-db 	 
-		do_install protobuf
+		do_install openjdk apache-ant apache-maven sigar berkeley-db  
+		do_install protobuf apache-hadoop	
 
 		do_install harfbuzz freetype fontconfig 
 		do_install sqlite imagemagick
@@ -1061,9 +1061,10 @@ mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
 wget 'http://github.com/hypertable/hypertable/archive/v0.9.8.11.tar.gz'
 tar xzvf v0.9.8.11.tar.gz
-mv hypertable-0.9.8.11 $TMP_NAME; cd $TMP_NAME;mkdir build;cd build;
+mv hypertable-0.9.8.11 $TMP_NAME; 
+mkdir $TMP_NAME-build;cd $TMP_NAME-build;
 
-cmake ../  -DBUILD_SHARED_LIBS=ON -DHADOOP_INCLUDE_PATH=/opt/hadoop/current/include -DHADOOP_LIB_PATH=/opt/hadoop/current/lib # -DCMAKE_BUILD_TYPE=Debug
+cmake -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON ../$TMP_NAM
 
 make; make check; make install
 cd ~; /sbin/ldconfig
