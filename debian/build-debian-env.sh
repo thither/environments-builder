@@ -839,12 +839,14 @@ make;make install;
 'apache-hadoop')
 fn='hadoop-2.8.0.tar.gz'; tn='hadoop-2.8.0'; url='http://apache.crihan.fr/dist/hadoop/common/hadoop-2.8.0/hadoop-2.8.0.tar.gz';
 set_source 'tar' 
-rm $CUST_INST_PREFIX/$sn;mv ../$sn $CUST_INST_PREFIX/$sn;
+rm -r $CUST_INST_PREFIX/$sn;mv ../$sn $CUST_INST_PREFIX/$sn;
 ln -s  $CUST_INST_PREFIX/$sn/etc/hadoop /etc/hadoop
 
 echo "export HADOOP_HOME=$CUST_INST_PREFIX/$sn" > /usr/local/etc/environment.d/$sn.conf
 echo "export HADOOP_CONF_DIR=$CUST_INST_PREFIX/$sn/etc/hadoop" >> /usr/local/etc/environment.d/$sn.conf
 echo "export HADOOP_VERSION=2.8.2" >> /usr/local/etc/environment.d/$sn.conf
+echo "export HADOOP_INCLUDE_PATH=$CUST_INST_PREFIX/$sn/include" > /usr/local/etc/environment.d/$sn.conf
+echo "export HADOOP_LIB_PATH=$CUST_INST_PREFIX/$sn/lib" > /usr/local/etc/environment.d/$sn.conf
 echo "export PATH=$PATH:$CUST_INST_PREFIX/$sn/bin" >> /usr/local/etc/environment.d/$sn.conf
 		shift;;	
 		
