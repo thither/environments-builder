@@ -12,7 +12,8 @@
        * --help 
      * --verbose
      * --stage N
-     
+  * recommend, execution cmd: ```nohup bash ~/builds/build-debian-env.sh > '/root/builds/built.log' &```
+  
 ## Directories Configurations: 
   *  ```CUST_INST_PREFIX=/usr/local ``` (equal to the configure --prefix)
  
