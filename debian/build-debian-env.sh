@@ -74,19 +74,6 @@ cust_conf_path=''
 	
 NUM_PROCS=`grep -c processor < /proc/cpuinfo || echo 1`
 
-arch=`uname -m`
-
-if [ $arch == "i386" ] || [ $arch == "i586" ] || [ $arch == "i686" ] ; then
-  ARCH=32
-elif [ $arch == "x86_64" ] ; then
-  ARCH=64
-else
-  echo "Unknown processor architecture: $arch"
-  exit 1
-fi
-echo "Release: $(lsb_release -sc)"
-echo "Arch: $arch"
-
 
 #########
 download() {
@@ -1686,7 +1673,20 @@ cmake ~/src/hypertable
 #nohup bash /home/www/LOAD_AND_BACKUP-test.sh NET 10000 100 2 &
 #cd log
 #tail DfsBroker.qfs.log
-	
+	arch=`uname -m`
+
+if [ $arch == "i386" ] || [ $arch == "i586" ] || [ $arch == "i686" ] ; then
+  ARCH=32
+elif [ $arch == "x86_64" ] ; then
+  ARCH=64
+else
+  echo "Unknown processor architecture: $arch"
+  exit 1
+fi
+echo "Release: $(lsb_release -sc)"
+echo "Arch: $arch"
+
+
 #cd ~/build/hypertable
 #nohup make alltests &
 
