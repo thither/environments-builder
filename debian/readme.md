@@ -37,7 +37,7 @@
 Logs are created in the BUILDS_LOG_PATH in a folder of date-time under filename stage number and source-name 
 
 ## Sources
-  * Current Sources consisted the follow latest realeses as to 20th of May 2017, exceptions to imagemagick.
+  * Current Sources consist the follow latest realeses as to 20th of May 2017, exceptions to imagemagick.
      *  Compilation Build and Install is in the same order, while stages have it's grouping
      *  Sources commented are kept out
      
