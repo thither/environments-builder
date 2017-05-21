@@ -1,8 +1,9 @@
 # Debian Enviroment Builder
 
 ####   A bash based script to Compile and Install debian environment
+* Manages the basic compile from source process: forlders structure, downloads, out-of-source configure and make (if possible), re-compile follow additional dependecies have been installed.
 
-
+* Main targets of the Build Enviroment: pypy2 and Hypertable
 
 ## Usages:
   * bash build-debian-env.sh 
