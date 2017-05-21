@@ -31,7 +31,7 @@
       make;make deciered commands
       shift;;
   ```
-or 
+ or 
  2. The same format os the _do_build function's case, add a bash file in SCRIPTS_PATH directory with the filename named-source.sh
 * First applied, if exists, the source filename
 
