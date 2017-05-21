@@ -4,17 +4,14 @@ fn='pypy2-v5.7.1-src.tar.bz2'; tn='pypy2-v5.7.1-src'; url='https://bitbucket.org
 set_source 'tar';
 
 #make LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" all;
-cd pypy;
-PYTHONPATH=$BUILDS_PATH/$sn LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" python ../rpython/bin/rpython --source --no-shared --opt=jit goal/targetpypystandalone.py #   --source  --no-shared --thread
-mkdir pypy2;cd pypy2;
-LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" ../pypy-c ../../rpython/bin/rpython --thread --annotate --rtype --translation-jit_opencoder_model=big --backendopt --shared --opt=jit ../goal/targetpypystandalone.py
-# --cc=gcc --thread --gc=boehm 
-#  --backend=c++ --thread --clever-malloc-removal-threshold=32.4 --translation-backendopt-profile_based_inline_threshold=32.4 --inline-threshold=32.4
-PYTHONPATH=$BUILDS_PATH/$sn  ./pypy-c ../tool/build_cffi_imports.py
+cd pypy; PYTHONPATH=$BUILDS_PATH/$sn LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" python ../rpython/bin/rpython  --without-tk --source --no-shared --opt=jit goal/targetpypystandalone.py #   --source  --no-shared --thread
+cd goal; LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" ../pypy-c ../../rpython/bin/rpython  --without-tk --thread --translation-jit_opencoder_model=big --shared --opt=jit ../goal/targetpypystandalone.py# --cc=gcc --thread --gc=boehm 
+# --annotate  --thread --clever-malloc-removal-threshold=32.4 --translation-backendopt-profile_based_inline_threshold=32.4 --inline-threshold=32.4  --backendopt  --rtype
+PYTHONPATH=$BUILDS_PATH/$sn  ./pypy-c  --without-tk ../tool/build_cffi_imports.py
 
-python ../tool/release/package.py --without-tk --archive-name pypy2 --targetdir $DOWNLOAD_PATH/pypy2.tar.bz2
-exit 1
-cd $BUILTS_PATH;tar -xf $DOWNLOAD_PATH/pypy2.tar.bz2;
+./pypy-c ../tool/release/package.py --without-tk --archive-name $sn --targetdir $DOWNLOAD_PATH/$sn.tar.bz2
+
+cd $BUILDS_PATH/pypy2;mkdir built_pkg; cd built_pkg; tar -xf $DOWNLOAD_PATH/pypy2.tar.bz2;
 rm -r /opt/pypy2;mv pypy2 /opt/;
 rm /usr/bin/pypy; ln -s /opt/pypy2/bin/pypy /usr/bin/pypy
 rm /usr/bin/pypy-stm; ln -s /opt/pypy2/bin/pypy-stm /usr/bin/pypy-stm
