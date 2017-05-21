@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+## Author Kashirin Alex (kashirin.alex@gmail.com)
 
 # nohup bash ~/builds/build-debian-env.sh > '/root/builds/built.log' &
 
