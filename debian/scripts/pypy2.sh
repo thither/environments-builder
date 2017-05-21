@@ -5,12 +5,15 @@ set_source 'tar';
 
 #make LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" all;
 cd pypy;
-LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" python ../rpython/bin/rpython  --source --shared --opt=jit goal/targetpypystandalone.py #  --no-shared --thread
+PYTHONPATH=$BUILDS_PATH/$sn LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" python ../rpython/bin/rpython --source --no-shared --opt=jit goal/targetpypystandalone.py #   --source  --no-shared --thread
 mkdir pypy2;cd pypy2;
-LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" ../pypy-c ../../rpython/bin/rpython --gc=boehm --thread --shared --opt=jit ../goal/targetpypystandalone.py
-PYTHONPATH=../ ./pypy-c ../tool/build_cffi_imports.py
+LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" ../pypy-c ../../rpython/bin/rpython --thread --annotate --rtype --translation-jit_opencoder_model=big --backendopt --shared --opt=jit ../goal/targetpypystandalone.py
+# --cc=gcc --thread --gc=boehm 
+#  --backend=c++ --thread --clever-malloc-removal-threshold=32.4 --translation-backendopt-profile_based_inline_threshold=32.4 --inline-threshold=32.4
+PYTHONPATH=$BUILDS_PATH/$sn  ./pypy-c ../tool/build_cffi_imports.py
 
-python tool/release/package.py --without-tk --archive-name pypy2 --targetdir $DOWNLOAD_PATH/pypy2.tar.bz2
+python ../tool/release/package.py --without-tk --archive-name pypy2 --targetdir $DOWNLOAD_PATH/pypy2.tar.bz2
+exit 1
 cd $BUILTS_PATH;tar -xf $DOWNLOAD_PATH/pypy2.tar.bz2;
 rm -r /opt/pypy2;mv pypy2 /opt/;
 rm /usr/bin/pypy; ln -s /opt/pypy2/bin/pypy /usr/bin/pypy
