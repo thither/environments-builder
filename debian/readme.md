@@ -9,4 +9,4 @@
 
 
 ## Liscense:
-Please, consult the sources 
+Please, consult with the liscenses of the sources
