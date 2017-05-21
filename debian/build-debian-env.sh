@@ -769,7 +769,7 @@ if [ -f $CUST_INST_PREFIX/bin/python ]; then
 fi
 if [ -f $CUST_INST_PREFIX/bin/pip ]; then
 	update-alternatives --install /usr/bin/pip pip /usr/local/bin/pip 60
-	pip install --upgrade thrift
+	#pip install --upgrade thrift
 fi
 		shift;;	
 
@@ -1077,9 +1077,9 @@ tar xzvf v0.9.8.11.tar.gz
 mv hypertable-0.9.8.11 $TMP_NAME; 
 mkdir $TMP_NAME-build;cd $TMP_NAME-build;
 
-cmake -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON ../$TMP_NAM
-# -DHADOOP_INCLUDE_PATH=$HADOOP_INCLUDE_PATH -DHADOOP_LIB_PATH=$HADOOP_LIB_PATH
-make; make check; make install
+cmake -DHADOOP_INCLUDE_PATH=$HADOOP_INCLUDE_PATH -DHADOOP_LIB_PATH=$HADOOP_LIB_PATH -DTHRIFT_SOURCE_DIR=~/builds/sources/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON ../$TMP_NAME
+#  -DPACKAGE_OS_SPECIFIC=1 -DVERSION_ADD_COMMIT_SUFFIX=1 
+make VERBOSE=1; make check; make install
 cd ~; /sbin/ldconfig
 
 	
