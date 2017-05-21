@@ -4,7 +4,6 @@
 
 
 
-
 ## Usages:
   * bash build-debian-env.sh 
      * --sources source-1 source-2  (builds and installs only the specified sources)
@@ -21,6 +20,20 @@
   * BUILDS_PATH=$BUILDS_ROOT/sources
   * BUILDS_LOG_PATH=$BUILDS_ROOT/logs/$( date  +"%Y-%m-%d_%H-%M-%S")
   * BUILTS_PATH=$BUILDS_ROOT/builts
+
+## Source Configuration:
+ 1. in the function _do_build() to add a named-source case in follow structure:
+<<
+'named-source')
+fn='downloaded.archive.name'; tn='archive-folder-name'; url='URI.tar';
+set_source 'tar' 
+configure_build --with-guile --prefix=$CUST_INST_PREFIX;
+make;make install-strip;make install;make all;
+		shift;;
+ >>
+
+## Logging:
+Logs are created in the BUILDS_LOG_PATH in a folder of date-time stage number and source-name 
 
 ## Liscense:
 Please, consult with the liscenses of the sources
