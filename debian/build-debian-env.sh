@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# nohup bash ~/builds/build-setup-debian.sh > '/root/builds/built.log' &
+# nohup bash ~/builds/build-debian-env.sh > '/root/builds/built.log' &
 
 reuse_make=0
 test_make=0
