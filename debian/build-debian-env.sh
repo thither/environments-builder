@@ -964,9 +964,10 @@ _os_releases(){
 			#apt-get install -y libedit-dev libunwind-dev libevent-dev libgc-dev libssl-dev libffi-dev libexpat1-dev libxml2-dev libxslt1-dev libre2-dev liblzma-dev libz-dev libbz2-dev libsnappy-dev  libgdbm-dev tk-dev 	
 		echo 'fin:os_releases-install'
 		
-	else if [ $1 == 'uninstall' ]; then
+	elif [ $1 == 'uninstall' ]; then
 		echo 'os_releases-uninstall'
 		if [ -f $CUST_INST_PREFIX/bin/make ] && [ -f $CUST_INST_PREFIX/bin/gcc ]; then
+			echo 'pkgs to remove'
 			#apt-get autoremove -y --purge python make pkg-config build-essential gcc cpp
 		fi
 		echo 'fin:os_releases-uninstall'
@@ -988,12 +989,13 @@ _env_setup(){
 	echo env_setup-$1
 	
 	if [ $1 == 'pre' ]; then
-		if [ ! -d $CUST_INST_PREFIX/etc/environment.d ]
+		if [ ! -d $CUST_INST_PREFIX/etc/environment.d ]; then
 			mkdir -p $CUST_INST_PREFIX/etc/environment.d
 			chmod -R 777 $CUST_INST_PREFIX/etc/environment.d/
 		fi
-		if [(fgrep -c  '/environment.d/' /etc/environment) -eq 0]; then
-			cat "
+		tmp=(fgrep -c '/environment.d/' /etc/environment);
+		if [tmp -eq 0]; then
+			cat '''
 if [ -d /usr/local/etc/environment.d/ ]; then
   for i in /usr/local/etc/environment.d/*.conf; do
     if [ -r $i ]; then
@@ -1001,11 +1003,11 @@ if [ -d /usr/local/etc/environment.d/ ]; then
     fi
   done
   unset i
-fi"  >> /etc/environment;
+fi'''  >> /etc/environment;
 		fi
 		
-	else if [ $1 == 'post' ]; then
-		if [ -d $CUST_INST_PREFIX/etc/environment.d ]
+	elif [ $1 == 'post' ]; then
+		if [ -d $CUST_INST_PREFIX/etc/environment.d ]; then
 			chmod -R 777 $CUST_INST_PREFIX/etc/environment.d/
 			source /etc/environment
 		fi
