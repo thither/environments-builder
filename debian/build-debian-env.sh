@@ -808,7 +808,7 @@ fi
 'thrift')
 fn='thrift-0.10.0.tar.gz'; tn='thrift-0.10.0'; url='http://archive.apache.org/dist/thrift/0.10.0/thrift-0.10.0.tar.gz';
 set_source 'tar' 
-cmake_build -DOPENSSL_ROOT_DIR=/usr/local/ssl -DWITH_STDTHREADS=ON; #-DWITH_BOOSTTHREADS=ON
+cmake_build -DUSE_STD_THREAD=1 -DOPENSSL_ROOT_DIR=/usr/local/ssl -DWITH_STDTHREADS=ON; #-DWITH_BOOSTTHREADS=ON
 make -j4;make install;make all;
 #configure_build --enable-libs --enable-plugin --with-c_glib  --with-csharp --with-python  --with-qt4  --with-qt5 --prefix=$CUST_INST_PREFIX; 
 		shift;;	
