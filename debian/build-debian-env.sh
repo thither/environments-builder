@@ -23,7 +23,7 @@ while [ $# -gt 0 ]; do
 		verbose=1
 	;;
     --stage)  			
-		stage=$1
+		stage=$2
 	;;
 	--sources)  		
 		only_sources="${@:$c}"
