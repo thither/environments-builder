@@ -29,7 +29,7 @@
       fn='downloaded.archive.name'; tn='archive-folder-name'; url='URI.tar*';
       set_source 'tar' 
       configure_build ARGUMENTS PASSSED TO configure --prefix=$CUST_INST_PREFIX;
-      make;make deciered commands
+      make;make desired commands
       shift;;
   ```
  * or the same format os the _do_build function's case, add a bash file in SCRIPTS_PATH directory with the filename named-source.sh (First applies, if exists, the source filename)
