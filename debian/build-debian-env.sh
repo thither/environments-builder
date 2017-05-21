@@ -1,6 +1,18 @@
 #!/usr/bin/env bash
 ## Author Kashirin Alex (kashirin.alex@gmail.com)
 
+
+################## DIRCETOTRIES CONFIGURATIONS ##################
+CUST_INST_PREFIX=/usr/local
+
+BUILDS_ROOT=~/builds
+SCRIPTS_PATH=$BUILDS_ROOT/scripts
+DOWNLOAD_PATH=$BUILDS_ROOT/downloads
+BUILDS_PATH=$BUILDS_ROOT/sources
+BUILDS_LOG_PATH=$BUILDS_ROOT/logs/$( date  +"%Y-%m-%d_%H-%M-%S")
+BUILTS_PATH=$BUILDS_ROOT/builts
+##################################################################
+
 # nohup bash ~/builds/build-debian-env.sh > '/root/builds/built.log' &
 
 reuse_make=0
@@ -46,15 +58,6 @@ if [ -z $help ] && [ ${#only_sources[@]} -eq 0 ]; then
 	echo $help
 	echo $only_sources
 fi
-
-CUST_INST_PREFIX=/usr/local
-
-BUILDS_ROOT=~/builds
-SCRIPTS_PATH=$BUILDS_ROOT/scripts
-DOWNLOAD_PATH=$BUILDS_ROOT/downloads
-BUILDS_PATH=$BUILDS_ROOT/sources
-BUILDS_LOG_PATH=$BUILDS_ROOT/logs/$( date  +"%Y-%m-%d_%H-%M-%S")
-BUILTS_PATH=$BUILDS_ROOT/builts
 
 #trap 'echo "trying to EXIT"' EXIT
 #trap 'echo "trying to SIGINT"' SIGINT
