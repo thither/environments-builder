@@ -2,7 +2,7 @@
 
 ####   A bash based script to Compile and Install debian environment
 * Manages the basic compile from source process: folders structure, downloads, out-of-source configure and make (if possible), re-compile follow additional dependencies have been installed.
-
+* Keep all the sources as much version control aware and specific to the build than the pkgs offered with OS-installers.
 * Main installation targets of the Build Enviroment are: pypy2 and Hypertable
   * on x86_64 linux
 
