@@ -994,7 +994,7 @@ _env_setup(){
 			chmod -R 777 $CUST_INST_PREFIX/etc/environment.d/
 		fi
 		tmp=(fgrep -c '/environment.d/' /etc/environment);
-		if [tmp -eq 0]; then
+		if [$tmp -eq 0]; then
 			cat '''
 if [ -d /usr/local/etc/environment.d/ ]; then
   for i in /usr/local/etc/environment.d/*.conf; do
