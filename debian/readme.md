@@ -23,14 +23,14 @@
 
 ## Source Configuration:
  1. in the function _do_build() to add a named-source case in follow structure:
-<<
-'named-source')
-fn='downloaded.archive.name'; tn='archive-folder-name'; url='URI.tar';
-set_source 'tar' 
-configure_build --with-guile --prefix=$CUST_INST_PREFIX;
-make;make install-strip;make install;make all;
-		shift;;
- >>
+
+    |'named-source')
+    |  fn='downloaded.archive.name'; tn='archive-folder-name'; url='URI.tar';
+    |  set_source 'tar' 
+    |  configure_build ARGUMENTS PASSSED TO configure --prefix=$CUST_INST_PREFIX;
+    |  make;make deciered commands
+    |  	shift;;
+ 
 
 ## Logging:
 Logs are created in the BUILDS_LOG_PATH in a folder of date-time stage number and source-name 
