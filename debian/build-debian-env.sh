@@ -6,7 +6,7 @@
 CUST_INST_PREFIX=/usr/local
 
 BUILDS_ROOT=~/builds
-SCRIPTS_PATH=$BUILDS_ROOT/deb_sources
+SCRIPTS_PATH=$BUILDS_ROOT/scripts
 DOWNLOAD_PATH=$BUILDS_ROOT/downloads
 BUILDS_PATH=$BUILDS_ROOT/sources
 BUILDS_LOG_PATH=$BUILDS_ROOT/logs/$( date  +"%Y-%m-%d_%H-%M-%S")
