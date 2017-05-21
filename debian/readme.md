@@ -8,7 +8,9 @@
 ## Usages:
   * bash build-debian-env.sh 
      * --sources source-1 source-2  (builds and installs only the specified sources)
+       * --help 
      * --verbose
+     * --stage N
      
 
 
