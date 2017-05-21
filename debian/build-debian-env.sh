@@ -1077,12 +1077,13 @@ tar xzvf v0.9.8.11.tar.gz
 mv hypertable-0.9.8.11 $TMP_NAME; 
 mkdir $TMP_NAME-build;cd $TMP_NAME-build;
 
-cmake -DHADOOP_INCLUDE_PATH=$HADOOP_INCLUDE_PATH -DHADOOP_LIB_PATH=$HADOOP_LIB_PATH -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON ../$TMP_NAM
-
+cmake -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON ../$TMP_NAM
+# -DHADOOP_INCLUDE_PATH=$HADOOP_INCLUDE_PATH -DHADOOP_LIB_PATH=$HADOOP_LIB_PATH
 make; make check; make install
 cd ~; /sbin/ldconfig
 
 	
+
 TMP_NAME=leveldb
 echo $TMP_NAME
 mkdir ~/tmpBuilds
