@@ -4,7 +4,7 @@
 * Manages the basic compile from source process: forlders structure, downloads, out-of-source configure and make (if possible), re-compile follow additional dependecies have been installed.
 
 * Main targets of the Build Enviroment: pypy2 and Hypertable
- * for x86_64 linux
+  * for x86_64 linux
 
 ## Usages:
   * bash build-debian-env.sh 
