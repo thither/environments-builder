@@ -1,5 +1,5 @@
 # Debian Enviroment Builder
-#### ⋅⋅⋅ A bash based script to Compile and Install debian environment
+⋅⋅⋅ ####   A bash based script to Compile and Install debian environment
 
 
 
