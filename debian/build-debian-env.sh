@@ -48,12 +48,12 @@ while [ $# -gt 0 ]; do
 done
 
 if [ ${#only_sources[@]} -gt 0 ]; then 
-	verbose=1;    
 	echo ${#only_sources[@]}
 	echo $only_sources
 fi
  
 if [ -z $help ] && [ ${#only_sources[@]} -eq 0 ]; then 
+	verbose=1;    
 	stage=0
 	echo $help
 	echo $only_sources
