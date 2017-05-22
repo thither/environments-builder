@@ -893,8 +893,20 @@ configure_build --prefix=$CUST_INST_PREFIX;
 make;make install;	
 		shift;;
 
+'unzip')
+fn='unzip60.tar.gz'; tn='unzip60'; url='https://sourceforge.net/projects/infozip/files/UnZip%206.x%20%28latest%29/UnZip%206.0/unzip60.tar.gz/download';
+set_source 'tar' 
+make -f unix/Makefile generic
+make prefix==$CUST_INST_PREFIX MANDIR=/usr/local/share/man/man1 -f unix/Makefile install
+		shift;;
 
-		
+'gawk')
+fn='gawk-4.1.4.tar.xz'; tn=' gawk-4.1.4'; url='https://ftp.gnu.org/gnu/gawk/gawk-4.1.4.tar.xz';
+set_source 'tar' 
+configure_build --prefix=$CUST_INST_PREFIX;
+make;make install;	
+		shift;;
+
 		
     *)         echo "Unknown build: $sn";       shift;;
   esac
@@ -927,7 +939,7 @@ compile_and_install(){
 	do_install make cmake
 	do_install byacc
 	do_install m4 gmp mpfr mpc isl
-	do_install autoconf automake libtool
+	do_install autoconf automake libtool gawk
 	do_install zlib bzip2 unrar gzip snappy lzma libzip unzip
 	do_install libatomic_ops libedit libevent libunwind #readline
 	do_install openssl libgpg-error libgcrypt libssh icu4c
@@ -1074,20 +1086,6 @@ exit 1
 
 
 
-
-TMP_NAME=unzip; 
-echo $TMP_NAME
-mkdir ~/tmpBuilds
-cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://sourceforge.net/projects/infozip/files/UnZip%206.x%20%28latest%29/UnZip%206.0/unzip60.tar.gz/download' -O unzip60.tar.gz
-tar xf unzip60.tgz
-mv unzip60 $TMP_NAME; cd $TMP_NAME;
-make prefix=/usr/local MANDIR=/usr/local/share/man/man1 -f unix/Makefile install
- 
-cp -r unix/* ~/tmpBuilds/unzip/
-
-
-
 apt-get -y install rrdtool #apt-get -y install nodejs-dev
 
 TMP_NAME=hypertable; 
@@ -1102,10 +1100,12 @@ mkdir $TMP_NAME-build;cd $TMP_NAME-build;
 
 cmake -DHADOOP_INCLUDE_PATH=$HADOOP_INCLUDE_PATH -DHADOOP_LIB_PATH=$HADOOP_LIB_PATH -DTHRIFT_SOURCE_DIR=~/builds/sources/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON ../$TMP_NAME
 #  -DPACKAGE_OS_SPECIFIC=1 -DVERSION_ADD_COMMIT_SUFFIX=1 
-make VERBOSE=1; make check; make install
+make VERBOSE=1; make alltests; make install
 cd ~; /sbin/ldconfig
 
-	
+
+
+https://www.openfabrics.org/downloads/libibverbs/libibverbs-1.1.4-1.24.gb89d4d7.tar.gz
 
 TMP_NAME=leveldb
 echo $TMP_NAME
@@ -1122,14 +1122,12 @@ TMP_NAME=libceph
 echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'http://download.ceph.com/tarballs/ceph-0.94.10.tar.gz'
-tar xf ceph-0.94.10.tar.gz
-mv ceph-0.94.10 $TMP_NAME;cd $TMP_NAME; 
+wget 'http://download.ceph.com/tarballs/ceph_12.0.3.orig.tar.gz'
+tar xf ceph_12.0.3.orig.tar.gz
+mv ceph-12.0.3 $TMP_NAME;cd $TMP_NAME; 
+./do_cmake.sh -DWITH_MANPAGE=
  ./configure --without-build  --enable-cephfs-java --with-cephfs  --with-mon   --with-osd    --with-cryptopp  --with-nss  --with-jemalloc  --with-tcmalloc-minimal  --with-libzfs  --prefix=/usr/local; #--enable-client  --enable-server  
 ./do_cmake.sh; #KRB5_PREFIX
-
-
-
 
 
 
@@ -1308,9 +1306,11 @@ cd ~/tmpBuilds; rm -r glibc;
 wget 'http://ftp.gnu.org/gnu/libc/glibc-2.25.tar.xz'
 tar xf glibc-2.25.tar.xz
 mv glibc-2.25 glibc; cd glibc
-mkdir build; cd build
-../configure --disable-sanity-checks --enable-shared --enable-lock-elision=yes --enable-stack-protector=all --enable-pt_chown --enable-tunables --enable-mathvec --with-fp --prefix=/usr/local;
- make; make check; make install #  --enable-multi-arch
+wget 'https://ftp.gnu.org/gnu/libc/glibc-linuxthreads-2.5.tar.bz2'
+tar xf glibc-linuxthreads-2.5.tar.bz2
+cd ..; mkdir build-glibc; cd build-glibc
+../glibc/configure  --enable-add-ons=linuxthreads --enable-shared --enable-lock-elision=yes --enable-stack-protector=all  --enable-tunables --enable-mathvec --with-fp --prefix=/usr/local/glibc;
+ make; make check; make install #  --enable-multi-arch --disable-sanity-checks 
 cd ~; /sbin/ldconfig
 
 echo llvm
