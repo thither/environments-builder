@@ -23,7 +23,6 @@ stage=-1
 c=1
 only_sources=()
 while [ $# -gt 0 ]; do
-  let c=c+1 
   case $1 in
     --no-reuse-make) 	
 		reuse_make=0
@@ -44,21 +43,31 @@ while [ $# -gt 0 ]; do
 		help='--help'
 	;;
   esac
+  let c=c+1 
   shift
 done
 
+if [ ${#only_sources[@]} -eq 0 ]; then 
+	echo '	--sources must be set with "all" or sources names'
+	exit 1
+fi
+if [ $only_sources[0] == 'all' ]; then 
+	only_sources=()
+fi
 if [ ${#only_sources[@]} -gt 0 ]; then 
-	echo ${#only_sources[@]}
-	echo $only_sources
+	echo 'number of sources: '${#only_sources[@]}
 fi
  
 if [ -z $help ] && [ ${#only_sources[@]} -eq 0 ]; then 
 	verbose=1;    
 	stage=0
-	echo $help
-	echo $only_sources
 fi
-
+echo '--verbose:' $verbose
+echo '--sources:' $only_sources
+echo '--help:' $help
+echo '--stage:' $stage
+echo '--test_make:' $test_make
+echo '--no-reuse-makee:' $reuse_make
 #trap 'echo "trying to EXIT"' EXIT
 #trap 'echo "trying to SIGINT"' SIGINT
 #trap 'echo "trying to SIGTERM"' SIGTERM
