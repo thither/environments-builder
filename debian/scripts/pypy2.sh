@@ -5,7 +5,7 @@ set_source 'tar';
 
 #make LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" all;
 cd pypy; PYTHONPATH=$BUILDS_PATH/$sn LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" python ../rpython/bin/rpython  --source --no-shared --opt=jit goal/targetpypystandalone.py #   --source  --no-shared --thread
-cd goal; LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" ../pypy-c ../../rpython/bin/rpython  --thread --translation-jit_opencoder_model=big --shared --opt=jit ../goal/targetpypystandalone.py# --cc=gcc --thread --gc=boehm 
+cd goal; LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" ../pypy-c ../../rpython/bin/rpython  --thread --translation-jit_opencoder_model=big --shared --opt=jit targetpypystandalone.py# --cc=gcc --thread --gc=boehm 
 # --annotate  --thread --clever-malloc-removal-threshold=32.4 --translation-backendopt-profile_based_inline_threshold=32.4 --inline-threshold=32.4  --backendopt  --rtype
 PYTHONPATH=$BUILDS_PATH/$sn  ./pypy-c  --without-tk ../tool/build_cffi_imports.py
 
