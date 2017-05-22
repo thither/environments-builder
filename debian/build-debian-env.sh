@@ -51,7 +51,7 @@ if [ ${#only_sources[@]} -eq 0 ]; then
 	echo '	--sources must be set with "all" or sources names'
 	exit 1
 fi
-if [ $only_sources[0] == 'all' ]; then 
+if [ ${only_sources[0]} == 'all' ]; then 
 	only_sources=()
 fi
 if [ ${#only_sources[@]} -gt 0 ]; then 
@@ -790,7 +790,7 @@ mv ../$sn $CUST_INST_PREFIX/;
 
 if [ -f $CUST_INST_PREFIX/$sn/bin/javac ] &&  [ -f $CUST_INST_PREFIX/$sn/jre/bin/java ]; then
 	echo "#!/usr/bin/env bash" > /usr/local/etc/environment.d/$sn.conf
-	echo "JAVA_HOME=\"$CUST_INST_PREFIX/$sn\"" >> /usr/local/etc/environment.d/$sn.conf
+	echo "export JAVA_HOME=\"$CUST_INST_PREFIX/$sn\"" >> /usr/local/etc/environment.d/$sn.conf
 	update-alternatives --install /usr/bin/javac javac $CUST_INST_PREFIX/$sn/bin/javac 60
 	update-alternatives --install /usr/bin/java java $CUST_INST_PREFIX/$sn/jre/bin/java 60
 fi
@@ -801,7 +801,7 @@ fn='apache-ant-1.10.1-src.tar.gz'; tn='apache-ant-1.10.1'; url='https://www.apac
 set_source 'tar' 
 ./build.sh install -Ddist.dir=$CUST_INST_PREFIX/$sn -Dant.install=$CUST_INST_PREFIX/$sn
 echo "#!/usr/bin/env bash" > /usr/local/etc/environment.d/$sn.conf
-echo "ANT_HOME=\"$CUST_INST_PREFIX/$sn\"" >> /usr/local/etc/environment.d/$sn.conf
+echo "export ANT_HOME=\"$CUST_INST_PREFIX/$sn\"" >> /usr/local/etc/environment.d/$sn.conf
 		shift;;	
 
 'apache-maven')	
@@ -811,8 +811,8 @@ rm -r  $CUST_INST_PREFIX/$sn
 mv ../$sn $CUST_INST_PREFIX/;
 if [ -f $CUST_INST_PREFIX/$sn/bin/mvn ]; then
 	echo "#!/usr/bin/env bash" > /usr/local/etc/environment.d/$sn.conf
-	echo "MAVEN_HOME=\"$CUST_INST_PREFIX/$sn\"" >> /usr/local/etc/environment.d/$sn.conf
-	echo "PATH=\$PATH:\"$CUST_INST_PREFIX/$sn/bin\"" >> /usr/local/etc/environment.d/$sn.conf
+	echo "export MAVEN_HOME=\"$CUST_INST_PREFIX/$sn\"" >> /usr/local/etc/environment.d/$sn.conf
+	echo "export PATH=\$PATH:\"$CUST_INST_PREFIX/$sn/bin\"" >> /usr/local/etc/environment.d/$sn.conf
 
 fi
 		shift;;	
@@ -861,20 +861,20 @@ mv ../$sn $CUST_INST_PREFIX/$sn;
 ln -s  $CUST_INST_PREFIX/$sn/etc/hadoop /etc/hadoop
 
 echo "#!/usr/bin/env bash" > /usr/local/etc/environment.d/$sn.conf
-echo "HADOOP_HOME=\"$CUST_INST_PREFIX/$sn\"" >> /usr/local/etc/environment.d/$sn.conf
-echo "HADOOP_CONF_DIR=\"$CUST_INST_PREFIX/$sn/etc/hadoop\"" >> /usr/local/etc/environment.d/$sn.conf
-echo "HADOOP_VERSION=\"2.8.2\"" >> /usr/local/etc/environment.d/$sn.conf
-echo "HADOOP_INCLUDE_PATH=\"$CUST_INST_PREFIX/$sn/include\"" >> /usr/local/etc/environment.d/$sn.conf
-echo "HADOOP_LIB_PATH=\"$CUST_INST_PREFIX/$sn/lib\"" >> /usr/local/etc/environment.d/$sn.conf
-echo "PATH=\$PATH:\"$CUST_INST_PREFIX/$sn/bin\"" >> /usr/local/etc/environment.d/$sn.conf
+echo "export HADOOP_HOME=\"$CUST_INST_PREFIX/$sn\"" >> /usr/local/etc/environment.d/$sn.conf
+echo "export HADOOP_CONF_DIR=\"$CUST_INST_PREFIX/$sn/etc/hadoop\"" >> /usr/local/etc/environment.d/$sn.conf
+echo "export HADOOP_VERSION=\"2.8.2\"" >> /usr/local/etc/environment.d/$sn.conf
+echo "export HADOOP_INCLUDE_PATH=\"$CUST_INST_PREFIX/$sn/include\"" >> /usr/local/etc/environment.d/$sn.conf
+echo "export HADOOP_LIB_PATH=\"$CUST_INST_PREFIX/$sn/lib\"" >> /usr/local/etc/environment.d/$sn.conf
+echo "export PATH=\$PATH:\"$CUST_INST_PREFIX/$sn/bin\"" >> /usr/local/etc/environment.d/$sn.conf
 
 		shift;;	
 		
 'nodejs')
 fn='node-v7.10.0.tar.xz'; tn='node-v7.10.0'; url='https://nodejs.org/dist/latest-v7.x/node-v7.10.0.tar.xz';
-set_source 'tar' 
-cp -r ../$sn ../$sn-tmp; mv ../$sn-tmp gtest;
-configure_build --prefix=$CUST_INST_PREFIX;
+set_source 'tar'
+# cp -r ../$sn ../$sn-tmp; mv ../$sn-tmp gtest;
+./configure --prefix=$CUST_INST_PREFIX; #--with-intl=none 
 make -j$NUM_PROCS;make install;
 		shift;;	
 
@@ -928,7 +928,7 @@ compile_and_install(){
 	do_install byacc
 	do_install m4 gmp mpfr mpc isl
 	do_install autoconf automake libtool
-	do_install zlib bzip2 unrar gzip snappy lzma libzip
+	do_install zlib bzip2 unrar gzip snappy lzma libzip unzip
 	do_install libatomic_ops libedit libevent libunwind #readline
 	do_install openssl libgpg-error libgcrypt libssh icu4c
 	do_install log4cpp cronolog fuse sparsehash
@@ -1075,15 +1075,29 @@ exit 1
 
 
 
+TMP_NAME=unzip; 
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'https://sourceforge.net/projects/infozip/files/UnZip%206.x%20%28latest%29/UnZip%206.0/unzip60.tar.gz/download' -O unzip60.tar.gz
+tar xf unzip60.tgz
+mv unzip60 $TMP_NAME; cd $TMP_NAME;
+make prefix=/usr/local MANDIR=/usr/local/share/man/man1 -f unix/Makefile install
+ 
+cp -r unix/* ~/tmpBuilds/unzip/
+
+
+
 apt-get -y install rrdtool #apt-get -y install nodejs-dev
 
 TMP_NAME=hypertable; 
 echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'http://github.com/hypertable/hypertable/archive/v0.9.8.11.tar.gz'
-tar xzvf v0.9.8.11.tar.gz
-mv hypertable-0.9.8.11 $TMP_NAME; 
+rm master.zip;
+wget 'https://github.com/kashirin-alex/hypertable/archive/master.zip'
+/usr/local/bin/unzip master.zip
+mv hypertable-master $TMP_NAME; 
 mkdir $TMP_NAME-build;cd $TMP_NAME-build;
 
 cmake -DHADOOP_INCLUDE_PATH=$HADOOP_INCLUDE_PATH -DHADOOP_LIB_PATH=$HADOOP_LIB_PATH -DTHRIFT_SOURCE_DIR=~/builds/sources/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON ../$TMP_NAME
