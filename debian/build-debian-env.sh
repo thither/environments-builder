@@ -864,7 +864,7 @@ echo "PATH=\$PATH:\"$CUST_INST_PREFIX/$sn/bin\"" >> /usr/local/etc/environment.d
 'nodejs')
 fn='node-v7.10.0.tar.xz'; tn='node-v7.10.0'; url='https://nodejs.org/dist/latest-v7.x/node-v7.10.0.tar.xz';
 set_source 'tar' 
-cp -r ../$TMP_NAME ../$TMP_NAME-tmp; mv ../$TMP_NAME-tmp gtest;
+cp -r ../$sn ../$sn-tmp; mv ../$sn-tmp gtest;
 configure_build --prefix=$CUST_INST_PREFIX;
 make -j$NUM_PROCS;make install;
 		shift;;	
