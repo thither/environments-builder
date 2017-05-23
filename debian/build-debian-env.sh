@@ -1105,6 +1105,9 @@ cd ~; /sbin/ldconfig
 
 
 
+
+
+
 https://www.openfabrics.org/downloads/libibverbs/libibverbs-1.1.4-1.24.gb89d4d7.tar.gz
 
 TMP_NAME=leveldb
@@ -1118,7 +1121,7 @@ make;
 mv out-shared /usr/local/leveldb;
 echo /usr/local/leveldb > "/etc/ld.so.conf.d/leveldb.conf"
  
-TMP_NAME=libceph
+TMP_NAME=ceph
 echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
@@ -1128,6 +1131,74 @@ mv ceph-12.0.3 $TMP_NAME;cd $TMP_NAME;
 ./do_cmake.sh -DWITH_MANPAGE=
  ./configure --without-build  --enable-cephfs-java --with-cephfs  --with-mon   --with-osd    --with-cryptopp  --with-nss  --with-jemalloc  --with-tcmalloc-minimal  --with-libzfs  --prefix=/usr/local; #--enable-client  --enable-server  
 ./do_cmake.sh; #KRB5_PREFIX
+
+
+
+
+
+
+
+TMP_NAME=gf-complete
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'http://lab.jerasure.org/jerasure/gf-complete/repository/archive.tar.gz'  -O gf-complete.tar.gz
+tar xf gf-complete.tar.gz
+mv gf-complete.git $TMP_NAME;cd $TMP_NAME
+./autogen.sh; ./configure --enable-avx --prefix=/usr/local; 
+make; make install;
+
+TMP_NAME=jerasure
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'http://www.kaymgee.com/Kevin_Greenan/Software_files/jerasure.tar.gz'
+tar xf jerasure.tar.gz
+mv jerasure $TMP_NAME;cd $TMP_NAME
+./configure --prefix=/usr/local; 
+make; make install;
+
+TMP_NAME=qfs
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'https://github.com/quantcast/qfs/archive/1.2.1.tar.gz'
+tar xzf 1.2.1.tar.gz
+mv qfs-1.2.1 $TMP_NAME;
+mkdir $TMP_NAME-build;cd $TMP_NAME-build;
+cmake -DFUSE_INCLUDE_DIRS=/usr/local/include/fuse3 -DFUSE_LIBRARIES=/usr/local/lib/libfuse3.so -DOPENSSL_ROOT_DIR=/usr/local/ssl -DQFS_USE_STATIC_LIB_LINKAGE=OFF -DCMAKE_BUILD_TYPE=Release ../$TMP_NAME
+make; make check; make install
+cd ~; /sbin/ldconfig
+
+
+
+TMP_NAME=libgssapi
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'http://www.citi.umich.edu/projects/nfsv4/linux/libgssapi/libgssapi-0.11.tar.gz'
+tar xzf libgssapi-0.11.tar.gz
+mv libgssapi-0.11 $TMP_NAME;cd $TMP_NAME;
+./configure  --prefix=/usr/local; 
+make;  make install;
+
+TMP_NAME=nfs-ganesha
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'https://github.com/nfs-ganesha/nfs-ganesha/archive/V2.5-rc7.tar.gz'
+tar xzf V2.5-rc7.tar.gz
+mv nfs-ganesha-2.5-rc7 $TMP_NAME;
+mkdir $TMP_NAME-build;cd $TMP_NAME-build;
+cmake -DUSE_GSS=OFF -DUSE_TSAN=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local  ../$TMP_NAME/src
+
+
+
+
+
+
+
+
 
 
 
@@ -1346,18 +1417,6 @@ cd ~; /sbin/ldconfig
 
 
 
-TMP_NAME=apache-hadoop; 
-echo $TMP_NAME
-mkdir ~/tmpBuilds
-cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'http://apache.crihan.fr/dist/hadoop/common/hadoop-2.8.0/hadoop-2.8.0-src.tar.gz'
-tar xf hadoop-2.8.0-src.tar.gz
-mv hadoop-2.8.0-src $TMP_NAME; cd $TMP_NAME;
-mvn compile -Pdist,native,src -Drequire.snappy -Drequire.openssl -Dopenssl.prefix=/usr/local/ssl
-
-
-
-
 
 
 TMP_NAME=guile-gtk
@@ -1377,9 +1436,8 @@ cd ~/tmpBuilds; rm -r $TMP_NAME;
 wget 'http://ftp.gnu.org/gnu/guile/guile-2.2.2.tar.xz'
 tar xf guile-2.2.2.tar.xz
 mv guile-2.2.2 $TMP_NAME;cd $TMP_NAME; 
-./configure --enable-fast-install --with-threads --prefix=/usr/local;# 
+./configure --disable-posix --prefix=/usr/local;# --with-threads
 make; make all; make install;
-
 
 TMP_NAME=autogen
 echo $TMP_NAME
@@ -1388,7 +1446,7 @@ cd ~/tmpBuilds; rm -r $TMP_NAME;
 wget 'http://ftp.gnu.org/gnu/autogen/rel5.18.12/autogen-5.18.12.tar.gz'
 tar xf autogen-5.18.12.tar.gz
 mv autogen-5.18.12 $TMP_NAME;cd $TMP_NAME; 
-./configure  --with-libxml2 --with-regex-header --with-libregex --prefix=/usr/local;
+./configure  --prefix=/usr/local;
 
 
 
@@ -1462,35 +1520,14 @@ mv krb5-krb5-1.15.1-final krb5; cd krb5/src
 make; make check; make install;
 cd ~; /sbin/ldconfig
 
-echo qfs
-cd ~/dependeciesBuilds; rm -r qfs;
-wget 'http://github.com/quantcast/qfs/archive/1.2.0.tar.gz'
-tar xzf 1.2.0.tar.gz
-mv qfs-1.2.0 qfs; cd qfs 
-cmake
-make; make check; make install
-mv ~/quantcast-qfs-a30c50e/build/release/ /opt/qfs
-cd ~; /sbin/ldconfig
-
 
 http://ftp.ntua.gr/mirror/gnu/libmicrohttpd/
-http://ftp.ntua.gr/mirror/gnu/intlfonts/
 
 
 
 
 
 
-echo heimdal
-cd ~/dependeciesBuilds
-wget 'http://github.com/heimdal/heimdal/archive/master.zip' --output-document=heimdal.zip
-unzip heimdal.zip
-#git clone git://svn.h5l.org/heimdal.git
-cd heimdal-master
-autoreconf -f -i
-./configure --with-mips-abi=64 --enable-pthread-support; make; make install # --enable-dce
-cd ~; /sbin/ldconfig
- 	
 
 
 
@@ -1505,6 +1542,17 @@ mv pcre2-10.23 pcre2; cd pcre2
 make; make check; make install
 cd ~; /sbin/ldconfig
 
+
+echo heimdal
+cd ~/dependeciesBuilds
+wget 'http://github.com/heimdal/heimdal/archive/master.zip' --output-document=heimdal.zip
+unzip heimdal.zip
+#git clone git://svn.h5l.org/heimdal.git
+cd heimdal-master
+autoreconf -f -i
+./configure --with-mips-abi=64 --enable-pthread-support; make; make install # --enable-dce
+cd ~; /sbin/ldconfig
+ 	
 
 echo ppl
 cd ~/dependeciesBuilds; rm -r ppl;
