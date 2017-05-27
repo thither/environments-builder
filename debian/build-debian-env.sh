@@ -13,7 +13,7 @@ BUILDS_LOG_PATH=$BUILDS_ROOT/logs/$( date  +"%Y-%m-%d_%H-%M-%S")
 BUILTS_PATH=$BUILDS_ROOT/builts
 ##################################################################
 
-# nohup bash ~/builds/build-debian-env.sh > '/root/builds/built.log' &
+# nohup bash ~/builds/build-debian-env.sh --sources all > '/root/builds/built.log' &
 
 reuse_make=0
 test_make=0
@@ -23,6 +23,7 @@ stage=-1
 c=1
 only_sources=()
 while [ $# -gt 0 ]; do
+  let c=c+1 
   case $1 in
     --no-reuse-make) 	
 		reuse_make=0
@@ -43,7 +44,6 @@ while [ $# -gt 0 ]; do
 		help='--help'
 	;;
   esac
-  let c=c+1 
   shift
 done
 
@@ -51,14 +51,18 @@ if [ ${#only_sources[@]} -eq 0 ]; then
 	echo '	--sources must be set with "all" or sources names'
 	exit 1
 fi
+build_all=0
 if [ ${only_sources[0]} == 'all' ]; then 
 	only_sources=()
+	build_all==1
+	verbose=0;    
+	stage=0
 fi
 if [ ${#only_sources[@]} -gt 0 ]; then 
 	echo 'number of sources: '${#only_sources[@]}
 fi
  
-if [ -z $help ] && [ ${#only_sources[@]} -eq 0 ]; then 
+if [ -z $help ] && [ ${#only_sources[@]} -eq 0 ] && [ $build_all == 0 ]; then 
 	verbose=1;    
 	stage=0
 fi
@@ -572,6 +576,8 @@ make;make install;make all;
 
 if [ -f $CUST_INST_PREFIX/bin/gcc ]; then
 	update-alternatives --install /usr/bin/gcc gcc $CUST_INST_PREFIX/bin/gcc 60
+	#mv  /usr/lib/x86_64-linux-gnu/libstdc++.so.6 /usr/lib/x86_64-linux-gnu/libOLDstdc++.so.6;
+	#ln -s /usr/local/lib64/libstdc++.so.6 /usr/lib/x86_64-linux-gnu/libstdc++.so.6
 fi
 if [ -f $CUST_INST_PREFIX/bin/cpp ]; then
 	update-alternatives --install /usr/bin/cpp cpp $CUST_INST_PREFIX/bin/cpp 60
@@ -660,16 +666,16 @@ echo $CUST_INST_PREFIX/lib > "/etc/ld.so.conf.d/bdb.conf"
 		shift;;
 
 'openssl')
-fn='openssl-1.0.2k.tar.gz'; tn='openssl-1.0.2k'; url='http://ftp.openssl.org/source/openssl-1.0.2k.tar.gz';
+fn='openssl-1.1.0f.tar.gz'; tn='openssl-1.1.0f'; url='https://ftp.openssl.org/source/openssl-1.1.0f.tar.gz';
 set_source 'tar' 
-./config threads zlib shared enable-ec_nistp_64_gcc_128 enable-weak-ssl-ciphers --openssldir=$CUST_INST_PREFIX/ssl --prefix=$CUST_INST_PREFIX/ssl;
+./config enable-ssl3 enable-ssl3-method enable-threads enable-zlib enable-zlib-dynamic enable-shared enable-ec_nistp_64_gcc_128 enable-weak-ssl-ciphers  --prefix=$CUST_INST_PREFIX;#--openssldir=$CUST_INST_PREFIX/ssl --prefix=$CUST_INST_PREFIX/ssl;
 make;make install;make all; 
-if [ -f $CUST_INST_PREFIX/ssl/bin/openssl ]; then
+if [ -f $CUST_INST_PREFIX/bin/openssl ]; then
 	if [ ! -f /usr/bin/openssl_older ]; then
 		mv /usr/bin/openssl /usr/bin/openssl_older;
 	fi
-	update-alternatives --install /usr/bin/openssl openssl $CUST_INST_PREFIX/ssl/bin/openssl 60
-	echo $CUST_INST_PREFIX/ssl > "/etc/ld.so.conf.d/openssl.conf"
+	update-alternatives --install /usr/bin/openssl openssl $CUST_INST_PREFIX/bin/openssl 60
+	#echo $CUST_INST_PREFIX/ssl > "/etc/ld.so.conf.d/openssl.conf"
 fi
 		shift;;	
 		
@@ -688,7 +694,7 @@ make;make install-strip;make install;make all;
 		shift;;	
 
 'libssh')
-fn='libssh-0.7.5.tar.xz'; tn='libssh-0.7.5'; url='http://red.libssh.org/attachments/download/218/libssh-0.7.5.tar.xz';
+fn='libssh-0.7.5.tar.xz'; tn='libssh-0.7.5'; url='http://download.openpkg.org/components/cache/libssh2/libssh-0.7.5.tar.xz';#http://red.libssh.org/attachments/download/218/libssh-0.7.5.tar.xz
 set_source 'tar' 
 cmake_build -DCMAKE_INSTALL_PREFIX=$CUST_INST_PREFIX -DWITH_LIBZ=ON -DWITH_SSH1=ON -DWITH_GCRYPT=ON;
 make;make install;make all; 
@@ -820,7 +826,7 @@ fi
 'thrift')
 fn='thrift-0.10.0.tar.gz'; tn='thrift-0.10.0'; url='http://archive.apache.org/dist/thrift/0.10.0/thrift-0.10.0.tar.gz';
 set_source 'tar' 
-cmake_build -DUSE_STD_THREAD=1 -DOPENSSL_ROOT_DIR=/usr/local/ssl -DWITH_STDTHREADS=ON; #-DWITH_BOOSTTHREADS=ON
+cmake_build -DUSE_STD_THREAD=1 -DWITH_STDTHREADS=ON; #-DWITH_BOOSTTHREADS=ON -DOPENSSL_ROOT_DIR=/usr/local/ssl
 make -j4;make install;make all;
 #configure_build --enable-libs --enable-plugin --with-c_glib  --with-csharp --with-python  --with-qt4  --with-qt5 --prefix=$CUST_INST_PREFIX; 
 		shift;;	
@@ -897,7 +903,7 @@ make;make install;
 fn='unzip60.tar.gz'; tn='unzip60'; url='https://sourceforge.net/projects/infozip/files/UnZip%206.x%20%28latest%29/UnZip%206.0/unzip60.tar.gz/download';
 set_source 'tar' 
 make -f unix/Makefile generic
-make prefix==$CUST_INST_PREFIX MANDIR=/usr/local/share/man/man1 -f unix/Makefile install
+make prefix=$CUST_INST_PREFIX MANDIR=/usr/local/share/man/man1 -f unix/Makefile install
 		shift;;
 
 'gawk')
@@ -1070,13 +1076,38 @@ fi
 exit 1
 
 
+TMP_NAME=proxygen; 
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+rm master.zip;
+wget 'https://github.com/facebook/proxygen/archive/v2017.05.22.00.tar.gz'
+tar xf v2017.05.22.00.tar.gz
+mv proxygen-2017.05.22.00 $TMP_NAME; cd $TMP_NAME;
 
 
 
 
+TMP_NAME=greeny; 
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+rm master.zip;
+wget 'https://github.com/nifigase/greeny/archive/master.zip'
+/usr/local/bin/unzip master.zip
+mv greeny-master $TMP_NAME; cd $TMP_NAME;
 
 
 
+TMP_NAME=poco
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'https://pocoproject.org/releases/poco-1.7.8/poco-1.7.8p2.tar.gz'
+tar xf poco-1.7.8p2.tar.gz
+mv  poco-1.7.8p2 $TMP_NAME;cd $TMP_NAME
+./configure --shared --unbundled --everything --config=Linux --prefix=/usr/local; 
+make; make install;
 
 
 
@@ -1100,10 +1131,20 @@ mkdir $TMP_NAME-build;cd $TMP_NAME-build;
 
 cmake -DHADOOP_INCLUDE_PATH=$HADOOP_INCLUDE_PATH -DHADOOP_LIB_PATH=$HADOOP_LIB_PATH -DTHRIFT_SOURCE_DIR=~/builds/sources/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON ../$TMP_NAME
 #  -DPACKAGE_OS_SPECIFIC=1 -DVERSION_ADD_COMMIT_SUFFIX=1 
-make VERBOSE=1; make alltests; make install
+make -j8; make install; make alltests;
 cd ~; /sbin/ldconfig
 
 
+
+TMP_NAME=nghttp2
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'https://github.com/nghttp2/nghttp2/releases/download/v1.22.0/nghttp2-1.22.0.tar.gz'
+tar xf nghttp2-1.22.0.tar.gz
+mv nghttp2-1.22.0 $TMP_NAME;cd $TMP_NAME
+./configure --ENABLE_ASIO_LIB=ON -DOPENSSL_ROOT_DIR=/usr/local/ssl --prefix=/usr/local; 
+make; make install;
 
 
 
