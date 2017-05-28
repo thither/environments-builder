@@ -327,7 +327,7 @@ make;make install;make all;
 'mpfr')
 fn='mpfr-3.1.5.tar.gz'; tn='mpfr-3.1.5'; url='http://www.mpfr.org/mpfr-current/mpfr-3.1.5.tar.gz';
 set_source 'tar' 
-configure_build --enable-decimal-float --enable-thread-safe --with-gmp-build=$BUILTS_PATH/gmp/ --prefix=$CUST_INST_PREFIX;
+configure_build --enable-decimal-float --enable-thread-safe --with-gmp-build=$BUILDS_PATH/gmp/ --prefix=$CUST_INST_PREFIX;
 make;make install-strip;make install;make all; 
 		shift;;
 		
@@ -341,7 +341,7 @@ make;make install-strip;make install;make all;
 'isl')
 fn='isl-0.16.1.tar.bz2'; tn='isl-0.16.1'; url='ftp://gcc.gnu.org/pub/gcc/infrastructure/isl-0.16.1.tar.bz2';
 set_source 'tar' 
-configure_build --with-gmp=build --with-gmp-builddir=$BUILTS_PATH/gmp/ --prefix=$CUST_INST_PREFIX;
+configure_build --with-gmp=build --with-gmp-builddir=$BUILDS_PATH/gmp/ --prefix=$CUST_INST_PREFIX;
 make;make install-strip;make install;make all;
 		shift;;
 		
@@ -930,7 +930,7 @@ make;make install;
 'hypertable')
 fn='master.zip'; tn='hypertable-master'; url='https://github.com/kashirin-alex/hypertable/archive/master.zip';
 set_source 'zip' 
-cmake_build -DVERSION_ADD_COMMIT_SUFFIX=1 -DHADOOP_INCLUDE_PATH=$HADOOP_INCLUDE_PATH -DHADOOP_LIB_PATH=$HADOOP_LIB_PATH -DTHRIFT_SOURCE_DIR=$BUILTS_PATH/thrift/ -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON
+cmake_build -DVERSION_MISC_SUFFIX=$( date  +"%Y-%m-%d_%H-%M") -DHADOOP_INCLUDE_PATH=$HADOOP_INCLUDE_PATH -DHADOOP_LIB_PATH=$HADOOP_LIB_PATH -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON
 make -j$NUM_PROCS ;make install;make alltests;#  -DPACKAGE_OS_SPECIFIC=1 
 		shift;;
 
