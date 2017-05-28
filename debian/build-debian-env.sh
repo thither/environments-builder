@@ -23,10 +23,9 @@ test_make=0
 verbose=0
 help=''
 stage=-1
-c=0
+c=1
 only_sources=()
 while [ $# -gt 0 ]; do
-  let c=c+1 
   case $1 in
     --no-reuse-make) 	
 		reuse_make=0
@@ -47,6 +46,7 @@ while [ $# -gt 0 ]; do
 		help='--help'
 	;;
   esac
+  let c=c+1;
   shift
 done
 
