@@ -645,6 +645,7 @@ make;make lib;make install;make all;
 'boost')
 fn='boost_1_64_0.tar.gz'; tn='boost_1_64_0'; url='http://dl.bintray.com/boostorg/release/1.64.0/source/boost_1_64_0.tar.gz';
 set_source 'tar' 
+wget 'https://github.com/kashirin-alex/environments-builder/raw/master/patches/libboost/wrapper.cpp'; mv wrapper.cpp libs/python/src/
 ./bootstrap.sh --with-libraries=all --with-icu --prefix=$CUST_INST_PREFIX; #echo "using mpi ;" >> "project-config.jam";
 ./b2 threading=multi link=shared runtime-link=shared install; # --build-type=complete
 		shift;;
@@ -913,13 +914,21 @@ make prefix=$CUST_INST_PREFIX MANDIR=/usr/local/share/man/man1 -f unix/Makefile 
 		shift;;
 
 'gawk')
-fn='gawk-4.1.4.tar.xz'; tn=' gawk-4.1.4'; url='https://ftp.gnu.org/gnu/gawk/gawk-4.1.4.tar.xz';
+fn='gawk-4.1.4.tar.xz'; tn='gawk-4.1.4'; url='https://ftp.gnu.org/gnu/gawk/gawk-4.1.4.tar.xz';
 set_source 'tar' 
 configure_build --prefix=$CUST_INST_PREFIX;
 make;make install;	
 		shift;;
 
-		
+'hypertable')
+fn='master.zip'; tn='hypertable-master'; url='https://github.com/kashirin-alex/hypertable/archive/master.zip';
+set_source 'tar' 
+cmake_build -DVERSION_ADD_COMMIT_SUFFIX=$( date  +"%Y-%m-%d_%H-%M") -DHADOOP_INCLUDE_PATH=$HADOOP_INCLUDE_PATH -DHADOOP_LIB_PATH=$HADOOP_LIB_PATH -DTHRIFT_SOURCE_DIR=$BUILTS_PATH/thrift/ -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON
+make;make install;make alltests;#  -DPACKAGE_OS_SPECIFIC=1 
+		shift;;
+
+
+
     *)         echo "Unknown build: $sn";       shift;;
   esac
   
@@ -976,6 +985,7 @@ compile_and_install(){
 		do_install sqlite imagemagick
 		if [ $stage == 2 ]; then
 			do_install pypy2 nodejs thrift
+			do_install hypertable
 		fi
 	fi
 } 
