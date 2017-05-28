@@ -2,10 +2,13 @@
 pip install --upgrade pycparser
 fn='pypy2-v5.7.1-src.tar.bz2'; tn='pypy2-v5.7.1-src'; url='https://bitbucket.org/pypy/pypy/downloads/pypy2-v5.7.1-src.tar.bz2';
 set_source 'tar';
-
 #make LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" all;
-cd pypy; PYTHONPATH=$BUILDS_PATH/$sn LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" python ../rpython/bin/rpython --no-shared --opt=jit goal/targetpypystandalone.py #   --source  --no-shared --thread
-cd goal; LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" ../pypy-c ../../rpython/bin/rpython  --thread --translation-jit_opencoder_model=big --shared --opt=jit targetpypystandalone.py #--cc=gcc --thread --gc=boehm 
+(cd pypy; PYTHONPATH=$BUILDS_PATH/$sn LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" python ../rpython/bin/rpython --no-shared --opt=jit goal/targetpypystandalone.py) & #   --source  --no-shared --thread
+while [ ! -f pypy-c ]; do sleep 60; done;
+
+(cd goal; LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" ../pypy-c ../../rpython/bin/rpython  --thread --translation-jit_opencoder_model=big --shared --opt=jit targetpypystandalone.py) & #--cc=gcc --thread --gc=boehm 
+while [ ! -f pypy-c ]; do sleep 60; done;
+
 # --annotate  --thread --clever-malloc-removal-threshold=32.4 --translation-backendopt-profile_based_inline_threshold=32.4 --inline-threshold=32.4  --backendopt  --rtype
 if [ -f 'pypy-c' ]; then
 	PYTHONPATH=$BUILDS_PATH/$sn  ./pypy-c  --without-tk ../tool/build_cffi_imports.py;
@@ -45,6 +48,4 @@ if [ -f 'pypy-c' ]; then
 	#JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64" HADOOP_CONF_DIR='/opt/hadoop/current/etc/hadoop/' HADOOP_VERSION='2.7.2' pypy_pip install --upgrade https://github.com/crs4/pydoop/archive/1.2.0.tar.gz
 
 fi
-
-
 
