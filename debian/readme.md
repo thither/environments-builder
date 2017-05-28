@@ -8,11 +8,11 @@
 
 ## Usages:
   * bash build-debian-env.sh 
-     * --sources source-1 source-2  (builds and installs only the specified sources)
+     * --sources source-1 source-2  (builds and installs only the specified sources) or --source all
        * --help 
      * --verbose
      * --stage N
-  * recommend, execution cmd: ```nohup bash ~/builds/build-debian-env.sh > '/root/builds/built.log' &```
+  * recommend, execution cmd: ```nohup bash ~/builds/build-debian-env.sh --sources all> '/root/builds/built.log' &```
   
 ## Directories Configurations: 
   *  ```CUST_INST_PREFIX=/usr/local ``` (equal to the configure --prefix)
