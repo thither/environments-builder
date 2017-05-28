@@ -23,7 +23,7 @@ test_make=0
 verbose=0
 help=''
 stage=-1
-c=1
+c=0
 only_sources=()
 while [ $# -gt 0 ]; do
   case $1 in
@@ -46,8 +46,8 @@ while [ $# -gt 0 ]; do
 		help='--help'
 	;;
   esac
-  let c=c+1;
   shift
+  let c=c+1;
 done
 
 if [ ${#only_sources[@]} -eq 0 ]; then 
@@ -104,14 +104,19 @@ download() {
 		wget $url -O $fn -nv;
 	fi
 }
-extract_tar() {
+extract() {
 	echo 'extracting:' $fn to $sn;
 	if [ -d $BUILDS_PATH/$sn ]; then
 		echo 'removing old:' $BUILDS_PATH/$sn
 		rm -r $BUILDS_PATH/$sn;
 	fi
 	cd $BUILDS_PATH; 
-	tar xf $DOWNLOAD_PATH/$sn/$fn;
+	
+	if [ $archive_type == 'tar' ]; then
+		tar xf $DOWNLOAD_PATH/$sn/$fn;
+	elif [ $archive_type == 'zip' ]; then
+		unzip $DOWNLOAD_PATH/$sn/$fn;
+	fi
 	if [ $tn != $sn ]; then
 		mv $tn $sn;
 	fi
@@ -126,9 +131,11 @@ set_source() {
 	fi
 
 	download $url 
-	if [ $1=='tar' ]; then
-		extract_tar
-	fi
+	archive_type=$1;
+	extract;
+	#if [ $1=='tar' ]; then
+	#	extract
+	#fi
 	cd $BUILDS_PATH/$sn;
 }
 mv_child_as_parent() {
@@ -922,9 +929,9 @@ make;make install;
 
 'hypertable')
 fn='master.zip'; tn='hypertable-master'; url='https://github.com/kashirin-alex/hypertable/archive/master.zip';
-set_source 'tar' 
+set_source 'zip' 
 cmake_build -DVERSION_ADD_COMMIT_SUFFIX=$( date  +"%Y-%m-%d_%H-%M") -DHADOOP_INCLUDE_PATH=$HADOOP_INCLUDE_PATH -DHADOOP_LIB_PATH=$HADOOP_LIB_PATH -DTHRIFT_SOURCE_DIR=$BUILTS_PATH/thrift/ -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON
-make;make install;make alltests;#  -DPACKAGE_OS_SPECIFIC=1 
+make -j$NUM_PROCS ;make install;make alltests;#  -DPACKAGE_OS_SPECIFIC=1 
 		shift;;
 
 
