@@ -4,6 +4,7 @@
 
 ################## DIRCETOTRIES CONFIGURATIONS ##################
 CUST_INST_PREFIX=/usr/local
+CUST_JAVA_INST_PREFIX=/usr/java
 
 BUILDS_ROOT=~/builds
 SCRIPTS_PATH=$BUILDS_ROOT/scripts
@@ -11,6 +12,8 @@ DOWNLOAD_PATH=$BUILDS_ROOT/downloads
 BUILDS_PATH=$BUILDS_ROOT/sources
 BUILDS_LOG_PATH=$BUILDS_ROOT/logs/$( date  +"%Y-%m-%d_%H-%M-%S")
 BUILTS_PATH=$BUILDS_ROOT/builts
+
+ENV_SETTINGS_PATH=/usr/local/etc/profile.d/
 ##################################################################
 
 # nohup bash ~/builds/build-debian-env.sh --sources all > '/root/builds/built.log' &
@@ -20,7 +23,7 @@ test_make=0
 verbose=0
 help=''
 stage=-1
-c=1
+c=0
 only_sources=()
 while [ $# -gt 0 ]; do
   let c=c+1 
@@ -78,6 +81,8 @@ echo '--no-reuse-makee:' $reuse_make
 #trap 'echo "trying to INT"' INT
 #
 
+mkdir -p $CUST_INST_PREFIX
+mkdir -p $CUST_JAVA_INST_PREFIX
 mkdir -p $BUILDS_ROOT
 mkdir -p $DOWNLOAD_PATH
 mkdir -p $BUILDS_PATH
@@ -180,7 +185,8 @@ make_test_build() {
 	fi
 }
 finalize_build() {
-	source /etc/environment
+	source /etc/profile
+	source ~/.bashrc
 	cd $BUILDS_ROOT; /sbin/ldconfig
 	echo 'finished:' $sn;
 	echo -e '\n\n\n'
@@ -784,41 +790,41 @@ if [ -f $CUST_INST_PREFIX/bin/python ]; then
 fi
 if [ -f $CUST_INST_PREFIX/bin/pip ]; then
 	update-alternatives --install /usr/bin/pip pip /usr/local/bin/pip 60
-	#pip install --upgrade thrift
+	pip install --upgrade thrift
 fi
 		shift;;	
 
 'openjdk')	
 fn='jdk-8u152-ea-bin-b03-linux-x64-19_apr_2017.tar.gz'; tn='jdk1.8.0_152'; url='http://download.java.net/java/jdk8u152/archive/b03/binaries/jdk-8u152-ea-bin-b03-linux-x64-19_apr_2017.tar.gz';
 set_source 'tar' 
-rm -r  $CUST_INST_PREFIX/$sn
-mv ../$sn $CUST_INST_PREFIX/;
+rm -r  $CUST_JAVA_INST_PREFIX/$sn
+mv ../$sn $CUST_JAVA_INST_PREFIX/;
 
-if [ -f $CUST_INST_PREFIX/$sn/bin/javac ] &&  [ -f $CUST_INST_PREFIX/$sn/jre/bin/java ]; then
-	echo "#!/usr/bin/env bash" > /usr/local/etc/environment.d/$sn.conf
-	echo "export JAVA_HOME=\"$CUST_INST_PREFIX/$sn\"" >> /usr/local/etc/environment.d/$sn.conf
-	update-alternatives --install /usr/bin/javac javac $CUST_INST_PREFIX/$sn/bin/javac 60
-	update-alternatives --install /usr/bin/java java $CUST_INST_PREFIX/$sn/jre/bin/java 60
+if [ -f $CUST_JAVA_INST_PREFIX/$sn/bin/javac ] &&  [ -f $CUST_JAVA_INST_PREFIX/$sn/jre/bin/java ]; then
+	echo "#!/usr/bin/env bash" > $ENV_SETTINGS_PATH/$sn.sh
+	echo "JAVA_HOME=\"$CUST_JAVA_INST_PREFIX/$sn\"" >> $ENV_SETTINGS_PATH/$sn.sh
+	update-alternatives --install /usr/bin/javac javac $CUST_JAVA_INST_PREFIX/$sn/bin/javac 60
+	update-alternatives --install /usr/bin/java java $CUST_JAVA_INST_PREFIX/$sn/jre/bin/java 60
 fi
 		shift;;	
 		
 'apache-ant')
 fn='apache-ant-1.10.1-src.tar.gz'; tn='apache-ant-1.10.1'; url='https://www.apache.org/dist/ant/source/apache-ant-1.10.1-src.tar.gz';
 set_source 'tar' 
-./build.sh install -Ddist.dir=$CUST_INST_PREFIX/$sn -Dant.install=$CUST_INST_PREFIX/$sn
-echo "#!/usr/bin/env bash" > /usr/local/etc/environment.d/$sn.conf
-echo "export ANT_HOME=\"$CUST_INST_PREFIX/$sn\"" >> /usr/local/etc/environment.d/$sn.conf
+./build.sh install -Ddist.dir=$CUST_JAVA_INST_PREFIX/$sn -Dant.install=$CUST_JAVA_INST_PREFIX/$sn
+echo "#!/usr/bin/env bash" > $ENV_SETTINGS_PATH/$sn.sh
+echo "ANT_HOME=\"$CUST_JAVA_INST_PREFIX/$sn\"" >> $ENV_SETTINGS_PATH/$sn.sh
 		shift;;	
 
 'apache-maven')	
 fn='apache-maven-3.5.0-bin.tar.gz'; tn='apache-maven-3.5.0'; url='http://apache.mediamirrors.org/maven/maven-3/3.5.0/binaries/apache-maven-3.5.0-bin.tar.gz';
 set_source 'tar' 
-rm -r  $CUST_INST_PREFIX/$sn
-mv ../$sn $CUST_INST_PREFIX/;
-if [ -f $CUST_INST_PREFIX/$sn/bin/mvn ]; then
-	echo "#!/usr/bin/env bash" > /usr/local/etc/environment.d/$sn.conf
-	echo "export MAVEN_HOME=\"$CUST_INST_PREFIX/$sn\"" >> /usr/local/etc/environment.d/$sn.conf
-	echo "export PATH=\$PATH:\"$CUST_INST_PREFIX/$sn/bin\"" >> /usr/local/etc/environment.d/$sn.conf
+rm -r  $CUST_JAVA_INST_PREFIX/$sn
+mv ../$sn $CUST_JAVA_INST_PREFIX/;
+if [ -f $CUST_JAVA_INST_PREFIX/$sn/bin/mvn ]; then
+	echo "#!/usr/bin/env bash" > $ENV_SETTINGS_PATH/$sn.sh
+	echo "MAVEN_HOME=\"$CUST_JAVA_INST_PREFIX/$sn\"" >> $ENV_SETTINGS_PATH/$sn.sh
+	echo "PATH=\$PATH:\"$CUST_JAVA_INST_PREFIX/$sn/bin\"" >> $ENV_SETTINGS_PATH/$sn.sh
 
 fi
 		shift;;	
@@ -857,22 +863,22 @@ make;make install;
 'apache-hadoop')
 fn='hadoop-2.8.0.tar.gz'; tn='hadoop-2.8.0'; url='http://apache.crihan.fr/dist/hadoop/common/hadoop-2.8.0/hadoop-2.8.0.tar.gz';
 set_source 'tar' 
-if [ -d $CUST_INST_PREFIX/$sn ]; then
-	rm -r $CUST_INST_PREFIX/$sn;
+if [ -d $CUST_JAVA_INST_PREFIX/$sn ]; then
+	rm -r $CUST_JAVA_INST_PREFIX/$sn;
 	rm  /etc/hadoop;
 fi
-mv ../$sn $CUST_INST_PREFIX/$sn;
-#update-alternatives --install /usr/bin/hadoop hadoop $CUST_INST_PREFIX/$sn/bin/hadoop 60
+mv ../$sn $CUST_JAVA_INST_PREFIX/$sn;
+#update-alternatives --install /usr/bin/hadoop hadoop $CUST_JAVA_INST_PREFIX/$sn/bin/hadoop 60
 
-ln -s  $CUST_INST_PREFIX/$sn/etc/hadoop /etc/hadoop
+ln -s  $CUST_JAVA_INST_PREFIX/$sn/etc/hadoop /etc/hadoop
 
-echo "#!/usr/bin/env bash" > /usr/local/etc/environment.d/$sn.conf
-echo "export HADOOP_HOME=\"$CUST_INST_PREFIX/$sn\"" >> /usr/local/etc/environment.d/$sn.conf
-echo "export HADOOP_CONF_DIR=\"$CUST_INST_PREFIX/$sn/etc/hadoop\"" >> /usr/local/etc/environment.d/$sn.conf
-echo "export HADOOP_VERSION=\"2.8.2\"" >> /usr/local/etc/environment.d/$sn.conf
-echo "export HADOOP_INCLUDE_PATH=\"$CUST_INST_PREFIX/$sn/include\"" >> /usr/local/etc/environment.d/$sn.conf
-echo "export HADOOP_LIB_PATH=\"$CUST_INST_PREFIX/$sn/lib\"" >> /usr/local/etc/environment.d/$sn.conf
-echo "export PATH=\$PATH:\"$CUST_INST_PREFIX/$sn/bin\"" >> /usr/local/etc/environment.d/$sn.conf
+echo "#!/usr/bin/env bash" > $ENV_SETTINGS_PATH/$sn.sh
+echo "HADOOP_HOME=\"$CUST_JAVA_INST_PREFIX/$sn\"" >> $ENV_SETTINGS_PATH/$sn.sh
+echo "HADOOP_CONF_DIR=\"$CUST_JAVA_INST_PREFIX/$sn/etc/hadoop\"" >> $ENV_SETTINGS_PATH/$sn.sh
+echo "HADOOP_VERSION=\"2.8.2\"" >> $ENV_SETTINGS_PATH/$sn.sh
+echo "HADOOP_INCLUDE_PATH=\"$CUST_JAVA_INST_PREFIX/$sn/include\"" >> $ENV_SETTINGS_PATH/$sn.sh
+echo "HADOOP_LIB_PATH=\"$CUST_JAVA_INST_PREFIX/$sn/lib\"" >> $ENV_SETTINGS_PATH/$sn.sh
+echo "PATH=\$PATH:\"$CUST_JAVA_INST_PREFIX/$sn/bin\"" >> $ENV_SETTINGS_PATH/$sn.sh
 
 		shift;;	
 		
@@ -1029,21 +1035,26 @@ _env_setup(){
 	echo env_setup-$1
 	
 	if [ $1 == 'pre' ]; then
-		if [ ! -d $CUST_INST_PREFIX/etc/environment.d ]; then
-			mkdir -p $CUST_INST_PREFIX/etc/environment.d
-			chmod -R 777 $CUST_INST_PREFIX/etc/environment.d/
-		fi
+	
+		#if [ ! -f $CUST_INST_PREFIX/etc/environment.d ]; then
+		#	mkdir -p $CUST_INST_PREFIX/etc/environment.d
+		#	chmod -R 777 $CUST_INST_PREFIX/etc/environment.d/
+		#fi
 
-		tmp=`fgrep -c '/environment.d/' /etc/environment`
-		if [ $tmp -eq 0 ]; then
-			echo '''if [ -d /usr/local/etc/environment.d/ ]; then  for i in /usr/local/etc/environment.d/*.conf; do    if [ -r $i ]; then       source $i;     fi;   done; unset i; fi; ''' >> /etc/environment;
-		fi
+		#tmp=`fgrep -c $ENV_SETTINGS_PATH /etc/profile`
+		#if [ $tmp -eq 0 ]; then
+		#	echo '''if [ -d $ENV_SETTINGS_PATH ]; then  for i in $ENV_SETTINGS_PATH*.sh; do    if [ -r $i ]; then       source $i;     fi;   done; unset i; fi; ''' >> /etc/profile;
+		#fi
+		echo '''if [ -d $ENV_SETTINGS_PATH ]; then  for i in $ENV_SETTINGS_PATH*.sh; do    if [ -r $i ]; then       source $i;     fi;   done; unset i; fi; ''' > /etc/profile.d/custom_env.sh;
+
+		
 
 
 	elif [ $1 == 'post' ]; then
-		if [ -d $CUST_INST_PREFIX/etc/environment.d ]; then
-			chmod -R 777 $CUST_INST_PREFIX/etc/environment.d/
-			source /etc/environment
+		if [ -d $ENV_SETTINGS_PATH ]; then
+			chmod -R 777 $ENV_SETTINGS_PATH
+			sn=$only_sources
+			finalize_build;
 		fi
 	fi
 	
@@ -1129,8 +1140,8 @@ wget 'https://github.com/kashirin-alex/hypertable/archive/master.zip'
 mv hypertable-master $TMP_NAME; 
 mkdir $TMP_NAME-build;cd $TMP_NAME-build;
 
-cmake -DHADOOP_INCLUDE_PATH=$HADOOP_INCLUDE_PATH -DHADOOP_LIB_PATH=$HADOOP_LIB_PATH -DTHRIFT_SOURCE_DIR=~/builds/sources/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON ../$TMP_NAME
-#  -DPACKAGE_OS_SPECIFIC=1 -DVERSION_ADD_COMMIT_SUFFIX=1 
+cmake -DVERSION_ADD_COMMIT_SUFFIX=$( date  +"%Y-%m-%d_%H-%M") -DHADOOP_INCLUDE_PATH=$HADOOP_INCLUDE_PATH -DHADOOP_LIB_PATH=$HADOOP_LIB_PATH -DTHRIFT_SOURCE_DIR=~/builds/sources/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON ../$TMP_NAME
+#  -DPACKAGE_OS_SPECIFIC=1 
 make -j8; make install; make alltests;
 cd ~; /sbin/ldconfig
 
