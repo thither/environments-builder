@@ -976,7 +976,7 @@ compile_and_install(){
 	do_install log4cpp cronolog fuse sparsehash
 	do_install bison texinfo flex binutils gettext nettle libtasn1 libiconv
 	do_install libexpat libunistring libidn2 libsodium unbound
-	do_install libffi gnutls p11-kit tcltk tk pcre glib openmpi gdbm re2
+	do_install libffi p11-kit gnutls tcltk tk pcre glib openmpi gdbm re2
 	do_install expect attr #musl
 	do_install libhoard jemalloc gc gperf gperftools patch 
 	do_install gcc 
