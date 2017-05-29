@@ -102,7 +102,7 @@ download() {
 			mkdir $DOWNLOAD_PATH/$sn;
 		fi	
 		cd $DOWNLOAD_PATH/$sn;
-		wget $url -O $fn -nv;
+		wget -O $fn -nv --tries=3 $url;
 	fi
 }
 extract() {
