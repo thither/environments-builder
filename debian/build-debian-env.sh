@@ -26,6 +26,7 @@ stage=-1
 c=1
 only_sources=()
 while [ $# -gt 0 ]; do
+  let c=c+1;
   case $1 in
     --no-reuse-make) 	
 		reuse_make=0
@@ -47,7 +48,6 @@ while [ $# -gt 0 ]; do
 	;;
   esac
   shift
-  let c=c+1;
 done
 
 if [ ${#only_sources[@]} -eq 0 ]; then 
