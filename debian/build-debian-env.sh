@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 ## Author Kashirin Alex (kashirin.alex@gmail.com)
 
-# nohup bash ~/builder/build-debian-env.sh --sources all &> '/root/builds/built.log' &
+# nohup bash ~/builder/build-debian-env.sh --sources all &> '/root/builder/built.log' &
 
 ################## DIRCETOTRIES CONFIGURATIONS ##################
 CUST_INST_PREFIX=/usr/local
@@ -328,7 +328,7 @@ make;make install;make all;
 'mpfr')
 fn='mpfr-3.1.5.tar.gz'; tn='mpfr-3.1.5'; url='http://www.mpfr.org/mpfr-current/mpfr-3.1.5.tar.gz';
 set_source 'tar' 
-configure_build --enable-decimal-float --enable-thread-safe --with-gmp-build=$BUILDS_PATH/gmp/ --prefix=$CUST_INST_PREFIX;
+configure_build --enable-decimal-float --enable-thread-safe --with-gmp-build=$BUILTS_PATH/gmp/ --prefix=$CUST_INST_PREFIX;
 make;make install-strip;make install;make all; 
 		shift;;
 		
@@ -342,7 +342,7 @@ make;make install-strip;make install;make all;
 'isl')
 fn='isl-0.16.1.tar.bz2'; tn='isl-0.16.1'; url='ftp://gcc.gnu.org/pub/gcc/infrastructure/isl-0.16.1.tar.bz2';
 set_source 'tar' 
-configure_build --with-gmp=build --with-gmp-builddir=$BUILDS_PATH/gmp/ --prefix=$CUST_INST_PREFIX;
+configure_build --with-gmp=build --with-gmp-builddir=$BUILTS_PATH/gmp/ --prefix=$CUST_INST_PREFIX;
 make;make install-strip;make install;make all;
 		shift;;
 		
