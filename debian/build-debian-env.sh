@@ -22,11 +22,11 @@ reuse_make=0
 test_make=0
 verbose=0
 help=''
-stage=-1
+stage=0
 c=1
 only_sources=()
-while [ $# -gt 0 ]; do
-  let c=c+1;
+while [ $# -gt 0 ]; do	
+
   case $1 in
     --no-reuse-make) 	
 		reuse_make=0
@@ -35,19 +35,23 @@ while [ $# -gt 0 ]; do
 		test_make=1
 	;;
     --verbose)  		
-		verbose=1
+		verbose=1;
 	;;
-    --stage)  			
-		stage=$2
+    --stage)  		
+		stage=$2;
 	;;
-	--sources)  		
-		only_sources="${@:$c}"
+	--sources) 
+		only_sources=(${@:$c})
 	;;
     --help)  			
 		help='--help'
 	;;
+    *)  			
+		let c=c-1
+	;;
   esac
   shift
+  let c=c+1;
 done
 
 if [ ${#only_sources[@]} -eq 0 ]; then 
@@ -55,12 +59,14 @@ if [ ${#only_sources[@]} -eq 0 ]; then
 	exit 1
 fi
 build_all=0
-if [ ${only_sources[0]} == 'all' ]; then 
+if [ ${#only_sources[@]} -eq 1 ] && [ ${only_sources[0]} == 'all' ]; then 
 	only_sources=()
-	build_all==1
-	verbose=0;    
-	stage=0
+	build_all=1
+	verbose=0;  
+else
+	stage=-1;
 fi
+
 if [ ${#only_sources[@]} -gt 0 ]; then 
 	echo 'number of sources: '${#only_sources[@]}
 fi
@@ -69,8 +75,9 @@ if [ -z $help ] && [ ${#only_sources[@]} -eq 0 ] && [ $build_all == 0 ]; then
 	verbose=1;    
 	stage=0
 fi
+
 echo '--verbose:' $verbose
-echo '--sources:' $only_sources
+echo '--sources:' ${only_sources[@]}
 echo '--help:' $help
 echo '--stage:' $stage
 echo '--test_make:' $test_make
@@ -108,7 +115,7 @@ download() {
 extract() {
 	echo 'extracting:' $fn to $sn;
 	if [ -d $BUILDS_PATH/$sn ]; then
-		echo 'removing old:' $BUILDS_PATH/$sn
+		echo 'removing old:' $BUILDS_PATH/$sn;
 		rm -r $BUILDS_PATH/$sn;
 	fi
 	cd $BUILDS_PATH; 
@@ -959,7 +966,7 @@ do_install() {
 #########
 
 if [  ${#only_sources[@]} -gt 0  ]; then 
-	do_install $only_sources
+	do_install ${only_sources[@]}
 	exit 1
 fi
 #########
@@ -1071,7 +1078,7 @@ _env_setup(){
 	elif [ $1 == 'post' ]; then
 		if [ -d $ENV_SETTINGS_PATH ]; then
 			chmod -R 777 $ENV_SETTINGS_PATH
-			sn=$only_sources
+			sn=${only_sources[@]}
 			finalize_build;
 		fi
 	fi
@@ -1091,7 +1098,7 @@ if [ $stage == 0 ]; then
 	stage=1
 fi
 if [ $stage == 1 ]; then
-	reuse_make=0
+	reuse_make=0;
 	compile_and_install
 	stage=2
 fi
