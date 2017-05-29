@@ -236,7 +236,7 @@ make;make install-strip;make install;make all;
 		shift;;
 		
 'autoconf')
-fn='autoconf-2.69.tar.xz'; tn='autoconf-2.69'; url='ftp://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.xz';
+fn='autoconf-2.69.tar.xz'; tn='autoconf-2.69'; url='http://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.xz';
 set_source 'tar'
 configure_build --prefix=$CUST_INST_PREFIX;
 make;make lib;make install-strip;make install;make all;
@@ -333,7 +333,7 @@ make;make install-strip;make install;make all;
 		shift;;
 		
 'mpc')
-fn='mpc-1.0.3.tar.gz'; tn='mpc-1.0.3'; url='ftp://ftp.gnu.org/gnu/mpc/mpc-1.0.3.tar.gz';
+fn='mpc-1.0.3.tar.gz'; tn='mpc-1.0.3'; url='http://ftp.gnu.org/gnu/mpc/mpc-1.0.3.tar.gz';
 set_source 'tar' 
 configure_build --prefix=$CUST_INST_PREFIX;
 make;make install-strip;make install;make all;
@@ -608,7 +608,7 @@ fi
 		shift;;
 
 'gdbm')
-fn='gdbm-1.13.tar.gz'; tn='gdbm-1.13'; url='ftp://ftp.gnu.org/gnu/gdbm/gdbm-1.13.tar.gz';
+fn='gdbm-1.13.tar.gz'; tn='gdbm-1.13'; url='http://ftp.gnu.org/gnu/gdbm/gdbm-1.13.tar.gz';
 set_source 'tar' 
 configure_build --enable-libgdbm-compat --enable-gdbm-export --prefix=$CUST_INST_PREFIX; 
 make;make install-strip;make install;make all;
@@ -922,7 +922,7 @@ make prefix=$CUST_INST_PREFIX MANDIR=/usr/local/share/man/man1 -f unix/Makefile 
 		shift;;
 
 'gawk')
-fn='gawk-4.1.4.tar.xz'; tn='gawk-4.1.4'; url='https://ftp.gnu.org/gnu/gawk/gawk-4.1.4.tar.xz';
+fn='gawk-4.1.4.tar.xz'; tn='gawk-4.1.4'; url='http://ftp.gnu.org/gnu/gawk/gawk-4.1.4.tar.xz';
 set_source 'tar' 
 configure_build --prefix=$CUST_INST_PREFIX;
 make;make install;	
@@ -1425,7 +1425,7 @@ cd ~; /sbin/ldconfig
 
 echo classpath
 cd ~/dependeciesBuilds; rm -r classpath;
-wget 'ftp://ftp.gnu.org/gnu/classpath/classpath-0.99.tar.gz'
+wget 'http://ftp.gnu.org/gnu/classpath/classpath-0.99.tar.gz'
 tar xf classpath-0.99.tar.gz
 mv classpath-0.99 classpath; cd classpath
 ./configure --with-gmp=/usr/local --enable-collections --enable-jni --enable-core-jni --enable-gstreamer-peer --enable-default-toolkit --enable-xmlj --enable-gmp --enable-regen-headers --enable-tool-wrappers --enable-tools --enable-local-sockets --prefix=/usr/local; 
@@ -1557,7 +1557,7 @@ TMP_NAME=ncurses
 echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'ftp://ftp.gnu.org/gnu/ncurses/ncurses-6.0.tar.gz'
+wget 'http://ftp.gnu.org/gnu/ncurses/ncurses-6.0.tar.gz'
 tar xf ncurses-6.0.tar.gz
 mv ncurses-6.0 $TMP_NAME;cd $TMP_NAME
 
@@ -1668,7 +1668,7 @@ cd ~; /sbin/ldconfig
 
 echo gss
 cd ~/dependeciesBuilds
-wget ftp://ftp.gnu.org/gnu/gss/gss-1.0.3.tar.gz
+wget http://ftp.gnu.org/gnu/gss/gss-1.0.3.tar.gz
 tar xzvf gss-1.0.3.tar.gz
 cd gss-1.0.3
 ./configure; make; make install
