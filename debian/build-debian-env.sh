@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 ## Author Kashirin Alex (kashirin.alex@gmail.com)
 
+# nohup bash ~/builder/build-debian-env.sh --sources all &> '/root/builds/built.log' &
 
 ################## DIRCETOTRIES CONFIGURATIONS ##################
 CUST_INST_PREFIX=/usr/local
 CUST_JAVA_INST_PREFIX=/usr/java
 
+SCRIPTS_PATH=~/builder/scripts
 BUILDS_ROOT=~/builds
-SCRIPTS_PATH=$BUILDS_ROOT/scripts
 DOWNLOAD_PATH=$BUILDS_ROOT/downloads
 BUILDS_PATH=$BUILDS_ROOT/sources
 BUILDS_LOG_PATH=$BUILDS_ROOT/logs/$( date  +"%Y-%m-%d_%H-%M-%S")
@@ -16,7 +17,6 @@ BUILTS_PATH=$BUILDS_ROOT/builts
 ENV_SETTINGS_PATH=/usr/local/etc/profile.d/
 ##################################################################
 
-# nohup bash ~/builds/build-debian-env.sh --sources all > '/root/builds/built.log' &
 
 reuse_make=0
 test_make=0
@@ -81,6 +81,7 @@ echo '--no-reuse-makee:' $reuse_make
 #trap 'echo "trying to INT"' INT
 #
 
+mkdir -p $ENV_SETTINGS_PATH
 mkdir -p $CUST_INST_PREFIX
 mkdir -p $CUST_JAVA_INST_PREFIX
 mkdir -p $BUILDS_ROOT
@@ -1053,7 +1054,6 @@ _env_setup(){
 	echo env_setup-$1
 	
 	if [ $1 == 'pre' ]; then
-	
 		#if [ ! -f $CUST_INST_PREFIX/etc/environment.d ]; then
 		#	mkdir -p $CUST_INST_PREFIX/etc/environment.d
 		#	chmod -R 777 $CUST_INST_PREFIX/etc/environment.d/
