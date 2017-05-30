@@ -1094,7 +1094,7 @@ _env_setup(){
 		echo include $LD_CONF_PATH/*.conf > "/etc/ld.so.conf.d/usr.conf"
 		echo $CUST_INST_PREFIX/lib64 > $LD_CONF_PATH/lib64.conf
 		
-		echo '''if [ -d $ENV_SETTINGS_PATH ]; then  for i in $ENV_SETTINGS_PATH*.sh; do    if [ -r $i ]; then       source $i;     fi;   done; unset i; fi; ''' > /etc/profile.d/custom_env.sh;
+		echo '''if [ -d '''$ENV_SETTINGS_PATH''' ]; then  for i in '''$ENV_SETTINGS_PATH'''*.sh; do    if [ -r $i ]; then       source $i;     fi;   done; unset i; fi; ''' > /etc/profile.d/custom_env.sh;
 
 		
 
