@@ -955,7 +955,14 @@ fn='master.zip'; tn='hypertable-master'; url='https://github.com/kashirin-alex/h
 set_source 'zip' 
 apt-get -y install rrdtool;
 cmake_build -DVERSION_MISC_SUFFIX=$( date  +"%Y-%m-%d_%H-%M") -DHADOOP_INCLUDE_PATH=$HADOOP_INCLUDE_PATH -DHADOOP_LIB_PATH=$HADOOP_LIB_PATH -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release;# -DBUILD_SHARED_LIBS=ON
-make -j$NUM_PROCS ;make install;make alltests;#  -DPACKAGE_OS_SPECIFIC=1 
+make VERBOSE=1 ;make install;make alltests;#  -DPACKAGE_OS_SPECIFIC=1 -j$NUM_PROCS
+		shift;;
+
+'llvm')
+fn='llvm-4.0.0.src.tar.xz'; tn='llvm-4.0.0.src'; url='http://releases.llvm.org/4.0.0/llvm-4.0.0.src.tar.xz';
+set_source 'tar' 
+cmake_build -DCMAKE_BUILD_TYPE=Release -DLLVM_TARGETS_TO_BUILD=X86 -DFFI_INCLUDE_DIR=$CUST_INST_PREFIX/lib/libffi-3.2.1/include -DFFI_LIBRARY_DIR=$CUST_INST_PREFIX/lib64 -DLLVM_ENABLE_FFI=ON -DLLVM_USE_INTEL_JITEVENTS=ON -DLLVM_LINK_LLVM_DYLIB=ON -DCMAKE_INSTALL_PREFIX=$CUST_INST_PREFIX; 
+make;make install;
 		shift;;
 
 
@@ -1000,7 +1007,7 @@ compile_and_install(){
 	do_install libffi p11-kit gnutls tcltk tk pcre glib openmpi gdbm re2
 	do_install expect attr #musl
 	do_install libhoard jemalloc gc gperf gperftools patch 
-	do_install gcc 
+	do_install gcc llvm
 	
 	if [ $stage -gt 0 ]; then
 		do_install boost  
@@ -1142,10 +1149,9 @@ tar xf llvm-4.0.0.src.tar.xz
 mv llvm-4.0.0.src llvm;
 rm -r llvm_build
 mkdir llvm_build;cd llvm_build;
-cmake -DLLVM_TARGETS_TO_BUILD=X86 -DFFI_INCLUDE_DIR=/usr/local/lib/libffi-3.2.1/include -DFFI_LIBRARY_DIR=/usr/local/lib64 -DLLVM_ENABLE_FFI=ON -DLLVM_USE_INTEL_JITEVENTS=ON -DLLVM_ENABLE_LTO=Full -DLLVM_LINK_LLVM_DYLIB=ON -DCMAKE_INSTALL_PREFIX=/usr/local ../llvm; 
+cmake -DLLVM_TARGETS_TO_BUILD=X86 -DFFI_INCLUDE_DIR=/usr/local/lib/libffi-3.2.1/include -DFFI_LIBRARY_DIR=/usr/local/lib64 -DLLVM_ENABLE_FFI=ON -DLLVM_USE_INTEL_JITEVENTS=ON -DLLVM_LINK_LLVM_DYLIB=ON -DCMAKE_INSTALL_PREFIX=/usr/local ../llvm; 
 make; make check; make install
 cd ~; /sbin/ldconfig
-./configure  --enable-targets="x86"  --prefix=/usr/local ; --enable-jit --enable-threads  --enable-libffi --enable-optimized --enable-bindings --enable-ltdl-install ;
 
 
 
@@ -1156,6 +1162,9 @@ cd ~/tmpBuilds; rm -r $TMP_NAME;
 wget 'http://github.com/libffi/libffi/archive/v3.2.1.tar.gz'
 tar xf v3.2.1.tar.gz
 mv $TMP_NAME-3.2.1 $TMP_NAME; cd $TMP_NAME;
+./autogen.sh
+./configure --includedir=/usr/local/include --prefix=/usr/local 
+make;make install-strip;make install;make all; 
 
 TMP_NAME=proxygen; 
 echo $TMP_NAME
