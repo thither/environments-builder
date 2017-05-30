@@ -935,6 +935,13 @@ configure_build --prefix=$CUST_INST_PREFIX;
 make;make install;	
 		shift;;
 
+'pybind11')
+fn='v2.1.1.tar.gz'; tn='pybind11-2.1.1'; url='https://github.com/pybind/pybind11/archive/v2.1.1.tar.gz';
+set_source 'tar' 
+cmake_build -DPYBIND11_TEST=OFF -DCMAKE_INSTALL_INCLUDEDIR=$CUST_INST_PREFIX;
+make install;
+		shift;;
+		
 'hypertable')
 fn='master.zip'; tn='hypertable-master'; url='https://github.com/kashirin-alex/hypertable/archive/master.zip';
 set_source 'zip' 
@@ -942,7 +949,6 @@ apt-get -y install rrdtool;
 cmake_build -DVERSION_MISC_SUFFIX=$( date  +"%Y-%m-%d_%H-%M") -DHADOOP_INCLUDE_PATH=$HADOOP_INCLUDE_PATH -DHADOOP_LIB_PATH=$HADOOP_LIB_PATH -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release;# -DBUILD_SHARED_LIBS=ON
 make -j$NUM_PROCS ;make install;make alltests;#  -DPACKAGE_OS_SPECIFIC=1 
 		shift;;
-
 
 
     *)         echo "Unknown build: $sn";       shift;;
@@ -1000,7 +1006,7 @@ compile_and_install(){
 		do_install harfbuzz freetype fontconfig 
 		do_install sqlite imagemagick
 		if [ $stage == 2 ]; then
-			do_install pypy2 nodejs thrift
+			do_install pypy2 nodejs thrift pybind11
 			do_install hypertable
 		fi
 	fi
@@ -1111,6 +1117,13 @@ fi
 
 exit 1
 
+# DRAFTS #######################################################################
+
+
+
+
+
+
 
 TMP_NAME=proxygen; 
 echo $TMP_NAME
@@ -1148,8 +1161,6 @@ make; make install;
 
 
 
-# DRAFTS #######################################################################
-
 
 
 
@@ -1176,10 +1187,13 @@ TMP_NAME=nghttp2
 echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://github.com/nghttp2/nghttp2/releases/download/v1.22.0/nghttp2-1.22.0.tar.gz'
-tar xf nghttp2-1.22.0.tar.gz
-mv nghttp2-1.22.0 $TMP_NAME;cd $TMP_NAME
-./configure --ENABLE_ASIO_LIB=ON -DOPENSSL_ROOT_DIR=/usr/local/ssl --prefix=/usr/local; 
+wget 'https://github.com/nghttp2/nghttp2/releases/download/v1.17.0/nghttp2-1.17.0.tar.xz'
+tar xf nghttp2-1.17.0.tar.xz
+mv nghttp2-1.17.0 $TMP_NAME;cd $TMP_NAME
+autoreconf -i
+automake
+autoconf
+./configure --enable-app --prefix=/usr/local; 
 make; make install;
 
 
