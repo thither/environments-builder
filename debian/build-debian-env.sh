@@ -938,7 +938,7 @@ make;make install;
 'pybind11')
 fn='v2.1.1.tar.gz'; tn='pybind11-2.1.1'; url='https://github.com/pybind/pybind11/archive/v2.1.1.tar.gz';
 set_source 'tar' 
-cmake_build -DPYBIND11_TEST=OFF -DCMAKE_INSTALL_INCLUDEDIR=$CUST_INST_PREFIX;
+cmake_build -DPYBIND11_TEST=OFF -DCMAKE_INSTALL_INCLUDEDIR=$CUST_INST_PREFIX/include;
 make install;
 		shift;;
 		
