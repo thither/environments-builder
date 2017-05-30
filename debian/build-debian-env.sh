@@ -15,6 +15,7 @@ BUILDS_LOG_PATH=$BUILDS_ROOT/logs/$( date  +"%Y-%m-%d_%H-%M-%S")
 BUILTS_PATH=$BUILDS_ROOT/builts
 
 ENV_SETTINGS_PATH=/usr/local/etc/profile.d/
+LD_CONF_PATH=/usr/local/etc/ld.so.conf.d
 ##################################################################
 
 
@@ -88,6 +89,7 @@ echo '--no-reuse-makee:' $reuse_make
 #trap 'echo "trying to INT"' INT
 #
 
+mkdir -p $LD_CONF_PATH
 mkdir -p $ENV_SETTINGS_PATH
 mkdir -p $CUST_INST_PREFIX
 mkdir -p $CUST_JAVA_INST_PREFIX
@@ -684,7 +686,7 @@ set_source 'tar'
 cust_conf_path='dist/'
 configure_build --enable-cxx --enable-smallbuild  --prefix=$CUST_INST_PREFIX; 
 make;make install;make all; 
-echo $CUST_INST_PREFIX/lib > "/etc/ld.so.conf.d/bdb.conf"
+#echo $CUST_INST_PREFIX/lib > "/etc/ld.so.conf.d/bdb.conf"
 		shift;;
 
 'openssl')
@@ -801,7 +803,7 @@ set_source 'tar'
 configure_build --with-system-expat --enable-unicode --with-ensurepip=install --with-computed-gotos --enable-shared --enable-optimizations --enable-ipv6 --with-lto  --with-system-ffi  --with-signal-module   --with-pth --with-pymalloc --with-fpectl  --prefix=$CUST_INST_PREFIX;   #
 make;make install;make all;
 if [ -f $CUST_INST_PREFIX/bin/python ]; then
-	echo /usr/local/include/python2.7 > "/etc/ld.so.conf.d/python.conf"
+	echo /usr/local/include/python2.7 > $LD_CONF_PATH/python.conf
 	update-alternatives --install /usr/bin/python python /usr/local/bin/python 60
 fi
 if [ -f $CUST_INST_PREFIX/bin/pip ]; then
@@ -1076,7 +1078,9 @@ _env_setup(){
 		#if [ $tmp -eq 0 ]; then
 		#	echo '''if [ -d $ENV_SETTINGS_PATH ]; then  for i in $ENV_SETTINGS_PATH*.sh; do    if [ -r $i ]; then       source $i;     fi;   done; unset i; fi; ''' >> /etc/profile;
 		#fi
-		echo $CUST_INST_PREFIX/lib64 > "/etc/ld.so.conf.d/lib64.conf"
+		echo include $LD_CONF_PATH/*.conf > "/etc/ld.so.conf.d/usr.conf"
+		echo $CUST_INST_PREFIX/lib64 > $LD_CONF_PATH/lib64.conf
+		
 		echo '''if [ -d $ENV_SETTINGS_PATH ]; then  for i in $ENV_SETTINGS_PATH*.sh; do    if [ -r $i ]; then       source $i;     fi;   done; unset i; fi; ''' > /etc/profile.d/custom_env.sh;
 
 		
