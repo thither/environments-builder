@@ -611,6 +611,12 @@ fi
 if [ -f $CUST_INST_PREFIX/bin/g++ ]; then
 	update-alternatives --install /usr/bin/g++ g++ $CUST_INST_PREFIX/bin/g++ 60
 fi
+if [ -f $CUST_INST_PREFIX/bin/ar ]; then
+	update-alternatives --install /usr/bin/ar ar $CUST_INST_PREFIX/bin/ar 60
+fi
+if [ -f $CUST_INST_PREFIX/bin/ranlib ]; then
+	update-alternatives --install /usr/bin/ranlib ranlib $CUST_INST_PREFIX/bin/ranlib 60
+fi
 # --with-cloog=$CUST_INST_PREFIX --disable-cloog-version-check --enable-fixed-point  --enable-stage1-checking=all  --enable-stage1-languages=all #http://gcc.gnu.org/install/configure.html
 #http://stackoverflow.com/questions/7832892/how-to-change-the-default-gcc-compiler-in-ubuntu
 
@@ -1128,7 +1134,28 @@ exit 1
 
 
 
+echo llvm
+mkdir ~/tmpBuilds;cd ~/tmpBuilds;
+ rm -r llvm;
+wget 'http://releases.llvm.org/4.0.0/llvm-4.0.0.src.tar.xz'
+tar xf llvm-4.0.0.src.tar.xz
+mv llvm-4.0.0.src llvm;
+rm -r llvm_build
+mkdir llvm_build;cd llvm_build;
+cmake -DLLVM_TARGETS_TO_BUILD=X86 -DFFI_INCLUDE_DIR=/usr/local/lib/libffi-3.2.1/include -DFFI_LIBRARY_DIR=/usr/local/lib64 -DLLVM_ENABLE_FFI=ON -DLLVM_USE_INTEL_JITEVENTS=ON -DLLVM_ENABLE_LTO=Full -DLLVM_LINK_LLVM_DYLIB=ON -DCMAKE_INSTALL_PREFIX=/usr/local ../llvm; 
+make; make check; make install
+cd ~; /sbin/ldconfig
+./configure  --enable-targets="x86"  --prefix=/usr/local ; --enable-jit --enable-threads  --enable-libffi --enable-optimized --enable-bindings --enable-ltdl-install ;
 
+
+
+TMP_NAME=libffi; 
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'http://github.com/libffi/libffi/archive/v3.2.1.tar.gz'
+tar xf v3.2.1.tar.gz
+mv $TMP_NAME-3.2.1 $TMP_NAME; cd $TMP_NAME;
 
 TMP_NAME=proxygen; 
 echo $TMP_NAME
@@ -1231,9 +1258,6 @@ mv ceph-12.0.3 $TMP_NAME;cd $TMP_NAME;
 
 
 
-
-
-
 TMP_NAME=gf-complete
 echo $TMP_NAME
 mkdir ~/tmpBuilds
@@ -1293,6 +1317,128 @@ cmake -DUSE_GSS=OFF -DUSE_TSAN=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PRE
 
 
 
+#### > libX11 > 
+libpthread-stubs0-dev libx11-dev libx11-doc libxau-dev libxcb 1-dev libxdmcp-dev x11proto-core-dev x11proto-input-dev x11proto-kb-dev xorg-sgml-doctools xtrans-dev
+
+
+TMP_NAME=xorg-macros
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'https://www.x.org/releases/X11R7.7/src/everything/util-macros-1.17.tar.gz'
+tar xf util-macros-1.17.tar.gz
+mv util-macros-1.17 $TMP_NAME;cd $TMP_NAME; 
+./configure  --prefix=/usr/local;
+make; make install
+
+ldconfig
+
+TMP_NAME=libpthread-stubs
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'https://www.x.org/releases/X11R7.7/src/xcb/libpthread-stubs-0.3.tar.gz'
+tar xf libpthread-stubs-0.3.tar.gz
+mv libpthread-stubs-0.3 $TMP_NAME;cd $TMP_NAME; 
+./configure  --prefix=/usr/local;
+make; make install
+
+ldconfig
+
+TMP_NAME=libXau
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'https://www.x.org/releases/X11R7.7/src/lib/libXau-1.0.7.tar.gz'
+tar xf libXau-1.0.7.tar.gz
+mv libXau-1.0.7 $TMP_NAME;cd $TMP_NAME; 
+./configure  --prefix=/usr/local;
+make; make install
+
+ldconfig
+
+TMP_NAME=libxcb
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'https://www.x.org/releases/X11R7.7/src/xcb/libxcb-1.8.1.tar.gz'
+tar xf libxcb-1.8.1.tar.gz
+mv libxcb-1.8.1 $TMP_NAME;cd $TMP_NAME; 
+./configure --disable-static --prefix=/usr/local;
+make; make install
+
+ldconfig
+
+TMP_NAME=xtrans
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'https://www.x.org/releases/X11R7.7/src/lib/xtrans-1.2.7.tar.gz'
+tar xf xtrans-1.2.7.tar.gz
+mv xtrans-1.2.7 $TMP_NAME;cd $TMP_NAME; 
+./configure  --prefix=/usr/local;
+make; make install
+
+ldconfig
+
+TMP_NAME=inputproto
+echo $TMP_NAME
+mkdir ~/tmpBuilds;
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'https://www.x.org/releases/X11R7.7/src/proto/inputproto-2.2.tar.gz'
+tar xf inputproto-2.2.tar.gz
+mv inputproto-2.2 $TMP_NAME;cd $TMP_NAME; 
+./configure  --prefix=/usr/local;
+make; make install
+
+ldconfig
+
+TMP_NAME=kbproto
+echo $TMP_NAME
+mkdir ~/tmpBuilds;
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'https://www.x.org/releases/X11R7.7/src/proto/kbproto-1.0.6.tar.gz'
+tar xf kbproto-1.0.6.tar.gz
+mv kbproto-1.0.6 $TMP_NAME;cd $TMP_NAME; 
+./configure  --prefix=/usr/local;
+make; make install
+
+ldconfig
+
+TMP_NAME=xproto
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'https://www.x.org/releases/X11R7.7/src/proto/xproto-7.0.23.tar.gz'
+tar xf xproto-7.0.23.tar.gz
+mv xproto-7.0.23 $TMP_NAME;cd $TMP_NAME; 
+./configure  --prefix=/usr/local;
+make; make install
+
+ldconfig
+
+TMP_NAME=libX11
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'https://www.x.org/releases/X11R7.7/src/lib/libX11-1.5.0.tar.gz'
+tar xf libX11-1.5.0.tar.gz
+mv libX11-1.5.0 $TMP_NAME;cd $TMP_NAME; 
+./configure  --prefix=/usr/local;
+make; make install
+
+####### > libX11
+
+TMP_NAME=libX11
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'https://github.com/mirror/libX11/archive/libX11-1.6.5.tar.gz'
+tar xf libX11-1.6.5.tar.gz
+mv libX11-1.6.5 $TMP_NAME;cd $TMP_NAME; 
+./configure  --prefix=/usr/local;
+make; make install
+
 
 
 
@@ -1324,41 +1470,25 @@ TMP_NAME=xcb-proto
 echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://xcb.freedesktop.org/dist/xcb-proto-1.12.tar.gz'
-tar xf xcb-proto-1.12.tar.gz
-mv  xcb-proto-1.12 $TMP_NAME;cd $TMP_NAME; 
+wget 'https://www.x.org/releases/X11R7.7/src/xcb/xcb-proto-1.7.1.tar.gz'
+tar xf xcb-proto-1.7.1.tar.gz
+mv xcb-proto-1.7.1 $TMP_NAME;cd $TMP_NAME; 
 ./configure  --prefix=/usr/local;
 make; make install
 
-TMP_NAME=libxcb
-echo $TMP_NAME
-mkdir ~/tmpBuilds
-cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'http://xcb.freedesktop.org/dist/libxcb-1.12.tar.bz2'
-tar xf libxcb-1.12.tar.bz2
-mv  libxcb-1.12 $TMP_NAME;cd $TMP_NAME; 
-./configure  --prefix=/usr/local;
-make; make install
 
 TMP_NAME=xextproto
 echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://www.x.org/archive/individual/proto/xextproto-7.3.0.tar.gz'
-tar xf xextproto-7.3.0.tar.gz
-mv xextproto-7.3.0 $TMP_NAME;cd $TMP_NAME; 
+wget 'https://www.x.org/releases/X11R7.7/src/proto/xextproto-7.2.1.tar.gz'
+tar xf xextproto-7.2.1.tar.gz
+mv xextproto-7.2.1 $TMP_NAME;cd $TMP_NAME; 
 ./configure  --prefix=/usr/local;
 make; make install
 
-TMP_NAME=libX11
-echo $TMP_NAME
-mkdir ~/tmpBuilds
-cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://www.x.org/archive//individual/lib/libX11-1.6.5.tar.gz'
-tar xf libX11-1.6.5.tar.gz
-mv libX11-1.6.5 $TMP_NAME;cd $TMP_NAME; 
-./configure  --prefix=/usr/local;
-make; make install
+
+
 
 TMP_NAME=renderproto
 echo $TMP_NAME
@@ -1480,21 +1610,12 @@ cd ..; mkdir build-glibc; cd build-glibc
  make; make check; make install #  --enable-multi-arch --disable-sanity-checks 
 cd ~; /sbin/ldconfig
 
-echo llvm
-cd ~/dependeciesBuilds; rm -r llvm;
-wget 'http://releases.llvm.org/4.0.0/llvm-4.0.0.src.tar.xz'
-tar xf llvm-4.0.0.src.tar.xz
-mv llvm-4.0.0.src llvm;
-cd llvm_build; mkdir llvm_build
-cmake ~/dependeciesBuilds/llvm; make; make check; make install
-cd ~; /sbin/ldconfig
-
 echo llvm_mono
 cd ~/dependeciesBuilds; rm -r llvm_mono;
 wget 'http://github.com/mono/llvm/archive/RELEASE_27.tar.gz'
 tar xvf RELEASE_27.tar.gz
 mv llvm-RELEASE_27 llvm_mono;cd llvm_mono
-./configure   --enable-bindings --enable-ltdl-install  --enable-jit --enable-threads  --enable-libffi --prefix=/usr/local;
+./configure  --enable-targets="x86_64"  --prefix=/usr/local ; --enable-jit --enable-threads  --enable-libffi --enable-optimized --enable-bindings --enable-ltdl-install ;
 make; make check; make install
 cd ~; /sbin/ldconfig
 
@@ -1529,11 +1650,11 @@ TMP_NAME=guile
 echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'http://ftp.gnu.org/gnu/guile/guile-2.2.2.tar.xz'
-tar xf guile-2.2.2.tar.xz
-mv guile-2.2.2 $TMP_NAME;cd $TMP_NAME; 
-./configure --disable-posix --prefix=/usr/local;# --with-threads
-make; make all; make install;
+wget 'https://ftp.gnu.org/gnu/guile/guile-2.0.13.tar.xz'
+tar xf guile-2.0.13.tar.xz
+mv guile-2.0.13 $TMP_NAME;cd $TMP_NAME; 
+./configure --prefix=/usr/local;# 
+make; make install;
 
 TMP_NAME=autogen
 echo $TMP_NAME
