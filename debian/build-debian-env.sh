@@ -826,7 +826,7 @@ mv ../$sn $CUST_JAVA_INST_PREFIX/;
 
 if [ -f $CUST_JAVA_INST_PREFIX/$sn/bin/javac ] &&  [ -f $CUST_JAVA_INST_PREFIX/$sn/jre/bin/java ]; then
 	echo "#!/usr/bin/env bash" > $ENV_SETTINGS_PATH/$sn.sh
-	echo "JAVA_HOME=\"$CUST_JAVA_INST_PREFIX/$sn\"" >> $ENV_SETTINGS_PATH/$sn.sh
+	echo "export JAVA_HOME=\"$CUST_JAVA_INST_PREFIX/$sn\"" >> $ENV_SETTINGS_PATH/$sn.sh
 	update-alternatives --install /usr/bin/javac javac $CUST_JAVA_INST_PREFIX/$sn/bin/javac 60
 	update-alternatives --install /usr/bin/java java $CUST_JAVA_INST_PREFIX/$sn/jre/bin/java 60
 fi
@@ -837,7 +837,7 @@ fn='apache-ant-1.10.1-src.tar.gz'; tn='apache-ant-1.10.1'; url='https://www.apac
 set_source 'tar' 
 ./build.sh install -Ddist.dir=$CUST_JAVA_INST_PREFIX/$sn -Dant.install=$CUST_JAVA_INST_PREFIX/$sn
 echo "#!/usr/bin/env bash" > $ENV_SETTINGS_PATH/$sn.sh
-echo "ANT_HOME=\"$CUST_JAVA_INST_PREFIX/$sn\"" >> $ENV_SETTINGS_PATH/$sn.sh
+echo "export ANT_HOME=\"$CUST_JAVA_INST_PREFIX/$sn\"" >> $ENV_SETTINGS_PATH/$sn.sh
 		shift;;	
 
 'apache-maven')	
@@ -847,8 +847,8 @@ rm -r  $CUST_JAVA_INST_PREFIX/$sn
 mv ../$sn $CUST_JAVA_INST_PREFIX/;
 if [ -f $CUST_JAVA_INST_PREFIX/$sn/bin/mvn ]; then
 	echo "#!/usr/bin/env bash" > $ENV_SETTINGS_PATH/$sn.sh
-	echo "MAVEN_HOME=\"$CUST_JAVA_INST_PREFIX/$sn\"" >> $ENV_SETTINGS_PATH/$sn.sh
-	echo "PATH=\$PATH:\"$CUST_JAVA_INST_PREFIX/$sn/bin\"" >> $ENV_SETTINGS_PATH/$sn.sh
+	echo "export MAVEN_HOME=\"$CUST_JAVA_INST_PREFIX/$sn\"" >> $ENV_SETTINGS_PATH/$sn.sh
+	echo "export PATH=\$PATH:\"$CUST_JAVA_INST_PREFIX/$sn/bin\"" >> $ENV_SETTINGS_PATH/$sn.sh
 
 fi
 		shift;;	
@@ -897,12 +897,12 @@ mv ../$sn $CUST_JAVA_INST_PREFIX/$sn;
 ln -s  $CUST_JAVA_INST_PREFIX/$sn/etc/hadoop /etc/hadoop
 
 echo "#!/usr/bin/env bash" > $ENV_SETTINGS_PATH/$sn.sh
-echo "HADOOP_HOME=\"$CUST_JAVA_INST_PREFIX/$sn\"" >> $ENV_SETTINGS_PATH/$sn.sh
-echo "HADOOP_CONF_DIR=\"$CUST_JAVA_INST_PREFIX/$sn/etc/hadoop\"" >> $ENV_SETTINGS_PATH/$sn.sh
-echo "HADOOP_VERSION=\"2.8.2\"" >> $ENV_SETTINGS_PATH/$sn.sh
-echo "HADOOP_INCLUDE_PATH=\"$CUST_JAVA_INST_PREFIX/$sn/include\"" >> $ENV_SETTINGS_PATH/$sn.sh
-echo "HADOOP_LIB_PATH=\"$CUST_JAVA_INST_PREFIX/$sn/lib\"" >> $ENV_SETTINGS_PATH/$sn.sh
-echo "PATH=\$PATH:\"$CUST_JAVA_INST_PREFIX/$sn/bin\"" >> $ENV_SETTINGS_PATH/$sn.sh
+echo "export HADOOP_HOME=\"$CUST_JAVA_INST_PREFIX/$sn\"" >> $ENV_SETTINGS_PATH/$sn.sh
+echo "export HADOOP_CONF_DIR=\"$CUST_JAVA_INST_PREFIX/$sn/etc/hadoop\"" >> $ENV_SETTINGS_PATH/$sn.sh
+echo "export HADOOP_VERSION=\"2.8.2\"" >> $ENV_SETTINGS_PATH/$sn.sh
+echo "export HADOOP_INCLUDE_PATH=\"$CUST_JAVA_INST_PREFIX/$sn/include\"" >> $ENV_SETTINGS_PATH/$sn.sh
+echo "export HADOOP_LIB_PATH=\"$CUST_JAVA_INST_PREFIX/$sn/lib\"" >> $ENV_SETTINGS_PATH/$sn.sh
+echo "export PATH=\$PATH:\"$CUST_JAVA_INST_PREFIX/$sn/bin\"" >> $ENV_SETTINGS_PATH/$sn.sh
 
 		shift;;	
 		
