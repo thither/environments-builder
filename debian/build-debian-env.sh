@@ -462,7 +462,7 @@ make;make lib;make install-strip;make install;make all;
 'openmpi')
 fn='openmpi-2.1.1.tar.gz'; tn='openmpi-2.1.1'; url='http://www.open-mpi.org/software/ompi/v2.1/downloads/openmpi-2.1.1.tar.gz';
 set_source 'tar' 
-configure_build --prefix=$CUST_INST_PREFIX; 
+configure_build --prefix=$CUST_INST_PREFIX; #--enable-mpi-fortran
 make;make install-strip;make install;make all; 
 		shift;;
 		
@@ -1076,6 +1076,7 @@ _env_setup(){
 		#if [ $tmp -eq 0 ]; then
 		#	echo '''if [ -d $ENV_SETTINGS_PATH ]; then  for i in $ENV_SETTINGS_PATH*.sh; do    if [ -r $i ]; then       source $i;     fi;   done; unset i; fi; ''' >> /etc/profile;
 		#fi
+		echo $CUST_INST_PREFIX/lib64 > "/etc/ld.so.conf.d/lib64.conf"
 		echo '''if [ -d $ENV_SETTINGS_PATH ]; then  for i in $ENV_SETTINGS_PATH*.sh; do    if [ -r $i ]; then       source $i;     fi;   done; unset i; fi; ''' > /etc/profile.d/custom_env.sh;
 
 		
