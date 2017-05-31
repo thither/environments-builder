@@ -944,12 +944,12 @@ make;make install;
 		shift;;
 
 'pybind11')
-fn='v2.1.1.tar.gz'; tn='pybind11-2.1.1'; url='https://github.com/pybind/pybind11/archive/v2.1.1.tar.gz';
-set_source 'tar' 
+fn='master.zip'; tn='pybind11-master'; url='https://github.com/pybind/pybind11/archive/master.zip';
+set_source 'zip' 
 cmake_build -DPYBIND11_TEST=OFF -DCMAKE_INSTALL_INCLUDEDIR=$CUST_INST_PREFIX/include;
 make install;
 		shift;;
-		
+
 'hypertable')
 fn='master.zip'; tn='hypertable-master'; url='https://github.com/kashirin-alex/hypertable/archive/master.zip';
 set_source 'zip' 
@@ -1201,9 +1201,16 @@ make; make install;
 
 
 
-
-
-
+TMP_NAME=pybind11; 
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+rm master.zip;
+wget 'https://github.com/pybind/pybind11/archive/master.zip'
+/usr/local/bin/unzip master.zip
+mv pybind11-master $TMP_NAME; 
+cd $TMP_NAME;
+cmake -DPYBIND11_PYPY_VERSION=2.7 -DPYBIND11_TEST=OFF -DCMAKE_INSTALL_INCLUDEDIR=/usr/local/include;
 
 apt-get -y install rrdtool #apt-get -y install nodejs-dev
 
