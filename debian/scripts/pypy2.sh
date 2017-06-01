@@ -32,7 +32,7 @@ if [ -f 'pypy-c' ]; then
 	pypy_pip install --upgrade pyopenssl #LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" 
 	with_gmp=no pypy_pip install --upgrade  pycrypto 
 
-	pypy_pip install --upgrade hypertable h2 urllib3 dnspython pyDNS # dnslib 
+	pypy_pip install --upgrade h2 urllib3 dnspython pyDNS # dnslib  hypertable
 	pypy_pip install --upgrade https://github.com/eventlet/eventlet/archive/v0.19.0.tar.gz #eventlet
 
 	pypy_pip install --upgrade Wand
@@ -45,7 +45,7 @@ if [ -f 'pypy-c' ]; then
 	wget  https://github.com/crs4/pydoop/archive/1.2.0.tar.gz
 	tar -zxvf 1.2.0.tar.gz
 	mv pydoop-1.2.0/pydoop  /opt/pypy2/site-packages/
-	#JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64" HADOOP_CONF_DIR='/opt/hadoop/current/etc/hadoop/' HADOOP_VERSION='2.7.2' pypy_pip install --upgrade https://github.com/crs4/pydoop/archive/1.2.0.tar.gz
+	# pip install --upgrade pydoop #https://github.com/crs4/pydoop/archive/1.2.0.tar.gz
 
 fi
 
