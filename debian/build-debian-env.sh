@@ -827,8 +827,10 @@ mv ../$sn $CUST_JAVA_INST_PREFIX/;
 if [ -f $CUST_JAVA_INST_PREFIX/$sn/bin/javac ] &&  [ -f $CUST_JAVA_INST_PREFIX/$sn/jre/bin/java ]; then
 	echo "#!/usr/bin/env bash" > $ENV_SETTINGS_PATH/$sn.sh
 	echo "export JAVA_HOME=\"$CUST_JAVA_INST_PREFIX/$sn\"" >> $ENV_SETTINGS_PATH/$sn.sh
-	update-alternatives --install /usr/bin/javac javac $CUST_JAVA_INST_PREFIX/$sn/bin/javac 60
-	update-alternatives --install /usr/bin/java java $CUST_JAVA_INST_PREFIX/$sn/jre/bin/java 60
+	echo "export PATH=\$PATH:\"$CUST_JAVA_INST_PREFIX/$sn/bin\"" >> $ENV_SETTINGS_PATH/$sn.sh
+
+	#update-alternatives --install /usr/bin/javac javac $CUST_JAVA_INST_PREFIX/$sn/bin/javac 60
+	#update-alternatives --install /usr/bin/java java $CUST_JAVA_INST_PREFIX/$sn/jre/bin/java 60
 fi
 		shift;;	
 		
