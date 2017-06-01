@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 ## Author Kashirin Alex (kashirin.alex@gmail.com)
 
-# nohup bash ~/builder/build-debian-env.sh --sources all &> '/root/builder/built.log' &
+# nohup bash ~/builder/build-debian-env.sh --no-reuse-make --sources all &> '/root/builder/built.log' &
 
 ################## DIRCETOTRIES CONFIGURATIONS ##################
 CUST_INST_PREFIX=/usr/local
@@ -891,12 +891,14 @@ fn='hadoop-2.8.0.tar.gz'; tn='hadoop-2.8.0'; url='http://apache.crihan.fr/dist/h
 set_source 'tar' 
 if [ -d $CUST_JAVA_INST_PREFIX/$sn ]; then
 	rm -r $CUST_JAVA_INST_PREFIX/$sn;
-	rm  /etc/hadoop;
+	rm -r /etc/opt/hadoop;
+else 
+    mkdir -p /etc/opt;
 fi
 mv ../$sn $CUST_JAVA_INST_PREFIX/$sn;
 #update-alternatives --install /usr/bin/hadoop hadoop $CUST_JAVA_INST_PREFIX/$sn/bin/hadoop 60
 
-ln -s  $CUST_JAVA_INST_PREFIX/$sn/etc/hadoop /etc/hadoop
+ln -s  $CUST_JAVA_INST_PREFIX/$sn/etc/hadoop /etc/opt/hadoop
 
 echo "#!/usr/bin/env bash" > $ENV_SETTINGS_PATH/$sn.sh
 echo "export HADOOP_HOME=\"$CUST_JAVA_INST_PREFIX/$sn\"" >> $ENV_SETTINGS_PATH/$sn.sh
@@ -905,7 +907,6 @@ echo "export HADOOP_VERSION=\"2.8.2\"" >> $ENV_SETTINGS_PATH/$sn.sh
 echo "export HADOOP_INCLUDE_PATH=\"$CUST_JAVA_INST_PREFIX/$sn/include\"" >> $ENV_SETTINGS_PATH/$sn.sh
 echo "export HADOOP_LIB_PATH=\"$CUST_JAVA_INST_PREFIX/$sn/lib\"" >> $ENV_SETTINGS_PATH/$sn.sh
 echo "export PATH=\$PATH:\"$CUST_JAVA_INST_PREFIX/$sn/bin\"" >> $ENV_SETTINGS_PATH/$sn.sh
-
 		shift;;	
 		
 'nodejs')
@@ -957,7 +958,7 @@ fn='master.zip'; tn='hypertable-master'; url='https://github.com/kashirin-alex/h
 set_source 'zip' 
 apt-get -y install rrdtool;
 cmake_build -DVERSION_MISC_SUFFIX=$( date  +"%Y-%m-%d_%H-%M") -DHADOOP_INCLUDE_PATH=$HADOOP_INCLUDE_PATH -DHADOOP_LIB_PATH=$HADOOP_LIB_PATH -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON; # 
-make VERBOSE=1 ;make install;make alltests;#  -DPACKAGE_OS_SPECIFIC=1 -j$NUM_PROCS
+make -j$NUM_PROCS VERBOSE=1 ;make install;#make alltests;#  -DPACKAGE_OS_SPECIFIC=1 
 		shift;;
 
 'llvm')
