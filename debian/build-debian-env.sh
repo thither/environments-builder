@@ -612,9 +612,13 @@ if [ -f $CUST_INST_PREFIX/bin/g++ ]; then
 	update-alternatives --install /usr/bin/g++ g++ $CUST_INST_PREFIX/bin/g++ 60
 fi
 if [ -f $CUST_INST_PREFIX/bin/ar ]; then
+	mv /usr/bin/ar /usr/bin/ar_os;
+	update-alternatives --install /usr/bin/ar_os ar /usr/bin/ar_os 10
 	update-alternatives --install /usr/bin/ar ar $CUST_INST_PREFIX/bin/ar 60
 fi
 if [ -f $CUST_INST_PREFIX/bin/ranlib ]; then
+	mv /usr/bin/ranlib /usr/bin/ranlib_os;
+	update-alternatives --install /usr/bin/ranlib_os ranlib /usr/bin/ranlib_os 10
 	update-alternatives --install /usr/bin/ranlib ranlib $CUST_INST_PREFIX/bin/ranlib 60
 fi
 # --with-cloog=$CUST_INST_PREFIX --disable-cloog-version-check --enable-fixed-point  --enable-stage1-checking=all  --enable-stage1-languages=all #http://gcc.gnu.org/install/configure.html
@@ -1052,7 +1056,7 @@ _os_releases(){
 			apt-get install -y --reinstall make 
 		fi
 		if [ ! -f $CUST_INST_PREFIX/bin/gcc ]; then
-			apt-get autoremove --purge -y --reinstall pkg-config build-essential gcc 
+			apt-get autoremove --purge -y pkg-config build-essential gcc 
 			apt-get install -y --reinstall libmount-dev libncurses-dev libreadline-dev
 			apt-get install -y --reinstall pkg-config build-essential gcc 
 		fi
