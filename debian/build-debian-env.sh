@@ -40,6 +40,7 @@ while [ $# -gt 0 ]; do
 	;;
     --stage)  		
 		stage=$2;
+		let c=c-1;
 	;;
 	--sources) 
 		only_sources=(${@:$c})
@@ -282,7 +283,7 @@ cp -av libbz2.so* $CUST_INST_PREFIX/lib/; ln -sv $CUST_INST_PREFIX/lib/libbz2.so
 'unrar')
 fn='unrar.tar.gz'; tn='unrar'; url='http://www.rarlab.com/rar/unrarsrc-5.5.3.tar.gz';
 set_source 'tar' 
-make;make lib;make install-lib;make install;make all;
+make;make lib;make install-lib PREFIX=$CUST_INST_PREFIX;make install PREFIX=$CUST_INST_PREFIX;make all PREFIX=$CUST_INST_PREFIX;
 		shift;;
 		
 'gzip')
