@@ -18,6 +18,7 @@ if [ -f 'pypy-c' ]; then
 	rm -r /opt/pypy2;mv pypy2 /opt/;
 	rm /usr/bin/pypy; ln -s /opt/pypy2/bin/pypy /usr/bin/pypy
 	rm /usr/bin/pypy-stm; ln -s /opt/pypy2/bin/pypy-stm /usr/bin/pypy-stm
+	PYTHONPATH=''
 	pypy -m ensurepip; rm /usr/bin/pypy_pip; ln -s /opt/pypy2/bin/pip /usr/bin/pypy_pip
 	ldconfig
 	
