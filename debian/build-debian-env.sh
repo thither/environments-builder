@@ -695,7 +695,7 @@ cp sigar-bin/include/*.h $CUST_INST_PREFIX/include; cp sigar-bin/lib/libsigar-am
 fn='db-6.2.32.tar.gz'; tn='db-6.2.32'; url='http://download.oracle.com/berkeley-db/db-6.2.32.tar.gz';
 set_source 'tar' 
 cust_conf_path='dist/'
-configure_build --enable-cxx --enable-smallbuild  --prefix=$CUST_INST_PREFIX; 
+configure_build --enable-shared --enable-cxx --enable-tcl --enable-dbm --prefix=$CUST_INST_PREFIX; # --enable-java --enable-smallbuild
 make;make install;make all; 
 #echo $CUST_INST_PREFIX/lib > "/etc/ld.so.conf.d/bdb.conf"
 		shift;;
@@ -709,6 +709,9 @@ if [ -f $CUST_INST_PREFIX/bin/openssl ]; then
 	if [ ! -f /usr/bin/openssl_older ]; then
 		mv /usr/bin/openssl /usr/bin/openssl_older;
 	fi
+	rm -r $CUST_INST_PREFIX/ssl/certs;
+	sudo apt-get install -y --reinstall ca-certificates
+	ln -s /etc/ssl/certs $CUST_INST_PREFIX/ssl/certs;
 	update-alternatives --install /usr/bin/openssl openssl $CUST_INST_PREFIX/bin/openssl 60
 	#echo $CUST_INST_PREFIX/ssl > "/etc/ld.so.conf.d/openssl.conf"
 fi
@@ -960,6 +963,7 @@ make install;
 
 'hypertable')
 fn='master.zip'; tn='hypertable-master'; url='https://github.com/kashirin-alex/hypertable/archive/master.zip';
+rm -r $DOWNLOAD_PATH/$sn/$fn
 set_source 'zip' 
 apt-get -y install rrdtool;
 cmake_build  -DHADOOP_INCLUDE_PATH=$HADOOP_INCLUDE_PATH -DHADOOP_LIB_PATH=$HADOOP_LIB_PATH -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release; # -DVERSION_MISC_SUFFIX=$( date  +"%Y-%m-%d_%H-%M") -DBUILD_SHARED_LIBS=ON
@@ -1563,9 +1567,9 @@ TMP_NAME=rrdtool
 echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'http://oss.oetiker.ch/rrdtool/pub/rrdtool-1.6.0.tar.gz'
-tar xf rrdtool-1.6.0.tar.gz
-mv rrdtool-1.6.0 $TMP_NAME;cd $TMP_NAME; 
+wget 'http://oss.oetiker.ch/rrdtool/pub/rrdtool-1.7.0.tar.gz'
+tar xf rrdtool-1.7.0.tar.gz
+mv rrdtool-1.7.0 $TMP_NAME;cd $TMP_NAME; 
 
 ./configure --enable-tcl-site  --disable-ruby --disable-lua   --disable-docs  --disable-examples --prefix=/usr/local; #
 make; make check;make installlib;  make install; make lib; make install-lib
