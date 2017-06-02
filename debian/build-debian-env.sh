@@ -892,7 +892,7 @@ make;make install;
 		shift;;	
 			
 'apache-hadoop')
-fn='hadoop-2.8.0.tar.gz'; tn='hadoop-2.8.0'; url='http://apache.crihan.fr/dist/hadoop/common/hadoop-2.8.0/hadoop-2.8.0.tar.gz';
+fn='hadoop-2.7.3.tar.gz'; tn='hadoop-2.7.3'; url='http://apache.crihan.fr/dist/hadoop/common/hadoop-2.7.3/hadoop-2.7.3.tar.gz';
 set_source 'tar' 
 if [ -d $CUST_JAVA_INST_PREFIX/$sn ]; then
 	rm -r $CUST_JAVA_INST_PREFIX/$sn;
@@ -904,7 +904,7 @@ mv ../$sn $CUST_JAVA_INST_PREFIX/$sn;
 #update-alternatives --install /usr/bin/hadoop hadoop $CUST_JAVA_INST_PREFIX/$sn/bin/hadoop 60
 
 ln -s  $CUST_JAVA_INST_PREFIX/$sn/etc/hadoop /etc/opt/hadoop
-
+chmod -R 777 /etc/opt/hadoop
 echo "#!/usr/bin/env bash" > $ENV_SETTINGS_PATH/$sn.sh
 echo "export HADOOP_HOME=\"$CUST_JAVA_INST_PREFIX/$sn\"" >> $ENV_SETTINGS_PATH/$sn.sh
 echo "export HADOOP_CONF_DIR=\"$CUST_JAVA_INST_PREFIX/$sn/etc/hadoop\"" >> $ENV_SETTINGS_PATH/$sn.sh
@@ -962,7 +962,7 @@ make install;
 fn='master.zip'; tn='hypertable-master'; url='https://github.com/kashirin-alex/hypertable/archive/master.zip';
 set_source 'zip' 
 apt-get -y install rrdtool;
-cmake_build -DVERSION_MISC_SUFFIX=$( date  +"%Y-%m-%d_%H-%M") -DHADOOP_INCLUDE_PATH=$HADOOP_INCLUDE_PATH -DHADOOP_LIB_PATH=$HADOOP_LIB_PATH -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON; # 
+cmake_build  -DHADOOP_INCLUDE_PATH=$HADOOP_INCLUDE_PATH -DHADOOP_LIB_PATH=$HADOOP_LIB_PATH -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release; # -DVERSION_MISC_SUFFIX=$( date  +"%Y-%m-%d_%H-%M") -DBUILD_SHARED_LIBS=ON
 make -j$NUM_PROCS VERBOSE=1 ;make install;#make alltests;#  -DPACKAGE_OS_SPECIFIC=1 
 		shift;;
 
@@ -1103,7 +1103,7 @@ _env_setup(){
 		echo $CUST_INST_PREFIX/lib64 > $LD_CONF_PATH/lib64.conf
 		
 		echo '''if [ -d '''$ENV_SETTINGS_PATH''' ]; then  for i in '''$ENV_SETTINGS_PATH'''*.sh; do    if [ -r $i ]; then       source $i;     fi;   done; unset i; fi; ''' > /etc/profile.d/custom_env.sh;
-
+		chmod -R 777 /etc/profile.d/custom_env.sh
 		
 
 
@@ -1342,6 +1342,8 @@ cmake -DUSE_GSS=OFF -DUSE_TSAN=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PRE
 
 
 #### > libX11 > 
+apt-get install -y libx11-dev 
+apt-get install -y rrdtools
 libpthread-stubs0-dev libx11-dev libx11-doc libxau-dev libxcb 1-dev libxdmcp-dev x11proto-core-dev x11proto-input-dev x11proto-kb-dev xorg-sgml-doctools xtrans-dev
 
 
