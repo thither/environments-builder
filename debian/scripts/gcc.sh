@@ -22,12 +22,10 @@ if [ -f $CUST_INST_PREFIX/bin/g++ ]; then
 fi
 if [ -f $CUST_INST_PREFIX/bin/ar ]; then
 	mv /usr/bin/ar /usr/bin/ar_os;
-	update-alternatives --install /usr/bin/ar_os ar /usr/bin/ar_os 10
 	update-alternatives --install /usr/bin/ar ar $CUST_INST_PREFIX/bin/ar 60
 fi
 if [ -f $CUST_INST_PREFIX/bin/ranlib ]; then
 	mv /usr/bin/ranlib /usr/bin/ranlib_os;
-	update-alternatives --install /usr/bin/ranlib_os ranlib /usr/bin/ranlib_os 10
 	update-alternatives --install /usr/bin/ranlib ranlib $CUST_INST_PREFIX/bin/ranlib 60
 fi
 # --with-cloog=$CUST_INST_PREFIX --disable-cloog-version-check --enable-fixed-point  --enable-stage1-checking=all  --enable-stage1-languages=all #http://gcc.gnu.org/install/configure.html
