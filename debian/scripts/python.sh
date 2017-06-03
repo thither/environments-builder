@@ -16,7 +16,6 @@ if [ -f $CUST_INST_PREFIX/bin/pip ]; then
 	rm -r ~/.cache/pip 
 	pip install --upgrade thrift
 
-	
 	pip install --upgrade setuptools
 	pip install --upgrade pip
 	pip install --upgrade setuptools
