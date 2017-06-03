@@ -486,15 +486,22 @@ make;make install-strip;make install;make all;
 		shift;;
 		
 'pcre')
-fn='pcre-8.36.tar.gz'; tn='libpcre-pcre-8.36'; url='http://github.com/vmg/libpcre/archive/pcre-8.36.tar.gz';
+fn='pcre-8.40.tar.gz'; tn='libpcre-pcre-8.36'; url='https://ftp.pcre.org/pub/pcre/pcre-8.40.tar.gz';
 set_source 'tar' 
 autogen_build;
-configure_build --enable-pcre16 --enable-pcre32 --enable-jit --enable-pcregrep-libz --enable-pcregrep-libbz2 --enable-unicode-properties --enable-utf  --prefix=`_install_prefix`; #  --enable-utf8
+configure_build --enable-newline-is-any --enable-pcre16 --enable-pcre32 --enable-jit --enable-pcregrep-libz --enable-pcregrep-libbz2 --enable-unicode-properties --enable-utf  --prefix=`_install_prefix`; #  --enable-utf8
+make;make install-strip;make install;make all; 
+		shift;;	
+		
+'pcre2')
+fn='pcre2-10.23.tar.gz'; tn='pcre2-10.23'; url='https://ftp.pcre.org/pub/pcre/pcre2-10.23.tar.gz';
+set_source 'tar' 
+configure_build --enable-rebuild-chartables --enable-newline-is-any --enable-pcre2-16 --enable-pcre2-32 --enable-jit --enable-pcre2grep-libz --enable-pcre2grep-libbz2 --enable-unicode-properties --enable-utf --enable-ucp --prefix=`_install_prefix`; #  --enable-utf8
 make;make install-strip;make install;make all; 
 		shift;;
 		
 'glib')
-fn='glib-2.53.1.tar.xz'; tn='glib-2.53.1'; url='http://ftp.acc.umu.se/pub/gnome/sources/glib/2.53/glib-2.53.1.tar.xz';
+fn='glib-2.53.2.tar.xz'; tn='glib-2.53.2'; url='http://ftp.acc.umu.se/pub/gnome/sources/glib/2.53/glib-2.53.2.tar.xz';
 set_source 'tar' 
 configure_build --with-libiconv=gnu --with-threads=posix --prefix=`_install_prefix`; 
 make; make install-strip;make install;make all;
@@ -745,14 +752,14 @@ make;make install-strip;make install;make all;
 'harfbuzz')
 fn='harfbuzz-1.4.6.tar.bz2'; tn='harfbuzz-1.4.6'; url='https://www.freedesktop.org/software/harfbuzz/release/harfbuzz-1.4.6.tar.bz2';
 set_source 'tar' 
-configure_build --prefix=`_install_prefix`; 
+configure_build  --with-fontconfig=auto --with-freetype=auto --prefix=`_install_prefix`; 
 make;make install;make all;
 		shift;;	
 		
 'freetype')
 fn='freetype-2.8.tar.gz'; tn='freetype-2.8'; url='http://download.savannah.gnu.org/releases/freetype/freetype-2.8.tar.gz';
 set_source 'tar' 
-configure_build --prefix=`_install_prefix`; 
+configure_build --enable-fast-install=no  --with-harfbuzz=auto --prefix=`_install_prefix`; 
 make;make install;make all;
 		shift;;	
 		
@@ -761,8 +768,8 @@ fn='fontconfig-2.12.0.tar.gz'; tn='fontconfig-2.12.0'; url='https://www.freedesk
 set_source 'tar' 
 configure_build --enable-iconv --prefix=`_install_prefix`; 
 make;make install-strip;make install;make all;
-		shift;;				
-		
+		shift;;		
+	
 'sparsehash')
 fn='sparsehash-2.0.3.tar.gz'; tn='sparsehash-sparsehash-2.0.3'; url='https://github.com/sparsehash/sparsehash/archive/sparsehash-2.0.3.tar.gz';
 set_source 'tar' 
@@ -922,6 +929,27 @@ cmake_build -DCMAKE_BUILD_TYPE=Release -DLLVM_TARGETS_TO_BUILD=X86 -DFFI_INCLUDE
 make;make install;
 		shift;;
 
+'libconfuse')
+fn='confuse-3.1.tar.xz'; tn='confuse-3.1'; url='https://github.com/martinh/libconfuse/releases/download/v3.1/confuse-3.1.tar.xz';
+set_source 'tar' 
+configure_build --prefix=`_install_prefix`;
+make;make install;	
+		shift;;
+
+'apr')
+fn='apr-1.5.2.tar.gz'; tn='apr-1.5.2'; url='http://apache.mindstudios.com//apr/apr-1.5.2.tar.gz';
+set_source 'tar' 
+configure_build --enable-threads --enable-posix-shm --prefix=`_install_prefix`;
+make;make install;	
+		shift;;
+
+'libsigcplusplus')
+fn='2.99.8.tar.gz'; tn='libsigcplusplus-2.99.8'; url='https://github.com/GNOME/libsigcplusplus/archive/2.99.8.tar.gz';
+set_source 'tar' 
+cmake_build -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+make;make install;	
+		shift;;
+
 
     *)         echo "Unknown build: $sn";       shift;;
   esac
@@ -955,10 +983,10 @@ compile_and_install(){
 	do_install log4cpp cronolog fuse sparsehash
 	do_install bison texinfo flex binutils gettext nettle libtasn1 libiconv
 	do_install libexpat libunistring libidn2 libsodium unbound
-	do_install libffi p11-kit gnutls tcltk tk pcre glib openmpi gdbm re2
+	do_install libffi p11-kit gnutls tcltk tk pcre pcre2 glib openmpi gdbm re2
 	do_install expect attr #musl
 	do_install libhoard jemalloc gc gperf gperftools patch 
-	do_install gcc llvm
+	do_install gcc llvm libconfuse arp libsigcplusplus
 	
 	if [ $stage -gt 0 ]; then
 		do_install boost  
@@ -969,7 +997,7 @@ compile_and_install(){
 		do_install openjdk apache-ant apache-maven sigar berkeley-db  
 		do_install protobuf apache-hadoop	
 
-		do_install harfbuzz freetype fontconfig 
+		do_install freetype harfbuzz  fontconfig 
 		do_install sqlite imagemagick
 		if [ $stage == 2 ]; then
 			do_install pypy2 nodejs thrift pybind11
@@ -1101,6 +1129,94 @@ exit 1
 
 
 
+TMP_NAME=pixman
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'https://www.cairographics.org/releases/pixman-0.34.0.tar.gz'
+tar xf pixman-0.34.0.tar.gz
+mv pixman-0.34.0 $TMP_NAME;cd $TMP_NAME; 
+./configure --enable-timers --prefix=/usr/local; #
+make; make check; make install
+
+TMP_NAME=skia
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'https://github.com/google/skia/archive/chrome/m38_2125.tar.gz'
+tar xf m38_2125.tar.gz
+mv skia-chrome-m38_2125 $TMP_NAME;cd $TMP_NAME; 
+./configure --enable-timers --prefix=/usr/local; #
+make; make check; make install
+
+TMP_NAME=cairo
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'https://www.cairographics.org/releases/cairo-1.14.8.tar.xz'
+tar xf cairo-1.14.8.tar.xz
+mv cairo-1.14.8 $TMP_NAME;cd $TMP_NAME; 
+./configure --enable-pdf=yes --enable-svg=yes --enable-tee=yes --enable-fc=yes --enable-ft=yes --enable-xml=yes  --enable-pthread=yes --prefix=/usr/local;# --enable-skia --enable-xlib=yes  --enable-xlib-xrender=yes  --enable-xcb=yes --enable-xlib-xcb=yes 
+make; make install
+
+TMP_NAME=cairomm
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'https://www.cairographics.org/releases/cairomm-1.15.3.tar.gz'
+tar xf cairomm-1.15.3.tar.gz
+mv cairomm-1.15.3 $TMP_NAME;cd $TMP_NAME; 
+./configure --prefix=/usr/local;
+make; make install
+
+TMP_NAME=gobject-ispec; 
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'http://ftp.gnome.org/pub/gnome/sources/gobject-introspection/1.53/gobject-introspection-1.53.2.tar.xz'
+tar xf gobject-introspection-1.53.2.tar.xz
+mv gobject-introspection-1.53.2 $TMP_NAME; cd $TMP_NAME;
+./configure  --prefix=/usr/local ;# --with-gmetad 
+make;make install;
+
+TMP_NAME=pango
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.40/pango-1.40.6.tar.xz'
+tar xf pango-1.40.6.tar.xz
+mv pango-1.40.6 $TMP_NAME;cd $TMP_NAME; 
+./configure  --prefix=/usr/local; #
+make; make check; make install
+
+
+
+TMP_NAME=rrdtool
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'http://oss.oetiker.ch/rrdtool/pub/rrdtool-1.7.0.tar.gz'
+tar xf rrdtool-1.7.0.tar.gz
+mv rrdtool-1.7.0 $TMP_NAME;cd $TMP_NAME; 
+
+./configure --enable-tcl-site --disable-rrdcgi --disable-ruby --disable-lua --disable-docs --disable-examples --prefix=/usr/local; #
+make; make check;make installlib;  make install; make lib; make install-lib
+cd ~; /sbin/ldconfig
+
+
+
+
+TMP_NAME=ganglia; 
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'https://github.com/ganglia/monitor-core/archive/3.7.2.tar.gz'
+tar xf 3.7.2.tar.gz
+mv monitor-core-3.7.2 $TMP_NAME; cd $TMP_NAME;
+./bootstrap
+./configure --enable-python --disable-perl --prefix=/usr/local ;# --with-gmetad 
+make;make install-strip;make install;make all; 
+
 
 echo llvm
 mkdir ~/tmpBuilds;cd ~/tmpBuilds;
@@ -1115,17 +1231,6 @@ make; make check; make install
 cd ~; /sbin/ldconfig
 
 
-
-TMP_NAME=libffi; 
-echo $TMP_NAME
-mkdir ~/tmpBuilds
-cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'http://github.com/libffi/libffi/archive/v3.2.1.tar.gz'
-tar xf v3.2.1.tar.gz
-mv $TMP_NAME-3.2.1 $TMP_NAME; cd $TMP_NAME;
-./autogen.sh
-./configure --includedir=/usr/local/include --prefix=/usr/local 
-make;make install-strip;make install;make all; 
 
 TMP_NAME=proxygen; 
 echo $TMP_NAME
@@ -1162,18 +1267,6 @@ make; make install;
 
 
 
-TMP_NAME=pybind11; 
-echo $TMP_NAME
-mkdir ~/tmpBuilds
-cd ~/tmpBuilds; rm -r $TMP_NAME;
-rm master.zip;
-wget 'https://github.com/pybind/pybind11/archive/master.zip'
-/usr/local/bin/unzip master.zip
-mv pybind11-master $TMP_NAME; 
-cd $TMP_NAME;
-cmake -DPYBIND11_PYPY_VERSION=2.7 -DPYBIND11_TEST=OFF -DCMAKE_INSTALL_INCLUDEDIR=/usr/local/include;
-
-apt-get -y install rrdtool #apt-get -y install nodejs-dev
 
 TMP_NAME=hypertable; 
 echo $TMP_NAME
@@ -1291,12 +1384,12 @@ cmake -DUSE_GSS=OFF -DUSE_TSAN=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PRE
 
 
 
-
+apt-get install libx11-dev 
 
 
 #### > libX11 > 
 apt-get install -y libx11-dev 
-apt-get install -y rrdtools
+apt-get install -y rrdtool
 libpthread-stubs0-dev libx11-dev libx11-doc libxau-dev libxcb 1-dev libxdmcp-dev x11proto-core-dev x11proto-input-dev x11proto-kb-dev xorg-sgml-doctools xtrans-dev
 
 
@@ -1424,24 +1517,13 @@ make; make install
 
 
 
-libpcre3 librsvg2 libexif
+ librsvg2 libexif
 
  pixman
 xcb-proto libxcb xextproto libX11
 renderproto libXrender libXrender
 cairo pango rrdtool
 
-
-
-TMP_NAME=pixman
-echo $TMP_NAME
-mkdir ~/tmpBuilds
-cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://www.cairographics.org/releases/pixman-0.34.0.tar.gz'
-tar xf pixman-0.34.0.tar.gz
-mv pixman-0.34.0 $TMP_NAME;cd $TMP_NAME; 
-./configure --prefix=/usr/local; #
-make; make check; make install
 
 
 
@@ -1490,39 +1572,7 @@ mv libXrender-0.9.10 $TMP_NAME;cd $TMP_NAME;
 make; make install
 
 
-TMP_NAME=cairo
-echo $TMP_NAME
-mkdir ~/tmpBuilds
-cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://www.cairographics.org/releases/cairo-1.14.8.tar.xz'
-tar xf cairo-1.14.8.tar.xz
-mv cairo-1.14.8 $TMP_NAME;cd $TMP_NAME; 
-./configure --enable-tee --enable-fc=yes --enable-ft=yes --enable-xml=yes  --enable-pthread=yes --enable-xlib=yes  --enable-xlib-xrender=yes  --enable-xcb=yes --enable-xlib-xcb=yes --prefix=/usr/local;
-make; make install
 
-TMP_NAME=pango
-echo $TMP_NAME
-mkdir ~/tmpBuilds
-cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.40/pango-1.40.0.tar.xz'
-tar xf pango-1.40.0.tar.xz
-mv pango-1.40.0 $TMP_NAME;cd $TMP_NAME; 
-./configure  --prefix=/usr/local; #
-make; make check; make install
-
-
-
-TMP_NAME=rrdtool
-echo $TMP_NAME
-mkdir ~/tmpBuilds
-cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'http://oss.oetiker.ch/rrdtool/pub/rrdtool-1.7.0.tar.gz'
-tar xf rrdtool-1.7.0.tar.gz
-mv rrdtool-1.7.0 $TMP_NAME;cd $TMP_NAME; 
-
-./configure --enable-tcl-site  --disable-ruby --disable-lua   --disable-docs  --disable-examples --prefix=/usr/local; #
-make; make check;make installlib;  make install; make lib; make install-lib
-cd ~; /sbin/ldconfig
 
 
 
@@ -1726,17 +1776,6 @@ http://ftp.ntua.gr/mirror/gnu/libmicrohttpd/
 
 
 
-
-
-
-echo pcre2
-cd ~/dependeciesBuilds; rm -r pcre2;
-wget 'ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre2-10.23.tar.gz'
-tar xf pcre2-10.23.tar.gz
-mv pcre2-10.23 pcre2; cd pcre2
-./configure --enable-pcre2-16 --enable-pcre2-32 --enable-jit --enable-pcre2grep-libz  --enable-pcre2grep-libbz2  --enable-pcre2test-libedit --prefix=/usr/local; 
-make; make check; make install
-cd ~; /sbin/ldconfig
 
 
 echo heimdal
