@@ -996,7 +996,7 @@ compile_and_install(){
 	do_install libffi p11-kit gnutls tcltk tk pcre pcre2 glib openmpi gdbm re2
 	do_install expect attr #musl
 	do_install libhoard jemalloc gc gperf gperftools patch 
-	do_install gcc llvm libconfuse arp apr-util libsigcplusplus
+	do_install gcc llvm libconfuse apr apr-util libsigcplusplus
 	
 	if [ $stage -gt 0 ]; then
 		do_install boost  
@@ -1136,7 +1136,7 @@ exit 1
 
 # DRAFTS #######################################################################
  
-bash ~/builder/build-debian-env.sh --verbose --sources libconfuse arp apr-util libsigcplusplus
+bash ~/builder/build-debian-env.sh --verbose --sources apr apr-util libsigcplusplus
 
 TMP_NAME=pixman
 echo $TMP_NAME
