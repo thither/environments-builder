@@ -486,7 +486,7 @@ make;make install-strip;make install;make all;
 		shift;;
 		
 'pcre')
-fn='pcre-8.40.tar.gz'; tn='libpcre-pcre-8.36'; url='https://ftp.pcre.org/pub/pcre/pcre-8.40.tar.gz';
+fn='pcre-8.40.tar.gz'; tn='libpcre-pcre-8.40'; url='https://ftp.pcre.org/pub/pcre/pcre-8.40.tar.gz';
 set_source 'tar' 
 autogen_build;
 configure_build --enable-newline-is-any --enable-pcre16 --enable-pcre32 --enable-jit --enable-pcregrep-libz --enable-pcregrep-libbz2 --enable-unicode-properties --enable-utf  --prefix=`_install_prefix`; #  --enable-utf8
