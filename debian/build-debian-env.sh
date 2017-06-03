@@ -1059,6 +1059,8 @@ compile_and_install(){
 
 		do_install freetype harfbuzz fontconfig 
 		do_install sqlite imagemagick
+		do_install pixman cairo cairomm gobject-ispec pango 
+		do_install rrdtool ganglia
 		if [ $stage == 2 ]; then
 			do_install pypy2 nodejs thrift pybind11
 			do_install hypertable
@@ -1356,12 +1358,10 @@ cmake -DUSE_GSS=OFF -DUSE_TSAN=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PRE
 
 
 
-apt-get install libx11-dev 
 
 
 #### > libX11 > 
 apt-get install -y libx11-dev 
-apt-get install -y rrdtool
 libpthread-stubs0-dev libx11-dev libx11-doc libxau-dev libxcb 1-dev libxdmcp-dev x11proto-core-dev x11proto-input-dev x11proto-kb-dev xorg-sgml-doctools xtrans-dev
 
 
