@@ -44,7 +44,7 @@
 Logs are created in the BUILDS_LOG_PATH in a folder of date-time under filename stage number and source-name 
 
 ## Sources
-  * Current Sources consist the follow latest realeses as to 20th of May 2017, exceptions to imagemagick,openssl.
+  * Current Sources consist the follow latest realeses as to  May 2017, with some exceptions.
      *  Compilation Build and Install is in the same order, while stages have it's grouping
      *  Sources commented are kept out
      
@@ -59,6 +59,7 @@ Logs are created in the BUILDS_LOG_PATH in a folder of date-time under filename 
         * autoconf
         * automake
         * libtool
+        * gawk
         * zlib
         * bzip2
         * unrar
@@ -66,6 +67,7 @@ Logs are created in the BUILDS_LOG_PATH in a folder of date-time under filename 
         * snappy
         * lzma
         * libzip
+        * unzip
         * libatomic_ops
         * libedit
         * libevent
@@ -94,11 +96,12 @@ Logs are created in the BUILDS_LOG_PATH in a folder of date-time under filename 
         * libsodium
         * unbound
         * libffi
-        * gnutls
         * p11-kit
+        * gnutls
         * tcltk
         * tk
         * pcre
+        * pcre2
         * glib
         * openmpi
         * gdbm
@@ -113,6 +116,11 @@ Logs are created in the BUILDS_LOG_PATH in a folder of date-time under filename 
         * gperftools
         * patch
         * gcc
+        * llvm
+        * libconfuse
+        * apr
+        * apr-util
+        * libsigcplusplus
         * boost
         * libpng
         * libjpeg
@@ -128,14 +136,24 @@ Logs are created in the BUILDS_LOG_PATH in a folder of date-time under filename 
         * sigar
         * berkeley-db
         * protobuf
-        * harfbuzz
+        * apache-hadoop
         * freetype
+        * harfbuzz
         * fontconfig
         * sqlite
         * imagemagick
+        * pixman
+        * cairo
+        * cairomm
+        * gobject-ispec
+        * pango
+        * rrdtool
+        * ganglia
         * pypy2
         * nodejs
         * thrift
+        * pybind11
+        * hypertable
 
 ## Liscense:
 Please, consult with the liscenses of the sources
