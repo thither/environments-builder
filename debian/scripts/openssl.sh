@@ -5,7 +5,7 @@ set_source 'tar'
 make;make install;make all; 
 if [ -f $CUST_INST_PREFIX/bin/openssl ]; then
 	if [ -f /usr/bin/openssl ]; then
-		if && [ ! -f /usr/bin/openssl_older ]; then
+		if [ ! -f /usr/bin/openssl_older ]; then
 			mv /usr/bin/openssl /usr/bin/openssl_older;
 			update-alternatives --install /usr/bin/openssl openssl $CUST_INST_PREFIX/bin/openssl 60
 		fi
