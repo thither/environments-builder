@@ -811,23 +811,6 @@ configure_build --prefix=$CUST_INST_PREFIX;   # --enable-namespace=gpreftools
 make;make install-strip;make install;make all; 	
 		shift;;	
 		
-'python')
-if [ ! -f $CUST_INST_PREFIX/bin/python ]; then
-	apt-get autoremove --purge python2.7
-fi
-fn='Python-2.7.13.tgz'; tn='Python-2.7.13'; url='https://www.python.org/ftp/python/2.7.13/Python-2.7.13.tgz';
-set_source 'tar' 
-configure_build --with-system-expat --enable-unicode --with-ensurepip=install --with-computed-gotos --enable-shared --enable-optimizations --enable-ipv6 --with-lto  --with-system-ffi  --with-signal-module   --with-pth --with-pymalloc --with-fpectl  --prefix=$CUST_INST_PREFIX;   #
-make;make install;make all;
-if [ -f $CUST_INST_PREFIX/bin/python ]; then
-	echo /usr/local/include/python2.7 > $LD_CONF_PATH/python.conf
-	update-alternatives --install /usr/bin/python python /usr/local/bin/python 60
-fi
-if [ -f $CUST_INST_PREFIX/bin/pip ]; then
-	update-alternatives --install /usr/bin/pip pip /usr/local/bin/pip 60
-	pip install --upgrade thrift
-fi
-		shift;;	
 
 'openjdk')	
 fn='jdk-8u152-ea-bin-b03-linux-x64-19_apr_2017.tar.gz'; tn='jdk1.8.0_152'; url='http://download.java.net/java/jdk8u152/archive/b03/binaries/jdk-8u152-ea-bin-b03-linux-x64-19_apr_2017.tar.gz';
