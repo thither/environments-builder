@@ -105,6 +105,10 @@ NUM_PROCS=`grep -c processor < /proc/cpuinfo || echo 1`
 
 
 #########
+_install_prefix(){
+	echo $CUST_INST_PREFIX; #/$sn
+}
+
 download() {
 	if [ ! -f $DOWNLOAD_PATH/$sn/$fn ]; then
 		echo 'downloading:' $fn: $url;
@@ -203,6 +207,18 @@ make_test_build() {
 	fi
 }
 finalize_build() {
+	if [ `_install_prefix` != $CUST_INST_PREFIX ]; then
+		paths=''
+		if [ -d `_install_prefix`/lib ]; then
+			paths=`_install_prefix`/lib;
+		fi
+		if [ -d `_install_prefix`/lib64 ]; then
+			paths=$paths\\n`_install_prefix`/lib64
+		fi
+		if [ paths != '' ]; then 
+			echo -e $paths > $LD_CONF_PATH/$sn.conf;
+		fi
+	fi
 	source /etc/profile
 	source ~/.bashrc
 	cd $BUILDS_ROOT; /sbin/ldconfig
@@ -234,209 +250,209 @@ _do_build() {
 'make')
 fn='make-4.2.tar.gz'; tn='make-4.2'; url='http://ftp.gnu.org/gnu/make/make-4.2.tar.gz';
 set_source 'tar' 
-configure_build --with-guile --prefix=$CUST_INST_PREFIX;
+configure_build --with-guile --prefix=`_install_prefix`;
 make;make install-strip;make install;make all;
 		shift;;
 
 'libtool')
 fn='libtool-2.4.6.tar.gz'; tn='libtool-2.4.6'; url='http://ftpmirror.gnu.org/libtool/libtool-2.4.6.tar.gz';
 set_source 'tar' 
-configure_build --enable-ltdl-install  --prefix=$CUST_INST_PREFIX;
+configure_build --enable-ltdl-install  --prefix=`_install_prefix`;
 make;make install-strip;make install;make all; 
 		shift;;
 		
 'autoconf')
 fn='autoconf-2.69.tar.xz'; tn='autoconf-2.69'; url='http://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.xz';
 set_source 'tar'
-configure_build --prefix=$CUST_INST_PREFIX;
+configure_build --prefix=`_install_prefix`;
 make;make lib;make install-strip;make install;make all;
 		shift;;
 		
 'automake')
 fn='automake-1.15.tar.xz'; tn='automake-1.15'; url='http://ftp.gnu.org/gnu/automake/automake-1.15.tar.xz';
 set_source 'tar'
-configure_build --prefix=$CUST_INST_PREFIX;
+configure_build --prefix=`_install_prefix`;
 make;make lib; make install-strip;make install;make all; 
 		shift;;
 		
 'cmake')
 fn='cmake-3.8.1.tar.gz'; tn='cmake-3.8.1'; url='http://cmake.org/files/v3.8/cmake-3.8.1.tar.gz';
 set_source 'tar' 
-bootstrap_build --prefix=$CUST_INST_PREFIX;
+bootstrap_build --prefix=`_install_prefix`;
 make;make install;make all;
 		shift;;
 
 'zlib')
 fn='zlib-1.2.11.tar.gz'; tn='zlib-1.2.11'; url='http://zlib.net/zlib-1.2.11.tar.gz';
 set_source 'tar'
-configure_build --prefix=$CUST_INST_PREFIX; 
+configure_build --prefix=`_install_prefix`; 
 make;make shared;make install;make all; 
 		shift;;
 		
 'bzip2')
 fn='bzip2-1.0.6.tar.gz'; tn='bzip2-1.0.6'; url='http://www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz';
 set_source 'tar' 
-make -f Makefile-libbz2_so;make install PREFIX=$CUST_INST_PREFIX;
-cp -av libbz2.so* $CUST_INST_PREFIX/lib/; ln -sv $CUST_INST_PREFIX/lib/libbz2.so.1.0.6 $CUST_INST_PREFIX/lib/libbz2.so
+make -f Makefile-libbz2_so;make install PREFIX=`_install_prefix`;
+cp -av libbz2.so* `_install_prefix`/lib/; ln -sv `_install_prefix`/lib/libbz2.so.1.0.6 `_install_prefix`/lib/libbz2.so
 		shift;;
 
 'unrar')
 fn='unrar.tar.gz'; tn='unrar'; url='http://www.rarlab.com/rar/unrarsrc-5.5.3.tar.gz';
 set_source 'tar' 
-make;make lib;make install-lib PREFIX=$CUST_INST_PREFIX;make install PREFIX=$CUST_INST_PREFIX;make all PREFIX=$CUST_INST_PREFIX;
+make;make lib;make install-lib PREFIX=`_install_prefix`;make install PREFIX=`_install_prefix`;make all PREFIX=`_install_prefix`;
 		shift;;
 		
 'gzip')
 fn='gzip-1.8.tar.xz'; tn='gzip-1.8'; url='http://ftp.gnu.org/gnu/gzip/gzip-1.8.tar.xz';
 set_source 'tar' 
-configure_build --enable-threads=posix --prefix=$CUST_INST_PREFIX; 
+configure_build --enable-threads=posix --prefix=`_install_prefix`; 
 make;make lib;make install-strip;make install;make all;
 		shift;;
 		
 'snappy')
 fn='snappy-1.1.4.tar.gz'; tn='snappy-1.1.4'; url='http://github.com/google/snappy/releases/download/1.1.4/snappy-1.1.4.tar.gz';
 set_source 'tar' 
-configure_build --prefix=$CUST_INST_PREFIX; 
+configure_build --prefix=`_install_prefix`; 
 make;make install-strip;make install;make all; 	
 		shift;;
 
 'lzma')
 fn='xz-5.2.3.tar.gz'; tn='xz-5.2.3'; url='https://tukaani.org/xz/xz-5.2.3.tar.gz';
 set_source 'tar' 
-configure_build --prefix=$CUST_INST_PREFIX; 
+configure_build --prefix=`_install_prefix`; 
 make;make lib;make install-strip;make install;make all; 
 		shift;;
 		
 'libpng')
 fn='libpng-1.6.29.tar.gz'; tn='libpng-1.6.29'; url='ftp://ftp.simplesystems.org/pub/libpng/png/src/libpng16/libpng-1.6.29.tar.gz';
 set_source 'tar' 
-configure_build --prefix=$CUST_INST_PREFIX; 
+configure_build --prefix=`_install_prefix`; 
 make;make install-strip;make install;make all; 
 		shift;;
 		
 'm4')
 fn='m4-1.4.18.tar.xz'; tn='m4-1.4.18'; url='http://ftp.gnu.org/gnu/m4/m4-1.4.18.tar.xz';
 set_source 'tar' 
-configure_build --enable-c++ --enable-threads=posix --prefix=$CUST_INST_PREFIX;
+configure_build --enable-c++ --enable-threads=posix --prefix=`_install_prefix`;
 make;make lib;make install-strip;make install;make all;
 		shift;;
 	
 'byacc')
 fn='byacc-20170430.tgz'; tn='byacc-20170430'; url='ftp://invisible-island.net/byacc/byacc-20170430.tgz';
 set_source 'tar' 
-configure_build --prefix=$CUST_INST_PREFIX;
+configure_build --prefix=`_install_prefix`;
 make;make install;make all;
 		shift;;	
 
 'gmp')
 fn='gmp-6.1.2.tar.xz'; tn='gmp-6.1.2'; url='http://ftp.gnu.org/gnu/gmp/gmp-6.1.2.tar.xz';
 set_source 'tar' 
-configure_build --enable-cxx --enable-fat --enable-assert --prefix=$CUST_INST_PREFIX;
+configure_build --enable-cxx --enable-fat --enable-assert --prefix=`_install_prefix`;
 make;make install;make all;
 		shift;;
 		
 'mpfr')
 fn='mpfr-3.1.5.tar.gz'; tn='mpfr-3.1.5'; url='http://www.mpfr.org/mpfr-current/mpfr-3.1.5.tar.gz';
 set_source 'tar' 
-configure_build --enable-decimal-float --enable-thread-safe --with-gmp-build=$BUILTS_PATH/gmp/ --prefix=$CUST_INST_PREFIX;
+configure_build --enable-decimal-float --enable-thread-safe --with-gmp-build=$BUILTS_PATH/gmp/ --prefix=`_install_prefix`;
 make;make install-strip;make install;make all; 
 		shift;;
 		
 'mpc')
 fn='mpc-1.0.3.tar.gz'; tn='mpc-1.0.3'; url='http://ftp.gnu.org/gnu/mpc/mpc-1.0.3.tar.gz';
 set_source 'tar' 
-configure_build --prefix=$CUST_INST_PREFIX;
+configure_build --prefix=`_install_prefix`;
 make;make install-strip;make install;make all;
 		shift;;
 		
 'isl')
 fn='isl-0.16.1.tar.bz2'; tn='isl-0.16.1'; url='ftp://gcc.gnu.org/pub/gcc/infrastructure/isl-0.16.1.tar.bz2';
 set_source 'tar' 
-configure_build --with-gmp=build --with-gmp-builddir=$BUILTS_PATH/gmp/ --prefix=$CUST_INST_PREFIX;
+configure_build --with-gmp=build --with-gmp-builddir=$BUILTS_PATH/gmp/ --prefix=`_install_prefix`;
 make;make install-strip;make install;make all;
 		shift;;
 		
 'bison')
 fn='bison-3.0.4.tar.gz'; tn='bison-3.0.4'; url='http://ftp.gnu.org/gnu/bison/bison-3.0.4.tar.gz';
 set_source 'tar' 
-configure_build --enable-threads=posix --prefix=$CUST_INST_PREFIX;
+configure_build --enable-threads=posix --prefix=`_install_prefix`;
 make; make lib;make install-strip;make install;make all;
 		shift;;
 		
 'texinfo')
 fn='texinfo-6.3.tar.gz'; tn='texinfo-6.3'; url='http://ftp.gnu.org/gnu/texinfo/texinfo-6.3.tar.gz';
 set_source 'tar' 
-configure_build --enable-threads=posix --prefix=$CUST_INST_PREFIX;
+configure_build --enable-threads=posix --prefix=`_install_prefix`;
 make;make install-strip;make install;make all; 
 		shift;;
 		
 'flex')
 fn='flex-2.6.4.tar.gz'; tn='flex-2.6.4'; url='http://github.com/westes/flex/files/981163/flex-2.6.4.tar.gz';
 set_source 'tar' 
-configure_build --prefix=$CUST_INST_PREFIX;
+configure_build --prefix=`_install_prefix`;
 make;make lib;make install-strip;make install;make all;
 		shift;;
 		
 'binutils')
 fn='binutils-2.28.tar.gz'; tn='binutils-2.28'; url='http://ftp.ntua.gr/mirror/gnu/binutils/binutils-2.28.tar.gz';
 set_source 'tar' 
-configure_build --enable-plugins --enable-gold=yes --enable-ld=yes --enable-libada --enable-libssp --enable-lto --enable-objc-gc --enable-vtable-verify  --with-system-zlib --with-mpfr=$CUST_INST_PREFIX --with-mpc=$CUST_INST_PREFIX --with-isl=$CUST_INST_PREFIX --with-gmp=$CUST_INST_PREFIX --prefix=$CUST_INST_PREFIX; 
-make tooldir=$CUST_INST_PREFIX; make tooldir=$CUST_INST_PREFIX install-strip;make tooldir=$CUST_INST_PREFIX install;make tooldir=$CUST_INST_PREFIX all; # libiberty> --enable-shared=opcodes --enable-shared=bfd --enable-host-shared --enable-stage1-checking=all --enable-stage1-languages=all 
+configure_build --enable-plugins --enable-gold=yes --enable-ld=yes --enable-libada --enable-libssp --enable-lto --enable-objc-gc --enable-vtable-verify  --with-system-zlib --with-mpfr=`_install_prefix` --with-mpc=`_install_prefix` --with-isl=`_install_prefix` --with-gmp=`_install_prefix` --prefix=`_install_prefix`; 
+make tooldir=`_install_prefix`; make tooldir=`_install_prefix` install-strip;make tooldir=`_install_prefix` install;make tooldir=`_install_prefix` all; # libiberty> --enable-shared=opcodes --enable-shared=bfd --enable-host-shared --enable-stage1-checking=all --enable-stage1-languages=all 
 		shift;;
 		
 'gettext')
 fn='gettext-0.19.8.1.tar.gz'; tn='gettext-0.19.8.1'; url='http://ftp.ntua.gr/mirror/gnu/gettext/gettext-0.19.8.1.tar.gz';
 set_source 'tar' 
-configure_build --enable-threads=posix --prefix=$CUST_INST_PREFIX; 
+configure_build --enable-threads=posix --prefix=`_install_prefix`; 
 make; make install-strip;make install;make all;
 		shift;;
 		
 'nettle')
 fn='nettle-3.3.tar.gz'; tn='nettle-3.3'; url='http://ftp.gnu.org/gnu/nettle/nettle-3.3.tar.gz';
 set_source 'tar' 
-configure_build --enable-gcov --enable-x86-aesni --enable-mini-gmp --enable-fat --prefix=$CUST_INST_PREFIX; 
+configure_build --enable-gcov --enable-x86-aesni --enable-mini-gmp --enable-fat --prefix=`_install_prefix`; 
 make;make install;make all;
 		shift;;
 		
 'libtasn1')
 fn='libtasn1-4.10.tar.gz'; tn='libtasn1-4.10'; url='http://ftp.gnu.org/gnu/libtasn1/libtasn1-4.10.tar.gz';
 set_source 'tar' 
-configure_build --prefix=$CUST_INST_PREFIX; 
+configure_build --prefix=`_install_prefix`; 
 make;make lib;make install-strip;make install;make all;  	
 		shift;;
 		
 'libiconv')
 fn='libiconv-1.15.tar.gz'; tn='libiconv-1.15'; url='http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.15.tar.gz';
 set_source 'tar' 
-configure_build --enable-extra-encodings --prefix=$CUST_INST_PREFIX; 
+configure_build --enable-extra-encodings --prefix=`_install_prefix`; 
 make;make lib;make install-lib;make install-strip;make install;make all; 
 		shift;;
 		
 'libunistring')
 fn='libunistring-0.9.7.tar.xz'; tn='libunistring-0.9.7'; url='http://ftp.gnu.org/gnu/libunistring/libunistring-0.9.7.tar.xz';
 set_source 'tar' 
-configure_build --enable-threads=posix --prefix=$CUST_INST_PREFIX; 
+configure_build --enable-threads=posix --prefix=`_install_prefix`; 
 make;make lib;make install-strip;make install;make all;
 		shift;;
 		
 'libidn2')
 fn='libidn2-2.0.2.tar.gz'; tn='libidn2-2.0.2'; url='http://ftp.gnu.org/pub/gnu/libidn/libidn2-2.0.2.tar.gz';
 set_source 'tar' 
-configure_build --prefix=$CUST_INST_PREFIX; 
+configure_build --prefix=`_install_prefix`; 
 make;make lib;make install-strip;make install;make all;
 		shift;;
 		
 'libsodium')
 fn='libsodium-1.0.12.tar.gz'; tn='libsodium-1.0.12'; url='http://download.libsodium.org/libsodium/releases/libsodium-1.0.12.tar.gz';
 set_source 'tar' 
-configure_build --enable-minimal --prefix=$CUST_INST_PREFIX; 
+configure_build --enable-minimal --prefix=`_install_prefix`; 
 make;make install-strip;make install;make all; 
 		shift;;
 		
 'unbound')
 fn='unbound-1.6.2.tar.gz'; tn='unbound-1.6.2'; url='http://www.unbound.net/downloads/unbound-1.6.2.tar.gz';
 set_source 'tar' 
-configure_build --enable-tfo-client --enable-tfo-server --enable-dnscrypt --prefix=$CUST_INST_PREFIX; 
+configure_build --enable-tfo-client --enable-tfo-server --enable-dnscrypt --prefix=`_install_prefix`; 
 make;make lib;make install-lib;make install;make all; 
 		shift;;
 		
@@ -444,28 +460,28 @@ make;make lib;make install-lib;make install;make all;
 fn='v3.2.1.tar.gz'; tn='libffi-3.2.1'; url='http://github.com/libffi/libffi/archive/v3.2.1.tar.gz';
 set_source 'tar' 
 autogen_build;
-configure_build --prefix=$CUST_INST_PREFIX; 
+configure_build --prefix=`_install_prefix`; 
 make;make install-strip;make install;make all; 
 		shift;;
 		
 'p11-kit')
 fn='p11-kit-0.23.2.tar.gz'; tn='p11-kit-0.23.2'; url='http://p11-glue.freedesktop.org/releases/p11-kit-0.23.2.tar.gz';
 set_source 'tar' 
-configure_build --prefix=$CUST_INST_PREFIX; 
+configure_build --prefix=`_install_prefix`; 
 make;make install-strip;make install;make all; 
 		shift;;
 		
 'gnutls')
 fn='gnutls-3.5.9.tar.xz'; tn='gnutls-3.5.9'; url='ftp://ftp.gnutls.org/gcrypt/gnutls/v3.5/gnutls-3.5.9.tar.xz';
 set_source 'tar' 
-configure_build --prefix=$CUST_INST_PREFIX; 
+configure_build --prefix=`_install_prefix`; 
 make;make lib;make install-strip;make install;make all;
 		shift;;
 		
 'openmpi')
 fn='openmpi-2.1.1.tar.gz'; tn='openmpi-2.1.1'; url='http://www.open-mpi.org/software/ompi/v2.1/downloads/openmpi-2.1.1.tar.gz';
 set_source 'tar' 
-configure_build --prefix=$CUST_INST_PREFIX; #--enable-mpi-fortran
+configure_build --prefix=`_install_prefix`; #--enable-mpi-fortran
 make;make install-strip;make install;make all; 
 		shift;;
 		
@@ -473,56 +489,56 @@ make;make install-strip;make install;make all;
 fn='pcre-8.36.tar.gz'; tn='libpcre-pcre-8.36'; url='http://github.com/vmg/libpcre/archive/pcre-8.36.tar.gz';
 set_source 'tar' 
 autogen_build;
-configure_build --enable-pcre16 --enable-pcre32 --enable-jit --enable-pcregrep-libz --enable-pcregrep-libbz2 --enable-unicode-properties --enable-utf  --prefix=$CUST_INST_PREFIX; #  --enable-utf8
+configure_build --enable-pcre16 --enable-pcre32 --enable-jit --enable-pcregrep-libz --enable-pcregrep-libbz2 --enable-unicode-properties --enable-utf  --prefix=`_install_prefix`; #  --enable-utf8
 make;make install-strip;make install;make all; 
 		shift;;
 		
 'glib')
 fn='glib-2.53.1.tar.xz'; tn='glib-2.53.1'; url='http://ftp.acc.umu.se/pub/gnome/sources/glib/2.53/glib-2.53.1.tar.xz';
 set_source 'tar' 
-configure_build --with-libiconv=gnu --with-threads=posix --prefix=$CUST_INST_PREFIX; 
+configure_build --with-libiconv=gnu --with-threads=posix --prefix=`_install_prefix`; 
 make; make install-strip;make install;make all;
 		shift;;
 
 'jemalloc')
 fn='jemalloc-4.2.1.tar.bz2'; tn='jemalloc-4.2.1'; url='http://www.canonware.com/download/jemalloc/jemalloc-4.2.1.tar.bz2';
 set_source 'tar' 
-configure_build --enable-lazy-lock --enable-xmalloc --prefix=$CUST_INST_PREFIX; 
+configure_build --enable-lazy-lock --enable-xmalloc --prefix=`_install_prefix`; 
 make;make lib;make install;make all;
 		shift;;
 		
 'libevent')
 fn='libevent-2.1.8-stable.tar.gz'; tn='libevent-2.1.8-stable'; url='http://github.com/libevent/libevent/releases/download/release-2.1.8-stable/libevent-2.1.8-stable.tar.gz';
 set_source 'tar' 
-configure_build --prefix=$CUST_INST_PREFIX; 
+configure_build --prefix=`_install_prefix`; 
 make;make install-strip;make install;make all;  
 		shift;;
 	
 'libatomic_ops')
 fn='libatomic_ops-7.4.4.tar.gz'; tn='libatomic_ops-7.4.4'; url='http://www.hboehm.info/gc/gc_source/libatomic_ops-7.4.4.tar.gz';
 set_source 'tar' 
-configure_build --enable-shared --prefix=$CUST_INST_PREFIX; 
+configure_build --enable-shared --prefix=`_install_prefix`; 
 make;make install-strip;make install;make all;
 		shift;;
 		
 'gc')
 fn='gc-7.6.0.tar.gz'; tn='gc-7.6.0'; url='http://www.hboehm.info/gc/gc_source/gc-7.6.0.tar.gz';
 set_source 'tar' 
-configure_build --enable-single-obj-compilation  --enable-large-config  --enable-redirect-malloc --enable-sigrt-signals --enable-parallel-mark   --enable-handle-fork  --enable-cplusplus  --with-libatomic-ops=yes --prefix=$CUST_INST_PREFIX;  # --enable-threads=posix  // GC Warning: USE_PROC_FOR_LIBRARIES + GC_LINUX_THREADS performs poorly
+configure_build --enable-single-obj-compilation  --enable-large-config  --enable-redirect-malloc --enable-sigrt-signals --enable-parallel-mark   --enable-handle-fork  --enable-cplusplus  --with-libatomic-ops=yes --prefix=`_install_prefix`;  # --enable-threads=posix  // GC Warning: USE_PROC_FOR_LIBRARIES + GC_LINUX_THREADS performs poorly
 make;make install-strip;make install;make all;
 		shift;;
 	
 'gperf')
 fn='gperf-3.1.tar.gz'; tn='gperf-3.1'; url='http://ftp.gnu.org/gnu/gperf/gperf-3.1.tar.gz';
 set_source 'tar' 
-configure_build --prefix=$CUST_INST_PREFIX; 
+configure_build --prefix=`_install_prefix`; 
 make;make lib; make install;make all; 
 		shift;;
 	
 'patch')
 fn='patch-2.7.5.tar.xz'; tn='patch-2.7.5'; url='http://ftp.gnu.org/gnu/patch/patch-2.7.5.tar.xz';
 set_source 'tar' 
-configure_build --prefix=$CUST_INST_PREFIX; 
+configure_build --prefix=`_install_prefix`; 
 make;make lib;make install-strip;make install;make all;
 		shift;;
 		
@@ -530,70 +546,70 @@ make;make lib;make install-strip;make install;make all;
 fn='tcl8.6.6-src.tar.gz'; tn='tcl8.6.6'; url='ftp://sunsite.icm.edu.pl/pub/programming/tcl/tcl8_6/tcl8.6.6-src.tar.gz';
 set_source 'tar' 
 cd unix;
-./configure --enable-threads --enable-shared --enable-64bit --prefix=$CUST_INST_PREFIX; 
+./configure --enable-threads --enable-shared --enable-64bit --prefix=`_install_prefix`; 
 make;make lib;make install-strip;make install;make all; 
 		shift;;
 'tk')
 fn='tk8.6.6-src.tar.gz'; tn='tk8.6.6'; url='ftp://sunsite.icm.edu.pl/pub/programming/tcl/tcl8_6/tk8.6.6-src.tar.gz';
 set_source 'tar' 
 cd unix;
-./configure --enable-threads --enable-shared --enable-64bit --prefix=$CUST_INST_PREFIX; #- --enable-xft  -with-tcl=$CUST_INST_PREFIX/lib/
+./configure --enable-threads --enable-shared --enable-64bit --prefix=`_install_prefix`; #- --enable-xft  -with-tcl=`_install_prefix`/lib/
 make;make install-strip;make install;make all;
 		shift;;
 
 'expect')
 fn='expect5.45.tar.gz'; tn='expect5.45'; url='https://sourceforge.net/projects/expect/files/Expect/5.45/expect5.45.tar.gz/download';
 set_source 'tar' 
-configure_build --enable-threads --enable-64bit --enable-shared --prefix=$CUST_INST_PREFIX;
+configure_build --enable-threads --enable-64bit --enable-shared --prefix=`_install_prefix`;
 make;make install;make all;
 		shift;;
 	
 'musl')
 fn='musl-1.1.16.tar.gz'; tn='musl-1.1.16'; url='http://www.musl-libc.org/releases/musl-1.1.16.tar.gz';
 set_source 'tar' 
-configure_build --prefix=$CUST_INST_PREFIX;
+configure_build --prefix=`_install_prefix`;
 make;make install;make all;
 		shift;;
 
 'libunwind')
 fn='libunwind-1.2.tar.gz'; tn='libunwind-1.2'; url='http://download.savannah.nongnu.org/releases/libunwind/libunwind-1.2.tar.gz';
 set_source 'tar' 
-configure_build --enable-setjmp --enable-block-signals --enable-conservative-checks --enable-msabi-support --enable-minidebuginfo  --enable-conservative-checks --prefix=$CUST_INST_PREFIX; 
+configure_build --enable-setjmp --enable-block-signals --enable-conservative-checks --enable-msabi-support --enable-minidebuginfo  --enable-conservative-checks --prefix=`_install_prefix`; 
 make;make install-strip;make install;make all;
 		shift;;
 		
 'libxml2')
 fn='libxml2-2.9.4.tar.gz'; tn='libxml2-2.9.4'; url='http://xmlsoft.org/sources/libxml2-2.9.4.tar.gz';
 set_source 'tar' 
-configure_build --enable-ipv6=yes --with-c14n --with-fexceptions --with-icu --with-python --with-thread-alloc --with-coverage --prefix=$CUST_INST_PREFIX; 
+configure_build --enable-ipv6=yes --with-c14n --with-fexceptions --with-icu --with-python --with-thread-alloc --with-coverage --prefix=`_install_prefix`; 
 make;make install-strip;make install;make all; 
 		shift;;
 		
 'libxslt')
 fn='libxslt-1.1.29.tar.gz'; tn='libxslt-1.1.29'; url='http://xmlsoft.org/sources/libxslt-1.1.29.tar.gz';
 set_source 'tar' 
-configure_build --prefix=$CUST_INST_PREFIX; 
+configure_build --prefix=`_install_prefix`; 
 make;make install-strip;make install;make all; 	
 		shift;;
 
 'libedit')
 fn='libedit-20170329-3.1.tar.gz'; tn='libedit-20170329-3.1'; url='http://thrysoee.dk/editline/libedit-20170329-3.1.tar.gz';
 set_source 'tar' 
-configure_build --enable-widec --prefix=$CUST_INST_PREFIX; 
+configure_build --enable-widec --prefix=`_install_prefix`; 
 make;make install-strip;make install;make all;
 		shift;;
 
 'readline')
 fn='readline-7.0.tar.gz'; tn='readline-7.0'; url='http://ftp.gnu.org/gnu/readline/readline-7.0.tar.gz';
 set_source 'tar' 
-configure_build --enable-shared --with-curses --enable-multibyte --prefix=$CUST_INST_PREFIX; 
+configure_build --enable-shared --with-curses --enable-multibyte --prefix=`_install_prefix`; 
 make;make install;make all;
 		shift;;
 
 'gdbm')
 fn='gdbm-1.13.tar.gz'; tn='gdbm-1.13'; url='http://ftp.gnu.org/gnu/gdbm/gdbm-1.13.tar.gz';
 set_source 'tar' 
-configure_build --enable-libgdbm-compat --enable-gdbm-export --prefix=$CUST_INST_PREFIX; 
+configure_build --enable-libgdbm-compat --enable-gdbm-export --prefix=`_install_prefix`; 
 make;make install-strip;make install;make all;
 		shift;;
 
@@ -601,7 +617,7 @@ make;make install-strip;make install;make all;
 fn='R_2_2_0.tar.gz'; tn='libexpat-R_2_2_0'; url='http://github.com/libexpat/libexpat/archive/R_2_2_0.tar.gz';
 set_source 'tar' 
 cd expat;
-./buildconf.sh; ./configure CPPFLAGS=-DXML_LARGE_SIZE --prefix=$CUST_INST_PREFIX; 
+./buildconf.sh; ./configure CPPFLAGS=-DXML_LARGE_SIZE --prefix=`_install_prefix`; 
 make;make lib;make shared;make installlib;make install;
 		shift;;
   		
@@ -615,7 +631,7 @@ make;make install;make all;
 'gperftools')
 fn='gperftools-2.5.tar.gz'; tn='gperftools-2.5'; url='http://github.com/gperftools/gperftools/releases/download/gperftools-2.5/gperftools-2.5.tar.gz';
 set_source 'tar' 
-configure_build --enable-libunwind --enable-frame-pointers --prefix=$CUST_INST_PREFIX; 
+configure_build --enable-libunwind --enable-frame-pointers --prefix=`_install_prefix`; 
 make;make install-strip;make install;make all; 
 		shift;;
 		
@@ -629,7 +645,7 @@ make;make lib; make install;make all;
 fn='icu4c-59_1-src.tgz'; tn='icu'; url='http://download.icu-project.org/files/icu4c/59.1/icu4c-59_1-src.tgz';
 set_source 'tar'
 cd  source;
-./configure --enable-rpath --enable-plugins --prefix=$CUST_INST_PREFIX; 
+./configure --enable-rpath --enable-plugins --prefix=`_install_prefix`; 
 make;make lib;make install;make all;
 		shift;;
 		
@@ -637,120 +653,120 @@ make;make lib;make install;make all;
 fn='boost_1_64_0.tar.gz'; tn='boost_1_64_0'; url='http://dl.bintray.com/boostorg/release/1.64.0/source/boost_1_64_0.tar.gz';
 set_source 'tar' 
 wget 'https://github.com/kashirin-alex/environments-builder/raw/master/patches/libboost/wrapper.cpp'; mv wrapper.cpp libs/python/src/
-./bootstrap.sh --with-libraries=all --with-icu --prefix=$CUST_INST_PREFIX; #echo "using mpi ;" >> "project-config.jam";
+./bootstrap.sh --with-libraries=all --with-icu --prefix=`_install_prefix`; #echo "using mpi ;" >> "project-config.jam";
 ./b2 threading=multi link=shared runtime-link=shared install; # --build-type=complete
 		shift;;
 		
 'fuse')
 fn='fuse-3.0.1.tar.gz'; tn='fuse-3.0.1'; url='http://github.com/libfuse/libfuse/releases/download/fuse-3.0.1/fuse-3.0.1.tar.gz';
 set_source 'tar' 
-configure_build --enable-lib --enable-util --prefix=$CUST_INST_PREFIX; 
+configure_build --enable-lib --enable-util --prefix=`_install_prefix`; 
 make;make lib; make install-strip;make install;make all;
 		shift;;
 		
 'sigar')
 fn='hyperic-sigar-1.6.4.tar.gz'; tn='hyperic-sigar-1.6.4'; url='http://sourceforge.net/projects/sigar/files/sigar/1.6/hyperic-sigar-1.6.4.tar.gz/download';
 set_source 'tar' 
-cp sigar-bin/include/*.h $CUST_INST_PREFIX/include; cp sigar-bin/lib/libsigar-amd64-linux.so $CUST_INST_PREFIX/lib
+cp sigar-bin/include/*.h `_install_prefix`/include; cp sigar-bin/lib/libsigar-amd64-linux.so `_install_prefix`/lib
 		shift;;
 		
 'berkeley-db')
 fn='db-6.2.32.tar.gz'; tn='db-6.2.32'; url='http://download.oracle.com/berkeley-db/db-6.2.32.tar.gz';
 set_source 'tar' 
 cust_conf_path='dist/'
-configure_build --enable-shared --enable-cxx --enable-tcl --enable-dbm --prefix=$CUST_INST_PREFIX; # --enable-java --enable-smallbuild
+configure_build --enable-shared --enable-cxx --enable-tcl --enable-dbm --prefix=`_install_prefix`; # --enable-java --enable-smallbuild
 make;make install;make all; 
-#echo $CUST_INST_PREFIX/lib > "/etc/ld.so.conf.d/bdb.conf"
+#echo `_install_prefix`/lib > "/etc/ld.so.conf.d/bdb.conf"
 		shift;;
 
 'libgpg-error')
 fn='libgpg-error-1.27.tar.gz'; tn='libgpg-error-1.27'; url='ftp://ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.27.tar.gz';
 set_source 'tar' 
-configure_build  --enable-threads=posix --prefix=$CUST_INST_PREFIX; 
+configure_build  --enable-threads=posix --prefix=`_install_prefix`; 
 make;make install-strip;make install;make all;
 		shift;;	
 		
 'libgcrypt')
 fn='libgcrypt-1.7.6.tar.gz'; tn='libgcrypt-1.7.6'; url='ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.7.6.tar.gz';
 set_source 'tar' 
-configure_build --enable-m-guard --prefix=$CUST_INST_PREFIX; 
+configure_build --enable-m-guard --prefix=`_install_prefix`; 
 make;make install-strip;make install;make all;
 		shift;;	
 
 'libssh')
 fn='libssh-0.7.5.tar.xz'; tn='libssh-0.7.5'; url='http://download.openpkg.org/components/cache/libssh2/libssh-0.7.5.tar.xz';#http://red.libssh.org/attachments/download/218/libssh-0.7.5.tar.xz
 set_source 'tar' 
-cmake_build -DCMAKE_INSTALL_PREFIX=$CUST_INST_PREFIX -DWITH_LIBZ=ON -DWITH_SSH1=ON -DWITH_GCRYPT=ON;
+cmake_build -DCMAKE_INSTALL_PREFIX=`_install_prefix` -DWITH_LIBZ=ON -DWITH_SSH1=ON -DWITH_GCRYPT=ON;
 make;make install;make all; 
 		shift;;	
 
 'cronolog')
 fn='1.7.1.tar.gz'; tn='cronolog-1.7.1'; url='https://github.com/holdenk/cronolog/archive/1.7.1.tar.gz';
 set_source 'tar' 
-configure_build --prefix=$CUST_INST_PREFIX; 
+configure_build --prefix=`_install_prefix`; 
 make;make lib;make install-strip;make install;make all;
 		shift;;	
 		
 'libuv')
 fn='libuv-v1.11.0.tar.gz'; tn='libuv-v1.11.0'; url='http://dist.libuv.org/dist/v1.11.0/libuv-v1.11.0.tar.gz';
 set_source 'tar' 
-./autogen.sh; ./configure --prefix=$CUST_INST_PREFIX; 
+./autogen.sh; ./configure --prefix=`_install_prefix`; 
 make;make install-strip;make install;make all; 
 		shift;;	
 
 'libcares')
 fn='c-ares-1.12.0.tar.gz'; tn='c-ares-1.12.0'; url='https://c-ares.haxx.se/download/c-ares-1.12.0.tar.gz';
 set_source 'tar' 
-configure_build  --enable-libgcc --enable-nonblocking --prefix=$CUST_INST_PREFIX; 
+configure_build  --enable-libgcc --enable-nonblocking --prefix=`_install_prefix`; 
 make;make install-strip;make install;make all;
 		shift;;	
 		
 'sqlite')
 fn='sqlite.tar.gz'; tn='sqlite'; url='https://www.sqlite.org/src/tarball/sqlite.tar.gz';
 set_source 'tar' 
-configure_build --enable-releasemode --enable-editline --enable-gcov --enable-session --enable-rtree  --enable-json1 --enable-fts5 --enable-fts4 --enable-fts3 --enable-memsys3 --enable-memsys5 --prefix=$CUST_INST_PREFIX; 
+configure_build --enable-releasemode --enable-editline --enable-gcov --enable-session --enable-rtree  --enable-json1 --enable-fts5 --enable-fts4 --enable-fts3 --enable-memsys3 --enable-memsys5 --prefix=`_install_prefix`; 
 make;make install;make all; 
 		shift;;	
 		
 'libjpeg')
 fn='jpegsrc.v9b.tar.gz'; tn='jpeg-9b'; url='http://www.ijg.org/files/jpegsrc.v9b.tar.gz';
 set_source 'tar' 
-configure_build --prefix=$CUST_INST_PREFIX;
+configure_build --prefix=`_install_prefix`;
 make;make install-strip;make install;make all;
 		shift;;	
 
 'imagemagick')
 fn='ImageMagick-6.7.7-10.tar.xz'; tn='ImageMagick-6.7.7-10'; url='https://www.imagemagick.org/download/releases/ImageMagick-6.7.7-10.tar.xz'; #https://github.com/dahlia/wand/blob/f97277be6d268038a869e59b0d6c3780d7be5664/wand/version.py
 set_source 'tar' 
-configure_build --enable-shared --with-jpeg=yes --with-quantum-depth=16 --enable-hdri --enable-pipes --enable-hugepages --disable-docs --with-aix-soname=both --with-modules --with-jemalloc --with-umem --prefix=$CUST_INST_PREFIX; 
+configure_build --enable-shared --with-jpeg=yes --with-quantum-depth=16 --enable-hdri --enable-pipes --enable-hugepages --disable-docs --with-aix-soname=both --with-modules --with-jemalloc --with-umem --prefix=`_install_prefix`; 
 make;make install-strip;make install;make all;
 		shift;;	
 		
 'harfbuzz')
 fn='harfbuzz-1.4.6.tar.bz2'; tn='harfbuzz-1.4.6'; url='https://www.freedesktop.org/software/harfbuzz/release/harfbuzz-1.4.6.tar.bz2';
 set_source 'tar' 
-configure_build --prefix=$CUST_INST_PREFIX; 
+configure_build --prefix=`_install_prefix`; 
 make;make install;make all;
 		shift;;	
 		
 'freetype')
 fn='freetype-2.8.tar.gz'; tn='freetype-2.8'; url='http://download.savannah.gnu.org/releases/freetype/freetype-2.8.tar.gz';
 set_source 'tar' 
-configure_build --prefix=$CUST_INST_PREFIX; 
+configure_build --prefix=`_install_prefix`; 
 make;make install;make all;
 		shift;;	
 		
 'fontconfig')
 fn='fontconfig-2.12.0.tar.gz'; tn='fontconfig-2.12.0'; url='https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.12.0.tar.gz';
 set_source 'tar' 
-configure_build --enable-iconv --prefix=$CUST_INST_PREFIX; 
+configure_build --enable-iconv --prefix=`_install_prefix`; 
 make;make install-strip;make install;make all;
 		shift;;				
 		
 'sparsehash')
 fn='sparsehash-2.0.3.tar.gz'; tn='sparsehash-sparsehash-2.0.3'; url='https://github.com/sparsehash/sparsehash/archive/sparsehash-2.0.3.tar.gz';
 set_source 'tar' 
-configure_build --prefix=$CUST_INST_PREFIX;   # --enable-namespace=gpreftools
+configure_build --prefix=`_install_prefix`;   # --enable-namespace=gpreftools
 make;make install-strip;make install;make all; 	
 		shift;;	
 		
@@ -797,21 +813,21 @@ fn='thrift-0.10.0.tar.gz'; tn='thrift-0.10.0'; url='http://archive.apache.org/di
 set_source 'tar' 
 cmake_build -DUSE_STD_THREAD=1 -DWITH_STDTHREADS=ON; #-DWITH_BOOSTTHREADS=ON -DOPENSSL_ROOT_DIR=/usr/local/ssl
 make -j4;make install;make all;
-#configure_build --enable-libs --enable-plugin --with-c_glib  --with-csharp --with-python  --with-qt4  --with-qt5 --prefix=$CUST_INST_PREFIX; 
+#configure_build --enable-libs --enable-plugin --with-c_glib  --with-csharp --with-python  --with-qt4  --with-qt5 --prefix=`_install_prefix`; 
 		shift;;	
 		
 'attr')
 fn='attr-2.4.47.tar.gz'; tn='attr-2.4.47'; url='http://git.savannah.nongnu.org/cgit/attr.git/snapshot/attr-2.4.47.tar.gz';
 set_source 'tar' 
 make configure;
-./configure --enable-gettext=yes --enable-shared=yes --prefix=$CUST_INST_PREFIX;
+./configure --enable-gettext=yes --enable-shared=yes --prefix=`_install_prefix`;
 make;make install-lib;make install-dev;make install;
 		shift;;	
 
 'libjansson')
 fn='jansson-2.10.tar.gz'; tn='jansson-2.10'; url='http://www.digip.org/jansson/releases/jansson-2.10.tar.gz';
 set_source 'tar' 
-configure_build --prefix=$CUST_INST_PREFIX;
+configure_build --prefix=`_install_prefix`;
 make install;	
 		shift;;
 		
@@ -819,7 +835,7 @@ make install;
 fn='v3.3.1.tar.gz'; tn='protobuf-3.3.1'; url='https://github.com/google/protobuf/archive/v3.3.1.tar.gz';
 set_source 'tar' 
 cp -r ../$TMP_NAME ../$TMP_NAME-tmp; mv ../$TMP_NAME-tmp gtest;
-./autogen.sh;./configure --with-zlib --prefix=$CUST_INST_PREFIX;
+./autogen.sh;./configure --with-zlib --prefix=`_install_prefix`;
 make;make install;
 		shift;;	
 			
@@ -850,7 +866,7 @@ echo "export PATH=\$PATH:\"$CUST_JAVA_INST_PREFIX/$sn/bin\"" >> $ENV_SETTINGS_PA
 fn='node-v7.10.0.tar.xz'; tn='node-v7.10.0'; url='https://nodejs.org/dist/latest-v7.x/node-v7.10.0.tar.xz';
 set_source 'tar'
 # cp -r ../$sn ../$sn-tmp; mv ../$sn-tmp gtest;
-./configure --prefix=$CUST_INST_PREFIX; #--with-intl=none 
+./configure --prefix=`_install_prefix`; #--with-intl=none 
 make -j$NUM_PROCS;make install;
 		shift;;	
 
@@ -865,7 +881,7 @@ make linux-gcc-x86-64;mv libhoard.so /usr/local/lib/;
 'libzip')
 fn='libzip-1.2.0.tar.xz'; tn='libzip-1.2.0'; url='https://nih.at/libzip/libzip-1.2.0.tar.xz';
 set_source 'tar' 
-configure_build --prefix=$CUST_INST_PREFIX;
+configure_build --prefix=`_install_prefix`;
 make;make install;	
 		shift;;
 
@@ -873,20 +889,20 @@ make;make install;
 fn='unzip60.tar.gz'; tn='unzip60'; url='https://sourceforge.net/projects/infozip/files/UnZip%206.x%20%28latest%29/UnZip%206.0/unzip60.tar.gz/download';
 set_source 'tar' 
 make -f unix/Makefile generic
-make prefix=$CUST_INST_PREFIX MANDIR=/usr/local/share/man/man1 -f unix/Makefile install
+make prefix=`_install_prefix` MANDIR=/usr/local/share/man/man1 -f unix/Makefile install
 		shift;;
 
 'gawk')
 fn='gawk-4.1.4.tar.xz'; tn='gawk-4.1.4'; url='http://ftp.gnu.org/gnu/gawk/gawk-4.1.4.tar.xz';
 set_source 'tar' 
-configure_build --prefix=$CUST_INST_PREFIX;
+configure_build --prefix=`_install_prefix`;
 make;make install;	
 		shift;;
 
 'pybind11')
 fn='master.zip'; tn='pybind11-master'; url='https://github.com/pybind/pybind11/archive/master.zip';
 set_source 'zip' 
-cmake_build -DPYBIND11_TEST=OFF -DCMAKE_INSTALL_INCLUDEDIR=$CUST_INST_PREFIX/include;
+cmake_build -DPYBIND11_TEST=OFF -DCMAKE_INSTALL_INCLUDEDIR=`_install_prefix`/include;
 make install;
 		shift;;
 
@@ -902,7 +918,7 @@ make -j$NUM_PROCS VERBOSE=1 ;make install;#make alltests;#  -DPACKAGE_OS_SPECIFI
 'llvm')
 fn='llvm-4.0.0.src.tar.xz'; tn='llvm-4.0.0.src'; url='http://releases.llvm.org/4.0.0/llvm-4.0.0.src.tar.xz';
 set_source 'tar' 
-cmake_build -DCMAKE_BUILD_TYPE=Release -DLLVM_TARGETS_TO_BUILD=X86 -DFFI_INCLUDE_DIR=$CUST_INST_PREFIX/lib/libffi-3.2.1/include -DFFI_LIBRARY_DIR=$CUST_INST_PREFIX/lib64 -DLLVM_ENABLE_FFI=ON -DLLVM_USE_INTEL_JITEVENTS=ON -DLLVM_LINK_LLVM_DYLIB=ON -DCMAKE_INSTALL_PREFIX=$CUST_INST_PREFIX; 
+cmake_build -DCMAKE_BUILD_TYPE=Release -DLLVM_TARGETS_TO_BUILD=X86 -DFFI_INCLUDE_DIR=`_install_prefix`/lib/libffi-3.2.1/include -DFFI_LIBRARY_DIR=`_install_prefix`/lib64 -DLLVM_ENABLE_FFI=ON -DLLVM_USE_INTEL_JITEVENTS=ON -DLLVM_LINK_LLVM_DYLIB=ON -DCMAKE_INSTALL_PREFIX=`_install_prefix`; 
 make;make install;
 		shift;;
 
