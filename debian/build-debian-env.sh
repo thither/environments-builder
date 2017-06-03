@@ -2,7 +2,7 @@
 ## Author Kashirin Alex (kashirin.alex@gmail.com)
 
 # nohup bash ~/builder/build-debian-env.sh --no-reuse-make --sources all &> '/root/builder/built.log' &
-
+  
 ################## DIRCETOTRIES CONFIGURATIONS ##################
 CUST_INST_PREFIX=/usr/local
 CUST_JAVA_INST_PREFIX=/usr/java
@@ -235,7 +235,7 @@ do_build() {
 	if [ -f $SCRIPTS_PATH/$sn.sh ]; then
 		source $SCRIPTS_PATH/$sn.sh
 	else
-		_do_build ${@:1}
+		_do_build #${@:1}
 	fi
 	finalize_build
   
@@ -749,25 +749,29 @@ configure_build --enable-shared --with-jpeg=yes --with-quantum-depth=16 --enable
 make;make install-strip;make install;make all;
 		shift;;	
 		
-'harfbuzz')
-fn='harfbuzz-1.4.6.tar.bz2'; tn='harfbuzz-1.4.6'; url='https://www.freedesktop.org/software/harfbuzz/release/harfbuzz-1.4.6.tar.bz2';
-set_source 'tar' 
-configure_build  --with-fontconfig=auto --with-freetype=auto --prefix=`_install_prefix`; 
-make;make install;make all;
-		shift;;	
-		
 'freetype')
 fn='freetype-2.8.tar.gz'; tn='freetype-2.8'; url='http://download.savannah.gnu.org/releases/freetype/freetype-2.8.tar.gz';
 set_source 'tar' 
-configure_build --enable-fast-install=no  --with-harfbuzz=auto --prefix=`_install_prefix`; 
+if [ -z $1 ]; then opt='--with-harfbuzz=no'; else opt=$1;fi 
+configure_build --enable-fast-install=no $opt --prefix=`_install_prefix`; 
 make;make install;make all;
 		shift;;	
-		
+			
+'harfbuzz')
+fn='harfbuzz-1.4.6.tar.bz2'; tn='harfbuzz-1.4.6'; url='https://www.freedesktop.org/software/harfbuzz/release/harfbuzz-1.4.6.tar.bz2';
+set_source 'tar' 
+if [ -z $1 ]; then opt='--with-freetype=yes --with-fontconfig=no'; else opt=${@:1};fi 
+configure_build $opt --prefix=`_install_prefix`; 
+make;make install;make all;
+sn='freetype'; _do_build --with-harfbuzz=yes; sn='harfbuzz';
+		shift;;	
+	
 'fontconfig')
 fn='fontconfig-2.12.0.tar.gz'; tn='fontconfig-2.12.0'; url='https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.12.0.tar.gz';
 set_source 'tar' 
 configure_build --enable-iconv --prefix=`_install_prefix`; 
 make;make install-strip;make install;make all;
+sn='harfbuzz';_do_build --with-fontconfig=yes --with-freetype=yes;sn='fontconfig';
 		shift;;		
 	
 'sparsehash')
@@ -917,8 +921,7 @@ make install;
 fn='master.zip'; tn='hypertable-master'; url='https://github.com/kashirin-alex/hypertable/archive/master.zip';
 rm -r $DOWNLOAD_PATH/$sn/$fn
 set_source 'zip' 
-apt-get -y install rrdtool;
-cmake_build  -DHADOOP_INCLUDE_PATH=$HADOOP_INCLUDE_PATH -DHADOOP_LIB_PATH=$HADOOP_LIB_PATH -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release; # -DVERSION_MISC_SUFFIX=$( date  +"%Y-%m-%d_%H-%M") -DBUILD_SHARED_LIBS=ON
+cmake_build -DVERSION_MISC_SUFFIX=$( date  +"%Y-%m-%d_%H-%M") -DHADOOP_INCLUDE_PATH=$HADOOP_INCLUDE_PATH -DHADOOP_LIB_PATH=$HADOOP_LIB_PATH -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release; #  -DBUILD_SHARED_LIBS=ON
 make -j$NUM_PROCS VERBOSE=1 ;make install;#make alltests;#  -DPACKAGE_OS_SPECIFIC=1 
 		shift;;
 
@@ -940,6 +943,13 @@ make;make install;
 fn='apr-1.5.2.tar.gz'; tn='apr-1.5.2'; url='http://apache.mindstudios.com//apr/apr-1.5.2.tar.gz';
 set_source 'tar' 
 configure_build --enable-threads --enable-posix-shm --prefix=`_install_prefix`;
+make;make install;	
+		shift;;
+		
+'apr-util')
+fn='apr-util-1.5.4.tar.gz'; tn='apr-util-1.5.4'; url='http://apache.mirrors.ovh.net/ftp.apache.org/dist//apr/apr-util-1.5.4.tar.gz';
+set_source 'tar' 
+configure_build --with-crypto=`_install_prefix` --with-openssl=`_install_prefix`  --with-apr=`_install_prefix` --prefix=`_install_prefix`;
 make;make install;	
 		shift;;
 
@@ -986,7 +996,7 @@ compile_and_install(){
 	do_install libffi p11-kit gnutls tcltk tk pcre pcre2 glib openmpi gdbm re2
 	do_install expect attr #musl
 	do_install libhoard jemalloc gc gperf gperftools patch 
-	do_install gcc llvm libconfuse arp libsigcplusplus
+	do_install gcc llvm libconfuse arp apr-util libsigcplusplus
 	
 	if [ $stage -gt 0 ]; then
 		do_install boost  
@@ -997,7 +1007,7 @@ compile_and_install(){
 		do_install openjdk apache-ant apache-maven sigar berkeley-db  
 		do_install protobuf apache-hadoop	
 
-		do_install freetype harfbuzz  fontconfig 
+		do_install freetype harfbuzz fontconfig 
 		do_install sqlite imagemagick
 		if [ $stage == 2 ]; then
 			do_install pypy2 nodejs thrift pybind11
@@ -1125,9 +1135,8 @@ _run_setup
 exit 1
 
 # DRAFTS #######################################################################
-
-
-
+ 
+bash ~/builder/build-debian-env.sh --verbose --sources libconfuse arp apr-util libsigcplusplus
 
 TMP_NAME=pixman
 echo $TMP_NAME
@@ -1136,16 +1145,6 @@ cd ~/tmpBuilds; rm -r $TMP_NAME;
 wget 'https://www.cairographics.org/releases/pixman-0.34.0.tar.gz'
 tar xf pixman-0.34.0.tar.gz
 mv pixman-0.34.0 $TMP_NAME;cd $TMP_NAME; 
-./configure --enable-timers --prefix=/usr/local; #
-make; make check; make install
-
-TMP_NAME=skia
-echo $TMP_NAME
-mkdir ~/tmpBuilds
-cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://github.com/google/skia/archive/chrome/m38_2125.tar.gz'
-tar xf m38_2125.tar.gz
-mv skia-chrome-m38_2125 $TMP_NAME;cd $TMP_NAME; 
 ./configure --enable-timers --prefix=/usr/local; #
 make; make check; make install
 
@@ -1187,9 +1186,7 @@ wget 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.40/pango-1.40.6.tar.xz'
 tar xf pango-1.40.6.tar.xz
 mv pango-1.40.6 $TMP_NAME;cd $TMP_NAME; 
 ./configure  --prefix=/usr/local; #
-make; make check; make install
-
-
+make; make install;
 
 TMP_NAME=rrdtool
 echo $TMP_NAME
@@ -1198,24 +1195,21 @@ cd ~/tmpBuilds; rm -r $TMP_NAME;
 wget 'http://oss.oetiker.ch/rrdtool/pub/rrdtool-1.7.0.tar.gz'
 tar xf rrdtool-1.7.0.tar.gz
 mv rrdtool-1.7.0 $TMP_NAME;cd $TMP_NAME; 
-
-./configure --enable-tcl-site --disable-rrdcgi --disable-ruby --disable-lua --disable-docs --disable-examples --prefix=/usr/local; #
-make; make check;make installlib;  make install; make lib; make install-lib
-cd ~; /sbin/ldconfig
-
-
+./configure --disable-python --disable-tcl --disable-perl --disable-ruby --disable-lua --disable-docs --disable-examples --prefix=/usr/local; # --disable-rrdcgi
+make; make install;
+ /sbin/ldconfig
 
 
 TMP_NAME=ganglia; 
 echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://github.com/ganglia/monitor-core/archive/3.7.2.tar.gz'
+wget 'https://sourceforge.net/projects/ganglia/files/ganglia%20monitoring%20core/3.7.2/ganglia-3.7.2.tar.gz/download' -O 3.7.2.tar.gz
 tar xf 3.7.2.tar.gz
-mv monitor-core-3.7.2 $TMP_NAME; cd $TMP_NAME;
-./bootstrap
-./configure --enable-python --disable-perl --prefix=/usr/local ;# --with-gmetad 
-make;make install-strip;make install;make all; 
+mv ganglia-3.7.2 $TMP_NAME; cd $TMP_NAME;
+./configure --with-gmetad --enable-status --enable-shared --enable-static --disable-python --disable-perl --prefix=/usr/local ;# --with-memcached 
+make;make install;
+
 
 
 echo llvm
@@ -1512,6 +1506,16 @@ mv libX11-1.6.5 $TMP_NAME;cd $TMP_NAME;
 make; make install
 
 
+
+TMP_NAME=skia
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'https://github.com/google/skia/archive/chrome/m38_2125.tar.gz'
+tar xf m38_2125.tar.gz
+mv skia-chrome-m38_2125 $TMP_NAME;cd $TMP_NAME; 
+./configure --enable-timers --prefix=/usr/local; #
+make; make check; make install
 
 
 
