@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-pip install --upgrade pycparser
 fn='pypy2-v5.7.1-src.tar.bz2'; tn='pypy2-v5.7.1-src'; url='https://bitbucket.org/pypy/pypy/downloads/pypy2-v5.7.1-src.tar.bz2';
 set_source 'tar';
 #make LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" all; LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" #   --source  --no-shared --thread
