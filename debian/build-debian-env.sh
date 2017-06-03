@@ -716,7 +716,7 @@ if [ -f $CUST_INST_PREFIX/bin/openssl ]; then
 	sudo apt-get install -y --reinstall ca-certificates
 	ln -s /etc/ssl/certs $CUST_INST_PREFIX/ssl/certs;
 	echo "#!/usr/bin/env bash" > $ENV_SETTINGS_PATH/$sn.sh
-	echo "export SSL_CERT_DIR=\"$CUST_INST_PREFIX/ssl/certs\"" >> $ENV_SETTINGS_PATH/$sn.sh
+	echo "export SSL_CERT_DIR=\"/etc/ssl/certs\"" >> $ENV_SETTINGS_PATH/$sn.sh
 fi
 		shift;;	
 		
