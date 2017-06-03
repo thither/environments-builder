@@ -998,14 +998,14 @@ make;make install;
 'rrdtool')
 fn='rrdtool-1.7.0.tar.gz'; tn='rrdtool-1.7.0'; url='http://oss.oetiker.ch/rrdtool/pub/rrdtool-1.7.0.tar.gz';
 set_source 'tar' 
-configure_build --disable-python --disable-tcl --disable-perl --disable-ruby --disable-lua --disable-docs --disable-examples --prefix=`_install_prefix`;
+./configure --disable-python --disable-tcl --disable-perl --disable-ruby --disable-lua --disable-docs --disable-examples --prefix=`_install_prefix`;
 make;make install;	
 		shift;;	
 		
 'ganglia')
 fn='3.7.2.tar.gz'; tn='ganglia-3.7.2'; url='https://sourceforge.net/projects/ganglia/files/ganglia%20monitoring%20core/3.7.2/ganglia-3.7.2.tar.gz/download';
 set_source 'tar' 
-configure_build --with-gmetad --enable-status --enable-shared --enable-static --disable-python --disable-perl --prefix=`_install_prefix`;
+./configure --with-gmetad --enable-status --enable-shared --enable-static --disable-python --disable-perl --prefix=`_install_prefix`;
 make;make install;	
 		shift;;	
 		
@@ -1191,6 +1191,88 @@ exit 1
 
 
 
+TMP_NAME=pixman
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'https://www.cairographics.org/releases/pixman-0.34.0.tar.gz'
+tar xf pixman-0.34.0.tar.gz
+mv pixman-0.34.0 $TMP_NAME;cd $TMP_NAME; 
+./configure --enable-timers --prefix=/usr/local; #
+make; make install
+
+TMP_NAME=cairo
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'https://www.cairographics.org/releases/cairo-1.14.8.tar.xz'
+tar xf cairo-1.14.8.tar.xz
+mv cairo-1.14.8 $TMP_NAME;cd $TMP_NAME; 
+./configure --enable-pdf=yes --enable-svg=yes --enable-tee=yes --enable-fc=yes --enable-ft=yes --enable-xml=yes  --enable-pthread=yes --prefix=/usr/local;# --enable-skia --enable-xlib=yes  --enable-xlib-xrender=yes  --enable-xcb=yes --enable-xlib-xcb=yes 
+make; make install
+
+TMP_NAME=cairomm
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'https://www.cairographics.org/releases/cairomm-1.15.3.tar.gz'
+tar xf cairomm-1.15.3.tar.gz
+mv cairomm-1.15.3 $TMP_NAME;cd $TMP_NAME; 
+./configure --prefix=/usr/local;
+make; make install
+
+TMP_NAME=gobject-ispec; 
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'http://ftp.gnome.org/pub/gnome/sources/gobject-introspection/1.53/gobject-introspection-1.53.2.tar.xz'
+tar xf gobject-introspection-1.53.2.tar.xz
+mv gobject-introspection-1.53.2 $TMP_NAME; cd $TMP_NAME;
+./configure  --prefix=/usr/local ; 
+make;make install;
+
+TMP_NAME=pango
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.40/pango-1.40.6.tar.xz'
+tar xf pango-1.40.6.tar.xz
+mv pango-1.40.6 $TMP_NAME;cd $TMP_NAME; 
+./configure  --prefix=/usr/local; #
+make; make install;
+
+TMP_NAME=rrdtool
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'http://oss.oetiker.ch/rrdtool/pub/rrdtool-1.7.0.tar.gz'
+tar xf rrdtool-1.7.0.tar.gz
+mv rrdtool-1.7.0 $TMP_NAME;cd $TMP_NAME; 
+./configure --disable-python --disable-tcl --disable-perl --disable-ruby --disable-lua --disable-docs --disable-examples --prefix=/usr/local; # --disable-rrdcgi
+make; make install;
+ /sbin/ldconfig
+
+TMP_NAME=ganglia; 
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'https://sourceforge.net/projects/ganglia/files/ganglia%20monitoring%20core/3.7.2/ganglia-3.7.2.tar.gz/download' -O 3.7.2.tar.gz
+tar xf 3.7.2.tar.gz
+mv ganglia-3.7.2 $TMP_NAME; cd $TMP_NAME;
+./configure --with-gmetad --enable-status --enable-shared --enable-static --disable-python --disable-perl --prefix=/usr/local ;# --with-memcached 
+make;make install;
+
+
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
 
 echo llvm
 mkdir ~/tmpBuilds;cd ~/tmpBuilds;
