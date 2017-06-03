@@ -25,7 +25,7 @@
   *  ```BUILTS_PATH=$BUILDS_ROOT/builts ```
 
 ## Source Configuration:
- * Add in the function _do_build() to add a named-source case in follow structure:
+ * Edit the function _do_build() and add a named-source case in follow structure:
   ```
     'named-source')
   ```
@@ -38,7 +38,7 @@
   ```
       shift;;
   ```
- * or the same format os the _do_build function's case, add a bash file in SCRIPTS_PATH directory with the filename named-source.sh (First applies, if exists, the source filename)
+ * or the same format os the _do_build function's case, add a bash file in SCRIPTS_PATH directory with the filename named-source.sh (The source filenam applies first , if exists,e)
 
 ## Logging:
 Logs are created in the BUILDS_LOG_PATH in a folder of date-time under filename stage number and source-name 
