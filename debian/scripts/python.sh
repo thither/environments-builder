@@ -8,11 +8,9 @@ configure_build --with-system-expat --enable-unicode --with-ensurepip=install --
 make;make install;make all;
 if [ -f $CUST_INST_PREFIX/bin/python ]; then
 	echo /usr/local/include/python2.7 > $LD_CONF_PATH/python.conf
-	#update-alternatives --install /usr/bin/python python /usr/local/bin/python 60
 fi
 ldconfig
 if [ -f $CUST_INST_PREFIX/bin/pip ]; then
-	#update-alternatives --install /usr/bin/pip pip /usr/local/bin/pip 60
 	rm -r ~/.cache/pip 
 	pip install --upgrade thrift
 

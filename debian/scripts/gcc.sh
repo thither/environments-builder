@@ -7,26 +7,30 @@ configure_build  --disable-multilib --target=x86_64-pc-linux-gnu --enable-defaul
 make;make install;make all;
 
 if [ -f $CUST_INST_PREFIX/bin/gcc ]; then
-	update-alternatives --install /usr/bin/gcc gcc $CUST_INST_PREFIX/bin/gcc 60
+	rm /usr/bin/gcc
+	#update-alternatives --install /usr/bin/gcc gcc $CUST_INST_PREFIX/bin/gcc 60
 	#mv  /usr/lib/x86_64-linux-gnu/libstdc++.so.6 /usr/lib/x86_64-linux-gnu/libOLDstdc++.so.6;
 	#ln -s /usr/local/lib64/libstdc++.so.6 /usr/lib/x86_64-linux-gnu/libstdc++.so.6
 fi
 if [ -f $CUST_INST_PREFIX/bin/cpp ]; then
-	update-alternatives --install /usr/bin/cpp cpp $CUST_INST_PREFIX/bin/cpp 60
+	rm /usr/bin/cpp
+	#update-alternatives --install /usr/bin/cpp cpp $CUST_INST_PREFIX/bin/cpp 60
 fi
 if [ -f $CUST_INST_PREFIX/bin/c++ ]; then
-	update-alternatives --install /usr/bin/c++ c++ $CUST_INST_PREFIX/bin/c++ 60
+	rm /usr/bin/c++
+	#update-alternatives --install /usr/bin/c++ c++ $CUST_INST_PREFIX/bin/c++ 60
 fi
 if [ -f $CUST_INST_PREFIX/bin/g++ ]; then
-	update-alternatives --install /usr/bin/g++ g++ $CUST_INST_PREFIX/bin/g++ 60
+	rm /usr/bin/g++
+	#update-alternatives --install /usr/bin/g++ g++ $CUST_INST_PREFIX/bin/g++ 60
 fi
 if [ -f $CUST_INST_PREFIX/bin/ar ]; then
 	mv /usr/bin/ar /usr/bin/ar_os;
-	update-alternatives --install /usr/bin/ar ar $CUST_INST_PREFIX/bin/ar 60
+	#update-alternatives --install /usr/bin/ar ar $CUST_INST_PREFIX/bin/ar 60
 fi
 if [ -f $CUST_INST_PREFIX/bin/ranlib ]; then
 	mv /usr/bin/ranlib /usr/bin/ranlib_os;
-	update-alternatives --install /usr/bin/ranlib ranlib $CUST_INST_PREFIX/bin/ranlib 60
+	#update-alternatives --install /usr/bin/ranlib ranlib $CUST_INST_PREFIX/bin/ranlib 60
 fi
 # --with-cloog=$CUST_INST_PREFIX --disable-cloog-version-check --enable-fixed-point  --enable-stage1-checking=all  --enable-stage1-languages=all #http://gcc.gnu.org/install/configure.html
 #http://stackoverflow.com/questions/7832892/how-to-change-the-default-gcc-compiler-in-ubuntu
