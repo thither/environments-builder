@@ -1051,9 +1051,6 @@ compile_and_install(){
 	
 		do_install pkg-config gcc
 	fi
-	if [ $stage -ne 3 ]; then
-		do_install python boost
-	fi
 	
 	if [ $stage -eq 2 ]; then
 		do_install llvm libconfuse apr apr-util libsigcplusplus log4cpp cronolog
@@ -1066,6 +1063,10 @@ compile_and_install(){
 		do_install sqlite
 		do_install pixman cairo cairomm gobject-ispec pango 
 		do_install imagemagick
+	fi
+	
+	if [ $stage -ne 3 ]; then
+		do_install python boost
 	fi
 
 	if [ $stage -eq 3 ]; then
