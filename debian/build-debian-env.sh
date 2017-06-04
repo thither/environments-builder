@@ -299,7 +299,7 @@ cp -av libbz2.so* `_install_prefix`/lib/; ln -sv `_install_prefix`/lib/libbz2.so
 'unrar')
 fn='unrar.tar.gz'; tn='unrar'; url='http://www.rarlab.com/rar/unrarsrc-5.5.3.tar.gz';
 set_source 'tar' 
-make;make lib;make install-lib PREFIX=`_install_prefix`;make install PREFIX=`_install_prefix`;make all PREFIX=`_install_prefix`;
+make DESTDIR=`_install_prefix`;make lib DESTDIR=`_install_prefix`;make install-lib DESTDIR=`_install_prefix`;make install DESTDIR=`_install_prefix`;make all DESTDIR=`_install_prefix`;
 		shift;;
 		
 'gzip')
@@ -467,7 +467,7 @@ make;make install-strip;make install;make all;
 'p11-kit')
 fn='p11-kit-0.23.2.tar.gz'; tn='p11-kit-0.23.2'; url='http://p11-glue.freedesktop.org/releases/p11-kit-0.23.2.tar.gz';
 set_source 'tar' 
-configure_build --prefix=`_install_prefix`; 
+configure_build --without-trust-paths --prefix=`_install_prefix`; 
 make;make install-strip;make install;make all; 
 		shift;;
 		
