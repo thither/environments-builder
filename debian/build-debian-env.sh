@@ -700,9 +700,9 @@ make;make install-strip;make install;make all;
 		shift;;	
 
 'libssh')
-fn='libssh-0.7.5.tar.xz'; tn='libssh-0.7.5'; url='http://download.openpkg.org/components/cache/libssh2/libssh-0.7.5.tar.xz';#http://red.libssh.org/attachments/download/218/libssh-0.7.5.tar.xz
+fn='libssh-0.7.5.tar.xz'; tn='libssh-0.7.5'; url='https://red.libssh.org/attachments/download/218/libssh-0.7.5.tar.xz';#http://red.libssh.org/attachments/download/218/libssh-0.7.5.tar.xz
 set_source 'tar' 
-cmake_build -DCMAKE_INSTALL_PREFIX=`_install_prefix` -DWITH_LIBZ=ON -DWITH_SSH1=ON -DWITH_GCRYPT=ON;
+cmake_build -DCMAKE_INSTALL_PREFIX=`_install_prefix` -DWITH_LIBZ=ON -DWITH_SSH1=ON -DWITH_GCRYPT=OFF;
 make;make install;make all; 
 		shift;;	
 
