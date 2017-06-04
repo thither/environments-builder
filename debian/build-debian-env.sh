@@ -486,10 +486,10 @@ make;make install-strip;make install;make all;
 		shift;;
 		
 'pcre')
-fn='pcre-8.40.tar.gz'; tn='libpcre-pcre-8.40'; url='https://ftp.pcre.org/pub/pcre/pcre-8.40.tar.gz';
+fn='pcre-8.40.tar.gz'; tn='pcre-8.40'; url='https://ftp.pcre.org/pub/pcre/pcre-8.40.tar.gz';
 set_source 'tar' 
 autogen_build;
-configure_build --enable-newline-is-any --enable-pcre16 --enable-pcre32 --enable-jit --enable-pcregrep-libz --enable-pcregrep-libbz2 --enable-unicode-properties --enable-utf  --prefix=`_install_prefix`; #  --enable-utf8
+configure_build --enable-newline-is-any --enable-pcre16 --enable-pcre32 --enable-jit --enable-pcregrep-libz --enable-pcregrep-libbz2 --enable-unicode-properties --enable-utf --enable-ucp --prefix=`_install_prefix`; #  --enable-utf8
 make;make install-strip;make install;make all; 
 		shift;;	
 		
@@ -659,7 +659,6 @@ make;make lib;make install;make all;
 'boost')
 fn='boost_1_64_0.tar.gz'; tn='boost_1_64_0'; url='http://dl.bintray.com/boostorg/release/1.64.0/source/boost_1_64_0.tar.gz';
 set_source 'tar' 
-wget 'https://github.com/kashirin-alex/environments-builder/raw/master/patches/libboost/wrapper.cpp'; mv wrapper.cpp libs/python/src/
 ./bootstrap.sh --with-libraries=all --with-icu --prefix=`_install_prefix`; #echo "using mpi ;" >> "project-config.jam";
 ./b2 threading=multi link=shared runtime-link=shared install; # --build-type=complete
 		shift;;
@@ -793,8 +792,6 @@ if [ -f $CUST_JAVA_INST_PREFIX/$sn/bin/javac ] &&  [ -f $CUST_JAVA_INST_PREFIX/$
 	echo "export JAVA_HOME=\"$CUST_JAVA_INST_PREFIX/$sn\"" >> $ENV_SETTINGS_PATH/$sn.sh
 	echo "export PATH=\$PATH:\"$CUST_JAVA_INST_PREFIX/$sn/bin\"" >> $ENV_SETTINGS_PATH/$sn.sh
 
-	#update-alternatives --install /usr/bin/javac javac $CUST_JAVA_INST_PREFIX/$sn/bin/javac 60
-	#update-alternatives --install /usr/bin/java java $CUST_JAVA_INST_PREFIX/$sn/jre/bin/java 60
 fi
 		shift;;	
 		
@@ -860,7 +857,6 @@ else
     mkdir -p /etc/opt;
 fi
 mv ../$sn $CUST_JAVA_INST_PREFIX/$sn;
-#update-alternatives --install /usr/bin/hadoop hadoop $CUST_JAVA_INST_PREFIX/$sn/bin/hadoop 60
 
 ln -s  $CUST_JAVA_INST_PREFIX/$sn/etc/hadoop /etc/opt/hadoop
 chmod -R 777 /etc/opt/hadoop
@@ -1005,11 +1001,17 @@ make;make install;
 'ganglia')
 fn='3.7.2.tar.gz'; tn='ganglia-3.7.2'; url='https://sourceforge.net/projects/ganglia/files/ganglia%20monitoring%20core/3.7.2/ganglia-3.7.2.tar.gz/download';
 set_source 'tar' 
-./configure --with-gmetad --enable-status --enable-shared --enable-static --disable-python --disable-perl --prefix=`_install_prefix`;
-make;make install;	
+./configure --with-gmetad --enable-status --enable-shared --enable-static --enable-python --disable-perl --prefix=`_install_prefix`;
+make;make install;
 		shift;;	
 		
-
+'pkg-config')
+fn='pkg-config-0.29.2.tar.gz'; tn='pkg-config-0.29.2'; url='http://pkg-config.freedesktop.org/releases/pkg-config-0.29.2.tar.gz';
+set_source 'tar' 
+configure_build --prefix=`_install_prefix`;
+make;make install;
+		shift;;	
+		
 		
     *)         echo "Unknown build: $sn";       shift;;
   esac
@@ -1033,38 +1035,42 @@ do_install() {
 
 #########
 compile_and_install(){
-	do_install make cmake
-	do_install byacc
-	do_install m4 gmp mpfr mpc isl
-	do_install autoconf automake libtool gawk
-	do_install zlib bzip2 unrar gzip snappy lzma libzip unzip
-	do_install libatomic_ops libedit libevent libunwind #readline
-	do_install openssl libgpg-error libgcrypt libssh icu4c
-	do_install log4cpp cronolog fuse sparsehash
-	do_install bison texinfo flex binutils gettext nettle libtasn1 libiconv
-	do_install libexpat libunistring libidn2 libsodium unbound
-	do_install libffi p11-kit gnutls tcltk tk pcre pcre2 glib openmpi gdbm re2
-	do_install expect attr #musl
-	do_install libhoard jemalloc gc gperf gperftools patch 
-	do_install gcc llvm libconfuse apr apr-util libsigcplusplus
+	if [ $stage -eq 0 ] || [ $stage -eq 1 ]; then
+		do_install make cmake
+		do_install byacc
+		do_install m4 gmp mpfr mpc isl
+		do_install autoconf automake libtool gawk
+		do_install zlib bzip2 unrar gzip snappy lzma libzip unzip
+		do_install libatomic_ops libedit libevent libunwind fuse #readline
+		do_install openssl libgpg-error libgcrypt libssh icu4c
+		do_install bison texinfo flex binutils gettext nettle libtasn1 libiconv
+		do_install libexpat libunistring libidn2 libsodium unbound
+		do_install libffi p11-kit gnutls tcltk tk pcre pcre2 glib openmpi gdbm
+		do_install expect attr patch #musl
+		do_install libhoard jemalloc gc gperf gperftools  
 	
-	if [ $stage -gt 0 ]; then
-		do_install boost  
-		do_install libpng libjpeg
+		do_install pkg-config gcc
+	fi
+	if [ $stage -ne 3 ]; then
+		do_install python boost
+	fi
+	
+	if [ $stage -eq 2 ]; then
+		do_install llvm libconfuse apr apr-util libsigcplusplus log4cpp cronolog
+		do_install re2 sparsehash 
+		do_install libpng libjpeg  
 		do_install libjansson libxml2 libxslt libuv libcares 
-	
-		do_install python
 		do_install openjdk apache-ant apache-maven sigar berkeley-db  
 		do_install protobuf apache-hadoop	
-
 		do_install freetype harfbuzz fontconfig 
-		do_install sqlite imagemagick
+		do_install sqlite
 		do_install pixman cairo cairomm gobject-ispec pango 
-		do_install rrdtool ganglia
-		if [ $stage == 2 ]; then
-			do_install pypy2 nodejs thrift pybind11
-			do_install hypertable
-		fi
+		do_install imagemagick
+	fi
+
+	if [ $stage -eq 3 ]; then
+		do_install pypy2 nodejs thrift pybind11
+		do_install rrdtool ganglia hypertable
 	fi
 } 
 #########
@@ -1084,7 +1090,7 @@ _os_releases(){
 		echo 'os_releases-install'
 		
 		apt-get update && apt-get upgrade -y
-		apt-get install -y  ufw nano
+		apt-get install -y ufw nano
 	 
 		if [ ! -f $CUST_INST_PREFIX/bin/make ]; then
 			apt-get install -y --reinstall make 
@@ -1095,14 +1101,13 @@ _os_releases(){
 			apt-get install -y --reinstall pkg-config build-essential gcc 
 		fi
 
-			#apt-get install -y libedit-dev libunwind-dev libevent-dev libgc-dev libssl-dev libffi-dev libexpat1-dev libxml2-dev libxslt1-dev libre2-dev liblzma-dev libz-dev libbz2-dev libsnappy-dev  libgdbm-dev tk-dev 	
 		echo 'fin:os_releases-install'
 		
 	elif [ $1 == 'uninstall' ]; then
 		echo 'os_releases-uninstall'
 		if [ -f $CUST_INST_PREFIX/bin/make ] && [ -f $CUST_INST_PREFIX/bin/gcc ]; then
 			echo 'pkgs to remove'
-			#apt-get autoremove -y --purge python make pkg-config build-essential gcc cpp
+			apt-get autoremove -y --purge make pkg-config build-essential gcc cpp
 		fi
 		echo 'fin:os_releases-uninstall'
 	fi
@@ -1159,15 +1164,17 @@ _run_setup(){
 		reuse_make=0
 		os_releases install;
 		compile_and_install;
+		stage=1		
+		compile_and_install;
 		os_releases uninstall;
-		stage=1
-	fi
-	if [ $stage == 1 ]; then
-		reuse_make=0;
-		compile_and_install
 		stage=2
 	fi
 	if [ $stage == 2 ]; then
+		reuse_make=0;
+		compile_and_install
+		stage=3
+	fi
+	if [ $stage == 3 ]; then
 		reuse_make=0
 		compile_and_install
 		env_setup post
@@ -1189,103 +1196,9 @@ exit 1
 # DRAFTS #######################################################################
  
 
-
-
-TMP_NAME=pixman
-echo $TMP_NAME
-mkdir ~/tmpBuilds
-cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://www.cairographics.org/releases/pixman-0.34.0.tar.gz'
-tar xf pixman-0.34.0.tar.gz
-mv pixman-0.34.0 $TMP_NAME;cd $TMP_NAME; 
-./configure --enable-timers --prefix=/usr/local; #
-make; make install
-
-TMP_NAME=cairo
-echo $TMP_NAME
-mkdir ~/tmpBuilds
-cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://www.cairographics.org/releases/cairo-1.14.8.tar.xz'
-tar xf cairo-1.14.8.tar.xz
-mv cairo-1.14.8 $TMP_NAME;cd $TMP_NAME; 
-./configure --enable-pdf=yes --enable-svg=yes --enable-tee=yes --enable-fc=yes --enable-ft=yes --enable-xml=yes  --enable-pthread=yes --prefix=/usr/local;# --enable-skia --enable-xlib=yes  --enable-xlib-xrender=yes  --enable-xcb=yes --enable-xlib-xcb=yes 
-make; make install
-
-TMP_NAME=cairomm
-echo $TMP_NAME
-mkdir ~/tmpBuilds
-cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://www.cairographics.org/releases/cairomm-1.15.3.tar.gz'
-tar xf cairomm-1.15.3.tar.gz
-mv cairomm-1.15.3 $TMP_NAME;cd $TMP_NAME; 
-./configure --prefix=/usr/local;
-make; make install
-
-TMP_NAME=gobject-ispec; 
-echo $TMP_NAME
-mkdir ~/tmpBuilds
-cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'http://ftp.gnome.org/pub/gnome/sources/gobject-introspection/1.53/gobject-introspection-1.53.2.tar.xz'
-tar xf gobject-introspection-1.53.2.tar.xz
-mv gobject-introspection-1.53.2 $TMP_NAME; cd $TMP_NAME;
-./configure  --prefix=/usr/local ; 
-make;make install;
-
-TMP_NAME=pango
-echo $TMP_NAME
-mkdir ~/tmpBuilds
-cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.40/pango-1.40.6.tar.xz'
-tar xf pango-1.40.6.tar.xz
-mv pango-1.40.6 $TMP_NAME;cd $TMP_NAME; 
-./configure  --prefix=/usr/local; #
-make; make install;
-
-TMP_NAME=rrdtool
-echo $TMP_NAME
-mkdir ~/tmpBuilds
-cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'http://oss.oetiker.ch/rrdtool/pub/rrdtool-1.7.0.tar.gz'
-tar xf rrdtool-1.7.0.tar.gz
-mv rrdtool-1.7.0 $TMP_NAME;cd $TMP_NAME; 
-./configure --disable-python --disable-tcl --disable-perl --disable-ruby --disable-lua --disable-docs --disable-examples --prefix=/usr/local; # --disable-rrdcgi
-make; make install;
- /sbin/ldconfig
-
-TMP_NAME=ganglia; 
-echo $TMP_NAME
-mkdir ~/tmpBuilds
-cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://sourceforge.net/projects/ganglia/files/ganglia%20monitoring%20core/3.7.2/ganglia-3.7.2.tar.gz/download' -O 3.7.2.tar.gz
-tar xf 3.7.2.tar.gz
-mv ganglia-3.7.2 $TMP_NAME; cd $TMP_NAME;
-./configure --with-gmetad --enable-status --enable-shared --enable-static --disable-python --disable-perl --prefix=/usr/local ;# --with-memcached 
-make;make install;
-
-
-
  
  
  
- 
- 
- 
- 
- 
- 
-
-echo llvm
-mkdir ~/tmpBuilds;cd ~/tmpBuilds;
- rm -r llvm;
-wget 'http://releases.llvm.org/4.0.0/llvm-4.0.0.src.tar.xz'
-tar xf llvm-4.0.0.src.tar.xz
-mv llvm-4.0.0.src llvm;
-rm -r llvm_build
-mkdir llvm_build;cd llvm_build;
-cmake -DLLVM_TARGETS_TO_BUILD=X86 -DFFI_INCLUDE_DIR=/usr/local/lib/libffi-3.2.1/include -DFFI_LIBRARY_DIR=/usr/local/lib64 -DLLVM_ENABLE_FFI=ON -DLLVM_USE_INTEL_JITEVENTS=ON -DLLVM_LINK_LLVM_DYLIB=ON -DCMAKE_INSTALL_PREFIX=/usr/local ../llvm; 
-make; make check; make install
-cd ~; /sbin/ldconfig
-
 
 
 TMP_NAME=proxygen; 
@@ -1644,15 +1557,6 @@ make; make install
 
 
 ##############################
-echo pkg-config
-cd ~/dependeciesBuilds; rm -r pkg-config;
-wget 'http://pkg-config.freedesktop.org/releases/pkg-config-0.29.2.tar.gz'
-tar xf pkg-config-0.29.2.tar.gz
-mv pkg-config-0.29.2 pkg-config; cd pkg-config
-./configure --with-internal-glib --prefix=/usr/local; 
-make; make check; make install
-cd ~; /sbin/ldconfig
-
 echo wayland-protocols
 cd ~/dependeciesBuilds; rm -r wayland-protocols;
 wget 'http://wayland.freedesktop.org/releases/weston-2.0.0.tar.xz'
@@ -2073,3 +1977,4 @@ echo "Arch: $arch"
 
 
 #ps aux | grep -ie qfs | awk '{print $2}' | xargs kill -9 
+			#apt-get install -y libedit-dev libunwind-dev libevent-dev libgc-dev libssl-dev libffi-dev libexpat1-dev libxml2-dev libxslt1-dev libre2-dev liblzma-dev libz-dev libbz2-dev libsnappy-dev  libgdbm-dev tk-dev 	
