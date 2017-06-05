@@ -8,6 +8,7 @@ make;make install;make all;
 
 if [ -f $CUST_INST_PREFIX/bin/gcc ]; then
 	rm /usr/bin/gcc
+	ln -s $CUST_INST_PREFIX/bin/gcc $CUST_INST_PREFIX/bin/cc
 	#update-alternatives --install /usr/bin/gcc gcc $CUST_INST_PREFIX/bin/gcc 60
 	#mv  /usr/lib/x86_64-linux-gnu/libstdc++.so.6 /usr/lib/x86_64-linux-gnu/libOLDstdc++.so.6;
 	#ln -s /usr/local/lib64/libstdc++.so.6 /usr/lib/x86_64-linux-gnu/libstdc++.so.6
