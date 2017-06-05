@@ -221,7 +221,7 @@ finalize_build() {
 	fi
 	source /etc/profile
 	source ~/.bashrc
-	cd $BUILDS_ROOT; /sbin/ldconfig
+	cd $BUILDS_ROOT; ldconfig
 	echo 'finished:' $sn;
 	echo -e '\n\n\n'
 }
@@ -702,7 +702,7 @@ make;make install-strip;make install;make all;
 'libssh')
 fn='libssh-0.7.5.tar.xz'; tn='libssh-0.7.5'; url='https://red.libssh.org/attachments/download/218/libssh-0.7.5.tar.xz';#http://red.libssh.org/attachments/download/218/libssh-0.7.5.tar.xz
 set_source 'tar' 
-cmake_build -DCMAKE_INSTALL_PREFIX=`_install_prefix` -DWITH_LIBZ=ON -DWITH_SSH1=ON -DWITH_GCRYPT=OFF;
+cmake_build -DCMAKE_INSTALL_PREFIX=`_install_prefix` -DWITH_GSSAPI=ON -DWITH_LIBZ=ON -DWITH_SSH1=ON -DWITH_GCRYPT=ON;
 make;make install;make all; 
 		shift;;	
 
@@ -1012,7 +1012,29 @@ configure_build --prefix=`_install_prefix`;
 make;make install;
 		shift;;	
 		
-		
+'gdb')
+fn='gdb-8.0.tar.xz'; tn='gdb-8.0'; url='http://ftp.gnu.org/gnu/gdb/gdb-8.0.tar.xz';
+set_source 'tar' 
+configure_build --prefix=`_install_prefix`;
+make;make install;
+		shift;;	
+
+'kerberos')
+fn='krb5-1.15.1.tar.gz'; tn='krb5-1.15.1'; url='http://web.mit.edu/kerberos/dist/krb5/1.15/krb5-1.15.1.tar.gz';
+set_source 'tar' 
+cust_conf_path='src/'
+configure_build  --disable-dns-for-realm --disable-athena --without-ldap --disable-asan --prefix=`_install_prefix`;
+make;make install;
+		shift;;
+
+'clang')
+fn='cfe-4.0.0.src.tar.xz'; tn='cfe-4.0.0.src'; url='http://releases.llvm.org/4.0.0/cfe-4.0.0.src.tar.xz';
+set_source 'tar' 
+cmake_build -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+make;make install;	
+		shift;;
+
+ 
     *)         echo "Unknown build: $sn";       shift;;
   esac
   
@@ -1042,18 +1064,21 @@ compile_and_install(){
 		do_install autoconf automake libtool gawk
 		do_install zlib bzip2 unrar gzip snappy lzma libzip unzip
 		do_install libatomic_ops libedit libevent libunwind fuse #readline
-		do_install openssl libgpg-error libgcrypt libssh icu4c
+		do_install openssl libgpg-error libgcrypt kerberos libssh icu4c
 		do_install bison texinfo flex binutils gettext nettle libtasn1 libiconv
 		do_install libexpat libunistring libidn2 libsodium unbound
 		do_install libffi p11-kit gnutls tcltk tk pcre pcre2 glib openmpi gdbm
 		do_install expect attr patch #musl
 		do_install libhoard jemalloc gc gperf gperftools  
-	
-		do_install pkg-config gcc
+		do_install pkg-config  gcc
+		if [ $stage -eq 1 ]; then
+			do_install gdb
+		fi
 	fi
 	
 	if [ $stage -eq 2 ]; then
-		do_install llvm libconfuse apr apr-util libsigcplusplus log4cpp cronolog
+		do_install llvm clang 
+		do_install libconfuse apr apr-util libsigcplusplus log4cpp cronolog
 		do_install re2 sparsehash 
 		do_install libpng libjpeg  
 		do_install libjansson libxml2 libxslt libuv libcares 
@@ -1185,6 +1210,8 @@ _run_setup(){
 
 #########
 if [  ${#only_sources[@]} -gt 0  ]; then 
+	source /etc/profile
+	source ~/.bashrc
 	do_install ${only_sources[@]}
 	exit 1
 fi
@@ -1197,9 +1224,9 @@ exit 1
 # DRAFTS #######################################################################
  
 
- 
- 
- 
+
+
+
 
 
 TMP_NAME=proxygen; 
@@ -1336,7 +1363,7 @@ TMP_NAME=libgssapi
 echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'http://www.citi.umich.edu/projects/nfsv4/linux/libgssapi/libgssapi-0.11.tar.gz'
+wget 'ftp://ftp.lyx.org/pub/linux/distributions/0linux/archives_sources/libgssapi/libgssapi-0.11.tar.gz'
 tar xzf libgssapi-0.11.tar.gz
 mv libgssapi-0.11 $TMP_NAME;cd $TMP_NAME;
 ./configure  --prefix=/usr/local; 
@@ -1629,6 +1656,16 @@ cd ~; /sbin/ldconfig
 
 
 
+TMP_NAME=openssh
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'https://ftp.halifax.rwth-aachen.de/openbsd/OpenSSH/portable/openssh-7.5p1.tar.gz'
+tar xf openssh-7.5p1.tar.gz
+mv openssh-7.5p1 $TMP_NAME;cd $TMP_NAME
+./configure --with-ssh1 --with-kerberos5 --with-pam --with-ssl-engine --with-pie --prefix=/usr/local; 
+make; make install;
+
 
 
 
@@ -1723,17 +1760,6 @@ cd ~; /sbin/ldconfig
 #cd ~; /sbin/ldconfig
 
 
-
-mkdir ~/dependeciesBuilds
-echo krb5
-cd ~/dependeciesBuilds; rm -r krb5;
-wget 'http://github.com/krb5/krb5/archive/krb5-1.15.1-final.tar.gz'
-tar xzvf krb5-1.15.1-final.tar.gz
-mv krb5-krb5-1.15.1-final krb5; cd krb5/src
-./autoconf
-./configure  --with-size-optimizations --prefix=/usr/local; 
-make; make check; make install;
-cd ~; /sbin/ldconfig
 
 
 http://ftp.ntua.gr/mirror/gnu/libmicrohttpd/
