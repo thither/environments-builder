@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 if [ ! -f $CUST_INST_PREFIX/bin/python ]; then
-	apt-get autoremove --purge python2.7
+	apt-get autoremove --purge -y python2.7
 fi
 fn='Python-2.7.13.tgz'; tn='Python-2.7.13'; url='https://www.python.org/ftp/python/2.7.13/Python-2.7.13.tgz';
 set_source 'tar' 

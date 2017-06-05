@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 if [ ! -f $CUST_INST_PREFIX/bin/openssl ]; then
-	apt-get autoremove --purge openssl ca-certificates
+	apt-get autoremove --purge -y openssl ca-certificates
 fi
 fn='openssl-1.1.0f.tar.gz'; tn='openssl-1.1.0f'; url='ftp://ftp.pca.dfn.de/pub/tools/net/openssl/source/openssl-1.1.0f.tar.gz';
 set_source 'tar' 
