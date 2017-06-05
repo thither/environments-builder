@@ -917,8 +917,8 @@ make install;
 fn='master.zip'; tn='hypertable-master'; url='https://github.com/kashirin-alex/hypertable/archive/master.zip';
 rm -r $DOWNLOAD_PATH/$sn/$fn
 set_source 'zip' 
-cmake_build -DVERSION_MISC_SUFFIX=$( date  +"%Y-%m-%d_%H-%M") -DHADOOP_INCLUDE_PATH=$HADOOP_INCLUDE_PATH -DHADOOP_LIB_PATH=$HADOOP_LIB_PATH -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release; #  -DBUILD_SHARED_LIBS=ON
-make -j$NUM_PROCS VERBOSE=1 ;make install;#make alltests;#  -DPACKAGE_OS_SPECIFIC=1 
+cmake_build -DHADOOP_INCLUDE_PATH=$HADOOP_INCLUDE_PATH -DHADOOP_LIB_PATH=$HADOOP_LIB_PATH -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release; #  -DBUILD_SHARED_LIBS=ON
+make -j$NUM_PROCS VERBOSE=1 ;make install;#make alltests;#  -DPACKAGE_OS_SPECIFIC=1  -DVERSION_MISC_SUFFIX=$( date  +"%Y-%m-%d_%H-%M")
 		shift;;
 
 'llvm')
@@ -1166,7 +1166,7 @@ _env_setup(){
 		echo include $LD_CONF_PATH/*.conf > "/etc/ld.so.conf.d/usr.conf"
 		echo $CUST_INST_PREFIX/lib64 > $LD_CONF_PATH/lib64.conf
 		
-		echo '''if [ -d '''$ENV_SETTINGS_PATH''' ]; then  for i in '''$ENV_SETTINGS_PATH'''*.sh; do    if [ -r $i ]; then       source $i;     fi;   done; unset i; fi; ''' > /etc/profile.d/custom_env.sh;
+		echo '''source /etc/environment; if [ -d '''$ENV_SETTINGS_PATH''' ]; then  for i in '''$ENV_SETTINGS_PATH'''*.sh; do    if [ -r $i ]; then       source $i;     fi;   done; unset i; fi; ''' > /etc/profile.d/custom_env.sh;
 		chmod -R 777 /etc/profile.d/custom_env.sh
 		
 
@@ -1281,6 +1281,16 @@ make -j8; make install; make alltests;
 cd ~; /sbin/ldconfig
 
 
+TMP_NAME=libev
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'http://dist.schmorp.de/libev/libev-4.24.tar.gz'
+tar xf libev-4.24.tar.gz
+mv libev-4.24 $TMP_NAME;cd $TMP_NAME
+./configure --prefix=/usr/local; 
+make; make install;
+
 
 TMP_NAME=nghttp2
 echo $TMP_NAME
@@ -1289,10 +1299,7 @@ cd ~/tmpBuilds; rm -r $TMP_NAME;
 wget 'https://github.com/nghttp2/nghttp2/releases/download/v1.17.0/nghttp2-1.17.0.tar.xz'
 tar xf nghttp2-1.17.0.tar.xz
 mv nghttp2-1.17.0 $TMP_NAME;cd $TMP_NAME
-autoreconf -i
-automake
-autoconf
-./configure --enable-app --prefix=/usr/local; 
+./configure --disable-spdylay --without-systemd --enable-app --prefix=/usr/local; 
 make; make install;
 
 
