@@ -1031,7 +1031,7 @@ make;make install;
 fn='cfe-4.0.0.src.tar.xz'; tn='cfe-4.0.0.src'; url='http://releases.llvm.org/4.0.0/cfe-4.0.0.src.tar.xz';
 set_source 'tar' 
 cmake_build -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
-make;make install;	
+make -j$NUM_PROCS;make install;	
 		shift;;
 
  
