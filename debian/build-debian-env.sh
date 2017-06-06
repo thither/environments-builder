@@ -1033,8 +1033,25 @@ set_source 'tar'
 cmake_build -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
 make -j$NUM_PROCS;make install;	
 		shift;;
-
  
+'php')
+fn='php-7.1.5.tar.xz'; tn='php-7.1.5'; url='http://mirror.cogentco.com/pub/php/php-7.1.5.tar.xz';
+set_source 'tar' 
+configure_build --enable-shared --enable-json --prefix=`_install_prefix`/$sn; #--enable-all
+make -j$NUM_PROCS;make install;	
+echo -e `_install_prefix`/$sn/lib > $LD_CONF_PATH/$sn.conf;
+echo "#!/usr/bin/env bash" > $ENV_SETTINGS_PATH/$sn.sh
+echo "export PATH=\$PATH:\"`_install_prefix`/$sn/bin\"" >> $ENV_SETTINGS_PATH/$sn.sh
+		shift;;
+ 
+'ganglia-web')
+fn='ganglia-web-3.7.2.tar.gz'; tn='ganglia-web-3.7.2'; url='https://sourceforge.net/projects/ganglia/files/ganglia-web/3.7.2/ganglia-web-3.7.2.tar.gz/download';
+set_source 'tar' 
+echo "\$conf['rrdtool'] = \"rrdtool\";" >> conf_default.php;
+if [ -d /usr/share/ganglia-webfrontend ]; then rm -r /usr/share/ganglia-webfrontend; fi;
+make install; #/usr/share/ganglia-webfrontend
+		shift;;
+
     *)         echo "Unknown build: $sn";       shift;;
   esac
   
@@ -1088,6 +1105,7 @@ compile_and_install(){
 		do_install sqlite
 		do_install pixman cairo cairomm gobject-ispec pango 
 		do_install imagemagick
+		#do_install php ganglia-web
 	fi
 	
 	if [ $stage -ne 3 ]; then
@@ -1224,12 +1242,21 @@ _run_setup
 exit 1
 
 # DRAFTS #######################################################################
+
+
+
+TMP_NAME=apache-httpd
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'http://mirrors.ircam.fr/pub/apache//httpd/httpd-2.2.32.tar.gz'
+tar xf httpd-2.2.32.tar.gz
+mv httpd-2.2.32 $TMP_NAME;cd $TMP_NAME
+./configure --prefix=/usr/local; 
+make; make install;
  
-
-
-http://mirrors.ircam.fr/pub/apache//httpd/httpd-2.2.32.tar.gz
 http://httpd.apache.org/[preferred]/httpd/mod_fcgid/mod_fcgid-2.3.9.tar.gz
-http://php.net/get/php-7.1.5.tar.xz/from/a/mirror
+
 https://cache.ruby-lang.org/pub/ruby/2.4/ruby-2.4.1.tar.gz
 https://github.com/macournoyer/thin/archive/v1.7.0.tar.gz
 
