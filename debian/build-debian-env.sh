@@ -1114,27 +1114,29 @@ os_releases(){
 _os_releases(){
 	if [ $1 == 'install' ]; then
 		echo 'os_releases-install'
+		front_state=$DEBIAN_FRONTEND;export DEBIAN_FRONTEND=noninteractive;
 		
-		apt-get update && apt-get upgrade -y
-		apt-get install -y ufw nano
-	 
+		apt-get update -yq && apt-get upgrade -yq 
 		if [ ! -f $CUST_INST_PREFIX/bin/make ]; then
-			apt-get install -y --reinstall make 
+			apt-get install -yq --reinstall make 
 		fi
 		if [ ! -f $CUST_INST_PREFIX/bin/gcc ]; then
-			apt-get autoremove --purge -y pkg-config build-essential gcc 
-			apt-get install -y --reinstall libmount-dev libncurses-dev libreadline-dev
-			apt-get install -y --reinstall pkg-config build-essential gcc 
+			apt-get autoremove --purge -yq pkg-config build-essential gcc 
+			apt-get install -yq --reinstall libmount-dev libncurses-dev libreadline-dev
+			apt-get install -yq --reinstall pkg-config build-essential gcc 
 		fi
-
+		export DEBIAN_FRONTEND=$front_state;
 		echo 'fin:os_releases-install'
 		
 	elif [ $1 == 'uninstall' ]; then
-		echo 'os_releases-uninstall'
+		echo 'os_releases-uninstall'		
+		front_state=$DEBIAN_FRONTEND;export DEBIAN_FRONTEND=noninteractive;
+		
 		if [ -f $CUST_INST_PREFIX/bin/make ] && [ -f $CUST_INST_PREFIX/bin/gcc ]; then
 			echo 'pkgs to remove'
-			apt-get autoremove -y --purge make pkg-config build-essential gcc cpp
+			apt-get autoremove -yq --purge make pkg-config build-essential gcc cpp
 		fi
+		export DEBIAN_FRONTEND=$front_state;
 		echo 'fin:os_releases-uninstall'
 	fi
 }
@@ -1225,9 +1227,11 @@ exit 1
  
 
 
-
-
-
+http://mirrors.ircam.fr/pub/apache//httpd/httpd-2.2.32.tar.gz
+http://httpd.apache.org/[preferred]/httpd/mod_fcgid/mod_fcgid-2.3.9.tar.gz
+http://php.net/get/php-7.1.5.tar.xz/from/a/mirror
+https://cache.ruby-lang.org/pub/ruby/2.4/ruby-2.4.1.tar.gz
+https://github.com/macournoyer/thin/archive/v1.7.0.tar.gz
 
 TMP_NAME=proxygen; 
 echo $TMP_NAME
