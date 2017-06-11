@@ -40,6 +40,7 @@ if [ -f 'pypy-c' ]; then
 	pypy_pip install --upgrade pylzma rarfile pysnappy  #zipfile
 	pypy_pip install --upgrade guess_language validate-email-address
 	pypy_pip install --upgrade paypalrestsdk pygeocoder python-google-places
+	pypy_pip install --upgrade acme
 
 	cd $DOWNLOAD_PATH
 	wget  https://github.com/crs4/pydoop/archive/1.2.0.tar.gz
