@@ -1119,14 +1119,14 @@ compile_and_install(){
 		do_install m4 gmp mpfr mpc isl
 		do_install autoconf automake libtool gawk
 		do_install zlib bzip2 unrar gzip snappy lzma libzip unzip
-		do_install libatomic_ops libedit libevent libunwind fuse #readline
+		do_install libatomic_ops libedit libevent libunwind fuse pth #readline
 		do_install openssl libgpg-error libgcrypt kerberos libssh icu4c
 		do_install bison texinfo flex binutils gettext nettle libtasn1 libiconv
 		do_install libexpat libunistring libidn2 libsodium unbound
 		do_install libffi p11-kit gnutls tcltk tk pcre pcre2 glib #openmpi 
 		do_install gdbm expect attr patch #musl
 		do_install libhoard jemalloc gc gperf gperftools  
-		do_install pkg-config pth gcc
+		do_install pkg-config gcc
 		if [ $stage -eq 1 ]; then
 			do_install gdb 
 		fi
@@ -1360,7 +1360,7 @@ cd ~/tmpBuilds; rm -r $TMP_NAME;
 wget 'http://dist.schmorp.de/libev/libev-4.24.tar.gz'
 tar xf libev-4.24.tar.gz
 mv libev-4.24 $TMP_NAME;cd $TMP_NAME
-./configure --prefix=/usr/local; 
+./configure --prefix=/usr/local/libev; 
 make; make install;
 
 
@@ -1368,11 +1368,14 @@ TMP_NAME=nghttp2
 echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://github.com/nghttp2/nghttp2/releases/download/v1.17.0/nghttp2-1.17.0.tar.xz'
-tar xf nghttp2-1.17.0.tar.xz
-mv nghttp2-1.17.0 $TMP_NAME;cd $TMP_NAME
-./configure --disable-spdylay --without-systemd --enable-app --prefix=/usr/local; 
-make; make install;
+wget 'https://github.com/nghttp2/nghttp2/releases/download/v1.23.1/nghttp2-1.23.1.tar.xz'
+tar xf nghttp2-1.23.1.tar.xz
+mv nghttp2-1.23.1 $TMP_NAME;cd $TMP_NAME
+cmake ./ -DLIBEVENT_INCLUDE_DIR=/usr/local/include -DLIBEV_LIBRARY=/usr/local/libev/lib/libev.so -DLIBEV_INCLUDE_DIR=/usr/local/libev/include
+#./configure --without-spdylay --without-systemd --enable-app --prefix=/usr/local; 
+make; 
+
+make install;
 
 
 
