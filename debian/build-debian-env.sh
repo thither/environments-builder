@@ -25,9 +25,12 @@ test_make=0
 verbose=0
 help=''
 stage=0
-c=1
+c=0
 only_sources=()
+
+ARGS=("$@")
 while [ $# -gt 0 ]; do	
+  let c=c+1;
 
   case $1 in
     --no-reuse-make) 	
@@ -37,31 +40,30 @@ while [ $# -gt 0 ]; do
 		test_make=1
 	;;
     --target)  		
-		build_target=$1
+		build_target=$2;
 	;;
     --verbose)  		
 		verbose=1;
 	;;
     --stage)  		
 		stage=$2;
-		let c=c-1;
 	;;
 	--sources) 
-		only_sources=(${@:$c})
+		echo --sources at $c :
+		echo ${ARGS[@]:$c}
+		only_sources=(${ARGS[@]:$c});
+		echo $only_sources
 	;;
     --help)  			
 		help='--help'
 	;;
-    *)  			
-		let c=c-1
-	;;
   esac
   shift
-  let c=c+1;
 done
 
 if [ ${#only_sources[@]} -eq 0 ]; then 
 	echo '	--sources must be set with "all" or sources names'
+	echo $only_sources
 	exit 1
 fi
 build_all=0
@@ -82,6 +84,8 @@ if [ -z $help ] && [ ${#only_sources[@]} -eq 0 ] && [ $build_all == 0 ]; then
 	stage=0
 fi
 
+
+echo '--target:' $build_target
 echo '--verbose:' $verbose
 echo '--sources:' ${only_sources[@]}
 echo '--help:' $help
@@ -701,7 +705,7 @@ make;make install-strip;make install;make all;
 fn='libgcrypt-1.7.6.tar.gz'; tn='libgcrypt-1.7.6'; url='ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.7.6.tar.gz';
 set_source 'tar' 
 configure_build --enable-m-guard --enable-hmac-binary-check --prefix=`_install_prefix`; 
-make;make install-strip;make install;make all; #libcap =  --with-capabilities , https://ftp.gnu.org/gnu/pth/pth-2.0.7.tar.gz
+make;make install-strip;make install;make all; #libcap =  --with-capabilities ,
 		shift;;	
 
 'libssh')
@@ -1075,10 +1079,17 @@ make;make install;
 fn='nftables-0.7.tar.bz2'; tn='nftables-0.7'; url='https://www.netfilter.org/projects/nftables/files/nftables-0.7.tar.bz2';
 set_source 'tar' 
 apt-get autoremove --purge -y iptables
-configure_build --prefix=`_install_prefix`;
+configure_build --enable-pthread --enable-optimize --prefix=`_install_prefix`;
 make;make install;	
 		shift;;
-		
+	
+'pth')
+fn='pth-2.0.7.tar.gz'; tn='pth-2.0.7'; url=' https://ftp.gnu.org/gnu/pth/pth-2.0.7.tar.gz';
+set_source 'tar' 
+configure_build --enable-m-guard --enable-hmac-binary-check --prefix=`_install_prefix`; 
+make;make install;
+		shift;;	
+	
 
     *)         echo "Unknown build: $sn";       shift;;
   esac
@@ -1115,9 +1126,9 @@ compile_and_install(){
 		do_install libffi p11-kit gnutls tcltk tk pcre pcre2 glib #openmpi 
 		do_install gdbm expect attr patch #musl
 		do_install libhoard jemalloc gc gperf gperftools  
-		do_install pkg-config  gcc
+		do_install pkg-config pth gcc
 		if [ $stage -eq 1 ]; then
-			do_install gdb
+			do_install gdb 
 		fi
 	fi
 	
@@ -1274,7 +1285,7 @@ _run_setup
 exit 1
 
 # DRAFTS #######################################################################
-
+ 
 TMP_NAME=apache-httpd
 echo $TMP_NAME
 mkdir ~/tmpBuilds
