@@ -4,7 +4,7 @@ if [ ! -f $CUST_INST_PREFIX/bin/openssl ]; then
 fi
 fn='openssl-1.1.0f.tar.gz'; tn='openssl-1.1.0f'; url='ftp://ftp.pca.dfn.de/pub/tools/net/openssl/source/openssl-1.1.0f.tar.gz';
 set_source 'tar' 
-./config  enable-md2 enable-rc5 enable-ubsan enable-ssl3 enable-ssl3-method threads zlib zlib-dynamic enable-asan shared enable-egd enable-weak-ssl-ciphers  enable-ec_nistp_64_gcc_128  --prefix=$CUST_INST_PREFIX;#--openssldir=$CUST_INST_PREFIX/ssl --prefix=$CUST_INST_PREFIX/ssl;
+./config  enable-md2 enable-rc5 enable-ubsan enable-ssl3 enable-ssl3-method threads zlib zlib-dynamic shared enable-egd enable-weak-ssl-ciphers  enable-ec_nistp_64_gcc_128  --prefix=$CUST_INST_PREFIX;# enable-asan  --openssldir=$CUST_INST_PREFIX/ssl --prefix=$CUST_INST_PREFIX/ssl;
 make;make install;make all; 
 if [ -f $CUST_INST_PREFIX/bin/openssl ]; then
 	rm -r $CUST_INST_PREFIX/ssl/certs /etc/ssl/certs;mkdir /etc/ssl/certs;
