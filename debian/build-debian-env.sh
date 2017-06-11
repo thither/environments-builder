@@ -19,6 +19,7 @@ LD_CONF_PATH=/usr/local/etc/ld.so.conf.d
 ##################################################################
 
 
+build_target='node'
 reuse_make=0
 test_make=0
 verbose=0
@@ -34,6 +35,9 @@ while [ $# -gt 0 ]; do
 	;;
     --test-make)  		
 		test_make=1
+	;;
+    --target)  		
+		build_target=$1
 	;;
     --verbose)  		
 		verbose=1;
@@ -531,7 +535,7 @@ make;make install-strip;make install;make all;
 'gc')
 fn='gc-7.6.0.tar.gz'; tn='gc-7.6.0'; url='http://www.hboehm.info/gc/gc_source/gc-7.6.0.tar.gz';
 set_source 'tar' 
-configure_build --enable-single-obj-compilation  --enable-large-config  --enable-redirect-malloc --enable-sigrt-signals --enable-parallel-mark   --enable-handle-fork  --enable-cplusplus  --with-libatomic-ops=yes --prefix=`_install_prefix`;  # --enable-threads=posix  // GC Warning: USE_PROC_FOR_LIBRARIES + GC_LINUX_THREADS performs poorly
+configure_build --enable-single-obj-compilation --enable-large-config --enable-redirect-malloc --enable-sigrt-signals --enable-parallel-mark --enable-handle-fork --enable-cplusplus  --with-libatomic-ops=yes --prefix=`_install_prefix`;  # --enable-threads=posix  // GC Warning: USE_PROC_FOR_LIBRARIES + GC_LINUX_THREADS performs poorly
 make;make install-strip;make install;make all;
 		shift;;
 	
@@ -659,7 +663,8 @@ make;make lib;make install;make all;
 'boost')
 fn='boost_1_64_0.tar.gz'; tn='boost_1_64_0'; url='http://dl.bintray.com/boostorg/release/1.64.0/source/boost_1_64_0.tar.gz';
 set_source 'tar' 
-./bootstrap.sh --with-libraries=all --with-icu --prefix=`_install_prefix`; #echo "using mpi ;" >> "project-config.jam";
+./bootstrap.sh --with-libraries=all --with-icu --prefix=`_install_prefix`; #
+#echo "using mpi ;" >> "project-config.jam";
 ./b2 threading=multi link=shared runtime-link=shared install; # --build-type=complete
 		shift;;
 		
@@ -695,14 +700,14 @@ make;make install-strip;make install;make all;
 'libgcrypt')
 fn='libgcrypt-1.7.6.tar.gz'; tn='libgcrypt-1.7.6'; url='ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.7.6.tar.gz';
 set_source 'tar' 
-configure_build --enable-m-guard --prefix=`_install_prefix`; 
-make;make install-strip;make install;make all;
+configure_build --enable-m-guard --enable-hmac-binary-check --prefix=`_install_prefix`; 
+make;make install-strip;make install;make all; #libcap =  --with-capabilities , https://ftp.gnu.org/gnu/pth/pth-2.0.7.tar.gz
 		shift;;	
 
 'libssh')
 fn='libssh-0.7.5.tar.xz'; tn='libssh-0.7.5'; url='https://red.libssh.org/attachments/download/218/libssh-0.7.5.tar.xz';#http://red.libssh.org/attachments/download/218/libssh-0.7.5.tar.xz
 set_source 'tar' 
-cmake_build -DCMAKE_INSTALL_PREFIX=`_install_prefix` -DWITH_GSSAPI=ON -DWITH_LIBZ=ON -DWITH_SSH1=ON -DWITH_GCRYPT=ON;
+cmake_build -DWITH_GSSAPI=ON -DWITH_LIBZ=ON -DWITH_SSH1=ON -DWITH_GCRYPT=ON -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
 make;make install;make all; 
 		shift;;	
 
@@ -1051,6 +1056,29 @@ echo "\$conf['rrdtool'] = \"rrdtool\";" >> conf_default.php;
 if [ -d /usr/share/ganglia-webfrontend ]; then rm -r /usr/share/ganglia-webfrontend; fi;
 make install; #/usr/share/ganglia-webfrontend
 		shift;;
+		
+'libmnl')
+fn='libmnl-1.0.4.tar.bz2'; tn='libmnl-1.0.4'; url='http://www.netfilter.org/projects/libmnl/files/libmnl-1.0.4.tar.bz2';
+set_source 'tar' 
+configure_build --enable-static --enable-shared --prefix=`_install_prefix`;
+make;make install;	
+		shift;;
+		
+'libnftnl')
+fn='libnftnl-1.0.7.tar.bz2'; tn='libnftnl-1.0.7'; url='http://www.netfilter.org/projects/libnftnl/files/libnftnl-1.0.7.tar.bz2';
+set_source 'tar' 
+configure_build --enable-static --enable-shared --prefix=`_install_prefix`;
+make;make install;	
+		shift;;
+		
+'nftables')
+fn='nftables-0.7.tar.bz2'; tn='nftables-0.7'; url='https://www.netfilter.org/projects/nftables/files/nftables-0.7.tar.bz2';
+set_source 'tar' 
+apt-get autoremove --purge -y iptables
+configure_build --prefix=`_install_prefix`;
+make;make install;	
+		shift;;
+		
 
     *)         echo "Unknown build: $sn";       shift;;
   esac
@@ -1084,8 +1112,8 @@ compile_and_install(){
 		do_install openssl libgpg-error libgcrypt kerberos libssh icu4c
 		do_install bison texinfo flex binutils gettext nettle libtasn1 libiconv
 		do_install libexpat libunistring libidn2 libsodium unbound
-		do_install libffi p11-kit gnutls tcltk tk pcre pcre2 glib openmpi gdbm
-		do_install expect attr patch #musl
+		do_install libffi p11-kit gnutls tcltk tk pcre pcre2 glib #openmpi 
+		do_install gdbm expect attr patch #musl
 		do_install libhoard jemalloc gc gperf gperftools  
 		do_install pkg-config  gcc
 		if [ $stage -eq 1 ]; then
@@ -1094,6 +1122,7 @@ compile_and_install(){
 	fi
 	
 	if [ $stage -eq 2 ]; then
+		do_install libmnl libnftnl nftables
 		do_install llvm clang 
 		do_install libconfuse apr apr-util libsigcplusplus log4cpp cronolog
 		do_install re2 sparsehash 
@@ -1105,7 +1134,10 @@ compile_and_install(){
 		do_install sqlite
 		do_install pixman cairo cairomm gobject-ispec pango 
 		do_install imagemagick
-		#do_install php ganglia-web
+		
+		if [ $build_target == 'monitoring' ];then
+			do_install php ganglia-web
+		fi
 	fi
 	
 	if [ $stage -ne 3 ]; then
@@ -1133,8 +1165,8 @@ _os_releases(){
 	if [ $1 == 'install' ]; then
 		echo 'os_releases-install'
 		front_state=$DEBIAN_FRONTEND;export DEBIAN_FRONTEND=noninteractive;
-		
 		apt-get update -yq && apt-get upgrade -yq 
+		
 		if [ ! -f $CUST_INST_PREFIX/bin/make ]; then
 			apt-get install -yq --reinstall make 
 		fi
@@ -1243,8 +1275,6 @@ exit 1
 
 # DRAFTS #######################################################################
 
-
-
 TMP_NAME=apache-httpd
 echo $TMP_NAME
 mkdir ~/tmpBuilds
@@ -1306,8 +1336,8 @@ wget 'https://github.com/kashirin-alex/hypertable/archive/master.zip'
 mv hypertable-master $TMP_NAME; 
 mkdir $TMP_NAME-build;cd $TMP_NAME-build;
 
-cmake -DVERSION_ADD_COMMIT_SUFFIX=$( date  +"%Y-%m-%d_%H-%M") -DHADOOP_INCLUDE_PATH=$HADOOP_INCLUDE_PATH -DHADOOP_LIB_PATH=$HADOOP_LIB_PATH -DTHRIFT_SOURCE_DIR=~/builds/sources/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON ../$TMP_NAME
-#  -DPACKAGE_OS_SPECIFIC=1 
+cmake -DHADOOP_INCLUDE_PATH=$HADOOP_INCLUDE_PATH -DHADOOP_LIB_PATH=$HADOOP_LIB_PATH -DTHRIFT_SOURCE_DIR=~/builds/sources/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release ~/builds/sources/hypertable; # -DBUILD_SHARED_LIBS=ON
+#  -DPACKAGE_OS_SPECIFIC=1  -DVERSION_ADD_COMMIT_SUFFIX=$( date  +"%Y-%m-%d_%H-%M") 
 make -j8; make install; make alltests;
 cd ~; /sbin/ldconfig
 
@@ -1669,7 +1699,7 @@ mv glibc-2.25 glibc; cd glibc
 wget 'https://ftp.gnu.org/gnu/libc/glibc-linuxthreads-2.5.tar.bz2'
 tar xf glibc-linuxthreads-2.5.tar.bz2
 cd ..; mkdir build-glibc; cd build-glibc
-../glibc/configure  --enable-add-ons=linuxthreads --enable-shared --enable-lock-elision=yes --enable-stack-protector=all  --enable-tunables --enable-mathvec --with-fp --prefix=/usr/local/glibc;
+../glibc/configure --disable-multi-arch --enable-add-ons=linuxthreads --enable-shared --enable-lock-elision=yes --enable-stack-protector=all  --enable-tunables --enable-mathvec --with-fp --prefix=/usr/local;
  make; make check; make install #  --enable-multi-arch --disable-sanity-checks 
 cd ~; /sbin/ldconfig
 
