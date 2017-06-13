@@ -1134,7 +1134,9 @@ compile_and_install(){
 	
 	if [ $stage -eq 2 ]; then
 		do_install libmnl libnftnl nftables
-		do_install llvm clang 
+		if [$build_target == 'all' ];then
+			do_install llvm clang 
+		fi
 		do_install libconfuse apr apr-util libsigcplusplus log4cpp cronolog
 		do_install re2 sparsehash 
 		do_install libpng libjpeg  
@@ -1146,7 +1148,7 @@ compile_and_install(){
 		do_install pixman cairo cairomm gobject-ispec pango 
 		do_install imagemagick
 		
-		if [ $build_target == 'monitoring' ];then
+		if [ $build_target == 'monitoring' ] || [ $build_target == 'all' ];then
 			do_install php ganglia-web
 		fi
 	fi
