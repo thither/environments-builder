@@ -4,7 +4,7 @@ if [ ! -f $CUST_INST_PREFIX/bin/python ]; then
 fi
 fn='Python-2.7.13.tgz'; tn='Python-2.7.13'; url='https://www.python.org/ftp/python/2.7.13/Python-2.7.13.tgz';
 set_source 'tar' 
-configure_build  --with-system-expat --with-system-ffi --enable-unicode --with-ensurepip=install --with-computed-gotos --enable-shared --enable-optimizations --enable-ipv6 --with-lto  --with-signal-module --with-pth --with-pymalloc --with-fpectl  --prefix=$CUST_INST_PREFIX;   #
+configure_build  --with-system-expat --with-system-ffi --enable-unicode --with-ensurepip=install --with-computed-gotos --enable-shared --enable-optimizations --enable-ipv6 --with-lto  --with-signal-module  --with-pth --with-pymalloc --with-fpectl  --prefix=$CUST_INST_PREFIX;   #
 make;make install;
 if [ -f $CUST_INST_PREFIX/bin/python ]; then
 	echo /usr/local/include/python2.7 > $LD_CONF_PATH/python.conf

@@ -28,9 +28,10 @@ if [ -f 'pypy-c' ]; then
 
 	pypy_pip install --upgrade cffi greenlet
 	pypy_pip install --upgrade psutil deepdiff
-	pypy_pip install --upgrade xlrd lxml
-	pypy_pip install --upgrade pyopenssl #LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" 
+	pypy_pip install --upgrade xlrd lxml	
 	with_gmp=no pypy_pip install --upgrade  pycrypto 
+	pypy_pip install --upgrade cryptography
+	pypy_pip install --upgrade pyopenssl #LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" 
 
 	pypy_pip install --upgrade h2 urllib3 dnspython pyDNS # dnslib  hypertable
 	pypy_pip install --upgrade https://github.com/eventlet/eventlet/archive/v0.19.0.tar.gz #eventlet
