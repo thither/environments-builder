@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-fn='pypy2-v5.7.1-src.tar.bz2'; tn='pypy2-v5.7.1-src'; url='https://bitbucket.org/pypy/pypy/downloads/pypy2-v5.7.1-src.tar.bz2';
+fn='pypy2-v5.8.0-src.tar.bz2'; tn='pypy2-v5.8.0-src'; url='https://bitbucket.org/pypy/pypy/downloads/pypy2-v5.8.0-src.tar.bz2';
 set_source 'tar';
 #make LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" all; LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" #   --source  --no-shared --thread
 cd pypy; (PYTHONPATH=$BUILDS_PATH/$sn python ../rpython/bin/rpython --no-shared --opt=jit goal/targetpypystandalone.py) & 
@@ -8,6 +8,7 @@ while [ ! -f pypy-c ]; do sleep 60; done; sleep 300;
 # LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" #--cc=gcc --thread --gc=boehm # --annotate  --thread --clever-malloc-removal-threshold=32.4 --translation-backendopt-profile_based_inline_threshold=32.4 --inline-threshold=32.4  --backendopt  --rtype
 cd goal; ( ../pypy-c ../../rpython/bin/rpython  --thread --translation-jit_opencoder_model=big --shared --opt=jit targetpypystandalone.py) &
 while [ ! -f pypy-c ]; do sleep 60; done; sleep 300; 
+#http://doc.pypy.org/en/latest/config/commandline.html#general-translation-options
 
 if [ -f 'pypy-c' ]; then
 	PYTHONPATH=$BUILDS_PATH/$sn  ./pypy-c  --without-tk ../tool/build_cffi_imports.py;
