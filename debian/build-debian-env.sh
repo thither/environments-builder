@@ -124,7 +124,7 @@ download() {
 			mkdir $DOWNLOAD_PATH/$sn;
 		fi	
 		cd $DOWNLOAD_PATH/$sn;
-		wget -O $fn -nv --tries=3 $url;
+		wget -O $fn -nv --tries=3 --no-check-certificate $url;
 	fi
 }
 extract() {
@@ -325,7 +325,7 @@ make;make install-strip;make install;make all;
 		shift;;
 
 'lzma')
-fn='xz-5.2.3.tar.gz'; tn='xz-5.2.3'; url='https://tukaani.org/xz/xz-5.2.3.tar.gz';
+fn='xz-5.2.3.tar.gz'; tn='xz-5.2.3'; url='http://tukaani.org/xz/xz-5.2.3.tar.gz';
 set_source 'tar' 
 configure_build --prefix=`_install_prefix`; 
 make;make lib;make install-strip;make install;make all; 
@@ -494,7 +494,7 @@ make;make install-strip;make install;make all;
 		shift;;
 		
 'pcre')
-fn='pcre-8.40.tar.gz'; tn='pcre-8.40'; url='https://ftp.pcre.org/pub/pcre/pcre-8.40.tar.gz';
+fn='pcre-8.40.tar.gz'; tn='pcre-8.40'; url='http://ftp.pcre.org/pub/pcre/pcre-8.40.tar.gz';
 set_source 'tar' 
 autogen_build;
 configure_build --enable-newline-is-any --enable-pcre16 --enable-pcre32 --enable-jit --enable-pcregrep-libz --enable-pcregrep-libbz2 --enable-unicode-properties --enable-utf --enable-ucp --prefix=`_install_prefix`; #  --enable-utf8
@@ -502,7 +502,7 @@ make;make install-strip;make install;make all;
 		shift;;	
 		
 'pcre2')
-fn='pcre2-10.23.tar.gz'; tn='pcre2-10.23'; url='https://ftp.pcre.org/pub/pcre/pcre2-10.23.tar.gz';
+fn='pcre2-10.23.tar.gz'; tn='pcre2-10.23'; url='http://ftp.pcre.org/pub/pcre/pcre2-10.23.tar.gz';
 set_source 'tar' 
 configure_build --enable-rebuild-chartables --enable-newline-is-any --enable-pcre2-16 --enable-pcre2-32 --enable-jit --enable-pcre2grep-libz --enable-pcre2grep-libbz2 --enable-unicode-properties --enable-utf --enable-ucp --prefix=`_install_prefix`; #  --enable-utf8
 make;make install-strip;make install;make all; 
@@ -573,7 +573,7 @@ make;make install-strip;make install;make all;
 		shift;;
 
 'expect')
-fn='expect5.45.tar.gz'; tn='expect5.45'; url='https://sourceforge.net/projects/expect/files/Expect/5.45/expect5.45.tar.gz/download';
+fn='expect5.45.tar.gz'; tn='expect5.45'; url='http://sourceforge.net/projects/expect/files/Expect/5.45/expect5.45.tar.gz/download';
 set_source 'tar' 
 configure_build --enable-threads --enable-64bit --enable-shared --prefix=`_install_prefix`;
 make;make install;make all;
@@ -709,14 +709,14 @@ make;make install-strip;make install;make all; #libcap =  --with-capabilities ,
 		shift;;	
 
 'libssh')
-fn='libssh-0.7.5.tar.xz'; tn='libssh-0.7.5'; url='https://red.libssh.org/attachments/download/218/libssh-0.7.5.tar.xz';#http://red.libssh.org/attachments/download/218/libssh-0.7.5.tar.xz
+fn='libssh-0.7.5.tar.xz'; tn='libssh-0.7.5'; url='http://red.libssh.org/attachments/download/218/libssh-0.7.5.tar.xz';#http://red.libssh.org/attachments/download/218/libssh-0.7.5.tar.xz
 set_source 'tar' 
 cmake_build -DWITH_GSSAPI=ON -DWITH_LIBZ=ON -DWITH_SSH1=ON -DWITH_GCRYPT=ON -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
 make;make install;make all; 
 		shift;;	
 
 'cronolog')
-fn='1.7.1.tar.gz'; tn='cronolog-1.7.1'; url='https://github.com/holdenk/cronolog/archive/1.7.1.tar.gz';
+fn='1.7.1.tar.gz'; tn='cronolog-1.7.1'; url='http://github.com/holdenk/cronolog/archive/1.7.1.tar.gz';
 set_source 'tar' 
 configure_build --prefix=`_install_prefix`; 
 make;make lib;make install-strip;make install;make all;
@@ -730,14 +730,14 @@ make;make install-strip;make install;make all;
 		shift;;	
 
 'libcares')
-fn='c-ares-1.12.0.tar.gz'; tn='c-ares-1.12.0'; url='https://c-ares.haxx.se/download/c-ares-1.12.0.tar.gz';
+fn='c-ares-1.12.0.tar.gz'; tn='c-ares-1.12.0'; url='http://c-ares.haxx.se/download/c-ares-1.12.0.tar.gz';
 set_source 'tar' 
 configure_build  --enable-libgcc --enable-nonblocking --prefix=`_install_prefix`; 
 make;make install-strip;make install;make all;
 		shift;;	
 		
 'sqlite')
-fn='sqlite.tar.gz'; tn='sqlite'; url='https://www.sqlite.org/src/tarball/sqlite.tar.gz';
+fn='sqlite.tar.gz'; tn='sqlite'; url='http://www.sqlite.org/src/tarball/sqlite.tar.gz';
 set_source 'tar' 
 configure_build --enable-releasemode --enable-editline --enable-gcov --enable-session --enable-rtree  --enable-json1 --enable-fts5 --enable-fts4 --enable-fts3 --enable-memsys3 --enable-memsys5 --prefix=`_install_prefix`; 
 make;make install;make all; 
@@ -751,7 +751,7 @@ make;make install-strip;make install;make all;
 		shift;;	
 
 'imagemagick')
-fn='ImageMagick-6.7.7-10.tar.xz'; tn='ImageMagick-6.7.7-10'; url='https://www.imagemagick.org/download/releases/ImageMagick-6.7.7-10.tar.xz'; #https://github.com/dahlia/wand/blob/f97277be6d268038a869e59b0d6c3780d7be5664/wand/version.py
+fn='ImageMagick-6.7.7-10.tar.xz'; tn='ImageMagick-6.7.7-10'; url='http://www.imagemagick.org/download/releases/ImageMagick-6.7.7-10.tar.xz'; #http://github.com/dahlia/wand/blob/f97277be6d268038a869e59b0d6c3780d7be5664/wand/version.py
 set_source 'tar' 
 configure_build --enable-shared --with-jpeg=yes --with-quantum-depth=16 --enable-hdri --enable-pipes --enable-hugepages --disable-docs --with-aix-soname=both --with-modules --with-jemalloc --with-umem --prefix=`_install_prefix`; 
 make;make install-strip;make install;make all;
@@ -766,7 +766,7 @@ make;make install;make all;
 		shift;;	
 			
 'harfbuzz')
-fn='harfbuzz-1.4.6.tar.bz2'; tn='harfbuzz-1.4.6'; url='https://www.freedesktop.org/software/harfbuzz/release/harfbuzz-1.4.6.tar.bz2';
+fn='harfbuzz-1.4.6.tar.bz2'; tn='harfbuzz-1.4.6'; url='http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-1.4.6.tar.bz2';
 set_source 'tar' 
 if [ -z $1 ]; then opt='--with-freetype=yes --with-fontconfig=no'; else opt=${@:1};fi 
 configure_build $opt --prefix=`_install_prefix`; 
@@ -775,7 +775,7 @@ sn='freetype'; _do_build --with-harfbuzz=yes; sn='harfbuzz';
 		shift;;	
 	
 'fontconfig')
-fn='fontconfig-2.12.0.tar.gz'; tn='fontconfig-2.12.0'; url='https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.12.0.tar.gz';
+fn='fontconfig-2.12.0.tar.gz'; tn='fontconfig-2.12.0'; url='http://www.freedesktop.org/software/fontconfig/release/fontconfig-2.12.0.tar.gz';
 set_source 'tar' 
 configure_build --enable-iconv --prefix=`_install_prefix`; 
 make;make install-strip;make install;make all;
@@ -783,7 +783,7 @@ sn='harfbuzz';_do_build --with-fontconfig=yes --with-freetype=yes;sn='fontconfig
 		shift;;		
 	
 'sparsehash')
-fn='sparsehash-2.0.3.tar.gz'; tn='sparsehash-sparsehash-2.0.3'; url='https://github.com/sparsehash/sparsehash/archive/sparsehash-2.0.3.tar.gz';
+fn='sparsehash-2.0.3.tar.gz'; tn='sparsehash-sparsehash-2.0.3'; url='http://github.com/sparsehash/sparsehash/archive/sparsehash-2.0.3.tar.gz';
 set_source 'tar' 
 configure_build --prefix=`_install_prefix`;   # --enable-namespace=gpreftools
 make;make install-strip;make install;make all; 	
@@ -805,7 +805,7 @@ fi
 		shift;;	
 		
 'apache-ant')
-fn='apache-ant-1.10.1-src.tar.gz'; tn='apache-ant-1.10.1'; url='https://www.apache.org/dist/ant/source/apache-ant-1.10.1-src.tar.gz';
+fn='apache-ant-1.10.1-src.tar.gz'; tn='apache-ant-1.10.1'; url='http://www.apache.org/dist/ant/source/apache-ant-1.10.1-src.tar.gz';
 set_source 'tar' 
 ./build.sh install -Ddist.dir=$CUST_JAVA_INST_PREFIX/$sn -Dant.install=$CUST_JAVA_INST_PREFIX/$sn
 echo "#!/usr/bin/env bash" > $ENV_SETTINGS_PATH/$sn.sh
@@ -849,7 +849,7 @@ make install;
 		shift;;
 		
 'protobuf')
-fn='v3.3.1.tar.gz'; tn='protobuf-3.3.1'; url='https://github.com/google/protobuf/archive/v3.3.1.tar.gz';
+fn='v3.3.1.tar.gz'; tn='protobuf-3.3.1'; url='http://github.com/google/protobuf/archive/v3.3.1.tar.gz';
 set_source 'tar' 
 cp -r ../$TMP_NAME ../$TMP_NAME-tmp; mv ../$TMP_NAME-tmp gtest;
 ./autogen.sh;./configure --with-zlib --prefix=`_install_prefix`;
@@ -879,7 +879,7 @@ echo "export PATH=\$PATH:\"$CUST_JAVA_INST_PREFIX/$sn/bin\"" >> $ENV_SETTINGS_PA
 		shift;;	
 		
 'nodejs')
-fn='node-v7.10.0.tar.xz'; tn='node-v7.10.0'; url='https://nodejs.org/dist/latest-v7.x/node-v7.10.0.tar.xz';
+fn='node-v7.10.0.tar.xz'; tn='node-v7.10.0'; url='http://nodejs.org/dist/latest-v7.x/node-v7.10.0.tar.xz';
 set_source 'tar'
 # cp -r ../$sn ../$sn-tmp; mv ../$sn-tmp gtest;
 ./configure --prefix=`_install_prefix`; #--with-intl=none 
@@ -887,7 +887,7 @@ make -j$NUM_PROCS;make install;
 		shift;;	
 
 'libhoard')
-fn='Hoard-3.10-source.tar.gz'; tn='Hoard'; url='https://github.com/emeryberger/Hoard/releases/download/3.10/Hoard-3.10-source.tar.gz';
+fn='Hoard-3.10-source.tar.gz'; tn='Hoard'; url='http://github.com/emeryberger/Hoard/releases/download/3.10/Hoard-3.10-source.tar.gz';
 set_source 'tar' 
 cd src;
 make linux-gcc-x86-64;mv libhoard.so /usr/local/lib/;
@@ -895,14 +895,14 @@ make linux-gcc-x86-64;mv libhoard.so /usr/local/lib/;
  	
 
 'libzip')
-fn='libzip-1.2.0.tar.xz'; tn='libzip-1.2.0'; url='https://nih.at/libzip/libzip-1.2.0.tar.xz';
+fn='libzip-1.2.0.tar.xz'; tn='libzip-1.2.0'; url='http://nih.at/libzip/libzip-1.2.0.tar.xz';
 set_source 'tar' 
 configure_build --prefix=`_install_prefix`;
 make;make install;	
 		shift;;
 
 'unzip')
-fn='unzip60.tar.gz'; tn='unzip60'; url='https://sourceforge.net/projects/infozip/files/UnZip%206.x%20%28latest%29/UnZip%206.0/unzip60.tar.gz/download';
+fn='unzip60.tar.gz'; tn='unzip60'; url='http://sourceforge.net/projects/infozip/files/UnZip%206.x%20%28latest%29/UnZip%206.0/unzip60.tar.gz/download';
 set_source 'tar' 
 make -f unix/Makefile generic
 make prefix=`_install_prefix` MANDIR=/usr/local/share/man/man1 -f unix/Makefile install
@@ -916,14 +916,14 @@ make;make install;
 		shift;;
 
 'pybind11')
-fn='master.zip'; tn='pybind11-master'; url='https://github.com/pybind/pybind11/archive/master.zip';
+fn='master.zip'; tn='pybind11-master'; url='http://github.com/pybind/pybind11/archive/master.zip';
 set_source 'zip' 
 cmake_build -DPYBIND11_TEST=OFF -DCMAKE_INSTALL_INCLUDEDIR=`_install_prefix`/include;
 make install;
 		shift;;
 
 'hypertable')
-fn='master.zip'; tn='hypertable-master'; url='https://github.com/kashirin-alex/hypertable/archive/master.zip';
+fn='master.zip'; tn='hypertable-master'; url='http://github.com/kashirin-alex/hypertable/archive/master.zip';
 rm -r $DOWNLOAD_PATH/$sn/$fn
 set_source 'zip' 
 cmake_build -DHADOOP_INCLUDE_PATH=$HADOOP_INCLUDE_PATH -DHADOOP_LIB_PATH=$HADOOP_LIB_PATH -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release; #  -DBUILD_SHARED_LIBS=ON
@@ -938,7 +938,7 @@ make;make install;
 		shift;;
 
 'libconfuse')
-fn='confuse-3.1.tar.xz'; tn='confuse-3.1'; url='https://github.com/martinh/libconfuse/releases/download/v3.1/confuse-3.1.tar.xz';
+fn='confuse-3.1.tar.xz'; tn='confuse-3.1'; url='http://github.com/martinh/libconfuse/releases/download/v3.1/confuse-3.1.tar.xz';
 set_source 'tar' 
 configure_build --prefix=`_install_prefix`;
 make;make install;	
@@ -959,28 +959,28 @@ make;make install;
 		shift;;
 
 'libsigcplusplus')
-fn='2.99.8.tar.gz'; tn='libsigcplusplus-2.99.8'; url='https://github.com/GNOME/libsigcplusplus/archive/2.99.8.tar.gz';
+fn='2.99.8.tar.gz'; tn='libsigcplusplus-2.99.8'; url='http://github.com/GNOME/libsigcplusplus/archive/2.99.8.tar.gz';
 set_source 'tar' 
 cmake_build -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
 make;make install;	
 		shift;;
 
 'pixman')
-fn='pixman-0.34.0.tar.gz'; tn='pixman-0.34.0'; url='https://www.cairographics.org/releases/pixman-0.34.0.tar.gz';
+fn='pixman-0.34.0.tar.gz'; tn='pixman-0.34.0'; url='http://www.cairographics.org/releases/pixman-0.34.0.tar.gz';
 set_source 'tar' 
 configure_build --enable-timers --prefix=`_install_prefix`;
 make;make install;	
 		shift;;
 
 'cairo')
-fn='cairo-1.14.8.tar.xz'; tn='cairo-1.14.8'; url='https://www.cairographics.org/releases/cairo-1.14.8.tar.xz';
+fn='cairo-1.14.8.tar.xz'; tn='cairo-1.14.8'; url='http://www.cairographics.org/releases/cairo-1.14.8.tar.xz';
 set_source 'tar' 
 configure_build --enable-pdf=yes --enable-svg=yes --enable-tee=yes --enable-fc=yes --enable-ft=yes --enable-xml=yes --enable-pthread=yes --prefix=`_install_prefix`;
 make;make install;	
 		shift;;
 
 'cairomm')
-fn='cairomm-1.15.3.tar.gz'; tn='cairomm-1.15.3'; url='https://www.cairographics.org/releases/cairomm-1.15.3.tar.gz';
+fn='cairomm-1.15.3.tar.gz'; tn='cairomm-1.15.3'; url='http://www.cairographics.org/releases/cairomm-1.15.3.tar.gz';
 set_source 'tar' 
 configure_build  --prefix=`_install_prefix`;
 make;make install;	
@@ -1008,7 +1008,7 @@ make;make install;
 		shift;;	
 		
 'ganglia')
-fn='3.7.2.tar.gz'; tn='ganglia-3.7.2'; url='https://sourceforge.net/projects/ganglia/files/ganglia%20monitoring%20core/3.7.2/ganglia-3.7.2.tar.gz/download';
+fn='3.7.2.tar.gz'; tn='ganglia-3.7.2'; url='http://sourceforge.net/projects/ganglia/files/ganglia%20monitoring%20core/3.7.2/ganglia-3.7.2.tar.gz/download';
 set_source 'tar' 
 ./configure --with-gmetad --enable-status --enable-shared --enable-static --enable-python --disable-perl --prefix=`_install_prefix`;
 make;make install;
@@ -1054,7 +1054,7 @@ echo "export PATH=\$PATH:\"`_install_prefix`/$sn/bin\"" >> $ENV_SETTINGS_PATH/$s
 		shift;;
  
 'ganglia-web')
-fn='ganglia-web-3.7.2.tar.gz'; tn='ganglia-web-3.7.2'; url='https://sourceforge.net/projects/ganglia/files/ganglia-web/3.7.2/ganglia-web-3.7.2.tar.gz/download';
+fn='ganglia-web-3.7.2.tar.gz'; tn='ganglia-web-3.7.2'; url='http://sourceforge.net/projects/ganglia/files/ganglia-web/3.7.2/ganglia-web-3.7.2.tar.gz/download';
 set_source 'tar' 
 echo "\$conf['rrdtool'] = \"rrdtool\";" >> conf_default.php;
 if [ -d /usr/share/ganglia-webfrontend ]; then rm -r /usr/share/ganglia-webfrontend; fi;
@@ -1076,7 +1076,7 @@ make;make install;
 		shift;;
 		
 'nftables')
-fn='nftables-0.7.tar.bz2'; tn='nftables-0.7'; url='https://www.netfilter.org/projects/nftables/files/nftables-0.7.tar.bz2';
+fn='nftables-0.7.tar.bz2'; tn='nftables-0.7'; url='http://www.netfilter.org/projects/nftables/files/nftables-0.7.tar.bz2';
 set_source 'tar' 
 apt-get autoremove --purge -y iptables
 configure_build --enable-pthread --enable-optimize --prefix=`_install_prefix`;
@@ -1084,7 +1084,7 @@ make;make install;
 		shift;;
 	
 'pth')
-fn='pth-2.0.7.tar.gz'; tn='pth-2.0.7'; url=' https://ftp.gnu.org/gnu/pth/pth-2.0.7.tar.gz';
+fn='pth-2.0.7.tar.gz'; tn='pth-2.0.7'; url=' http://ftp.gnu.org/gnu/pth/pth-2.0.7.tar.gz';
 set_source 'tar' 
 configure_build --enable-m-guard --enable-hmac-binary-check --prefix=`_install_prefix`; 
 make;make install;
@@ -1300,15 +1300,15 @@ make; make install;
  
 http://httpd.apache.org/[preferred]/httpd/mod_fcgid/mod_fcgid-2.3.9.tar.gz
 
-https://cache.ruby-lang.org/pub/ruby/2.4/ruby-2.4.1.tar.gz
-https://github.com/macournoyer/thin/archive/v1.7.0.tar.gz
+http://cache.ruby-lang.org/pub/ruby/2.4/ruby-2.4.1.tar.gz
+http://github.com/macournoyer/thin/archive/v1.7.0.tar.gz
 
 TMP_NAME=proxygen; 
 echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
 rm master.zip;
-wget 'https://github.com/facebook/proxygen/archive/v2017.05.22.00.tar.gz'
+wget 'http://github.com/facebook/proxygen/archive/v2017.05.22.00.tar.gz'
 tar xf v2017.05.22.00.tar.gz
 mv proxygen-2017.05.22.00 $TMP_NAME; cd $TMP_NAME;
 
@@ -1320,7 +1320,7 @@ echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
 rm master.zip;
-wget 'https://github.com/nifigase/greeny/archive/master.zip'
+wget 'http://github.com/nifigase/greeny/archive/master.zip'
 /usr/local/bin/unzip master.zip
 mv greeny-master $TMP_NAME; cd $TMP_NAME;
 
@@ -1330,7 +1330,7 @@ TMP_NAME=poco
 echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://pocoproject.org/releases/poco-1.7.8/poco-1.7.8p2.tar.gz'
+wget 'http://pocoproject.org/releases/poco-1.7.8/poco-1.7.8p2.tar.gz'
 tar xf poco-1.7.8p2.tar.gz
 mv  poco-1.7.8p2 $TMP_NAME;cd $TMP_NAME
 ./configure --shared --unbundled --everything --config=Linux --prefix=/usr/local; 
@@ -1344,7 +1344,7 @@ echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
 rm master.zip;
-wget 'https://github.com/kashirin-alex/hypertable/archive/master.zip'
+wget 'http://github.com/kashirin-alex/hypertable/archive/master.zip'
 /usr/local/bin/unzip master.zip
 mv hypertable-master $TMP_NAME; 
 mkdir $TMP_NAME-build;cd $TMP_NAME-build;
@@ -1370,7 +1370,7 @@ TMP_NAME=nghttp2
 echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://github.com/nghttp2/nghttp2/releases/download/v1.23.1/nghttp2-1.23.1.tar.xz'
+wget 'http://github.com/nghttp2/nghttp2/releases/download/v1.23.1/nghttp2-1.23.1.tar.xz'
 tar xf nghttp2-1.23.1.tar.xz
 mv nghttp2-1.23.1 $TMP_NAME;cd $TMP_NAME
 cmake ./ -DLIBEVENT_INCLUDE_DIR=/usr/local/include -DLIBEV_LIBRARY=/usr/local/libev/lib/libev.so -DLIBEV_INCLUDE_DIR=/usr/local/libev/include
@@ -1382,13 +1382,13 @@ make install;
 
 
 
-https://www.openfabrics.org/downloads/libibverbs/libibverbs-1.1.4-1.24.gb89d4d7.tar.gz
+http://www.openfabrics.org/downloads/libibverbs/libibverbs-1.1.4-1.24.gb89d4d7.tar.gz
 
 TMP_NAME=leveldb
 echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://github.com/google/leveldb/archive/v1.20.tar.gz'
+wget 'http://github.com/google/leveldb/archive/v1.20.tar.gz'
 tar xf v1.20.tar.gz
 mv leveldb-1.20 $TMP_NAME;cd $TMP_NAME; 
 make;
@@ -1433,7 +1433,7 @@ TMP_NAME=qfs
 echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://github.com/quantcast/qfs/archive/1.2.1.tar.gz'
+wget 'http://github.com/quantcast/qfs/archive/1.2.1.tar.gz'
 tar xzf 1.2.1.tar.gz
 mv qfs-1.2.1 $TMP_NAME;
 mkdir $TMP_NAME-build;cd $TMP_NAME-build;
@@ -1457,7 +1457,7 @@ TMP_NAME=nfs-ganesha
 echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://github.com/nfs-ganesha/nfs-ganesha/archive/V2.5-rc7.tar.gz'
+wget 'http://github.com/nfs-ganesha/nfs-ganesha/archive/V2.5-rc7.tar.gz'
 tar xzf V2.5-rc7.tar.gz
 mv nfs-ganesha-2.5-rc7 $TMP_NAME;
 mkdir $TMP_NAME-build;cd $TMP_NAME-build;
@@ -1476,7 +1476,7 @@ TMP_NAME=xorg-macros
 echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://www.x.org/releases/X11R7.7/src/everything/util-macros-1.17.tar.gz'
+wget 'http://www.x.org/releases/X11R7.7/src/everything/util-macros-1.17.tar.gz'
 tar xf util-macros-1.17.tar.gz
 mv util-macros-1.17 $TMP_NAME;cd $TMP_NAME; 
 ./configure  --prefix=/usr/local;
@@ -1488,7 +1488,7 @@ TMP_NAME=libpthread-stubs
 echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://www.x.org/releases/X11R7.7/src/xcb/libpthread-stubs-0.3.tar.gz'
+wget 'http://www.x.org/releases/X11R7.7/src/xcb/libpthread-stubs-0.3.tar.gz'
 tar xf libpthread-stubs-0.3.tar.gz
 mv libpthread-stubs-0.3 $TMP_NAME;cd $TMP_NAME; 
 ./configure  --prefix=/usr/local;
@@ -1500,7 +1500,7 @@ TMP_NAME=libXau
 echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://www.x.org/releases/X11R7.7/src/lib/libXau-1.0.7.tar.gz'
+wget 'http://www.x.org/releases/X11R7.7/src/lib/libXau-1.0.7.tar.gz'
 tar xf libXau-1.0.7.tar.gz
 mv libXau-1.0.7 $TMP_NAME;cd $TMP_NAME; 
 ./configure  --prefix=/usr/local;
@@ -1512,7 +1512,7 @@ TMP_NAME=libxcb
 echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://www.x.org/releases/X11R7.7/src/xcb/libxcb-1.8.1.tar.gz'
+wget 'http://www.x.org/releases/X11R7.7/src/xcb/libxcb-1.8.1.tar.gz'
 tar xf libxcb-1.8.1.tar.gz
 mv libxcb-1.8.1 $TMP_NAME;cd $TMP_NAME; 
 ./configure --disable-static --prefix=/usr/local;
@@ -1524,7 +1524,7 @@ TMP_NAME=xtrans
 echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://www.x.org/releases/X11R7.7/src/lib/xtrans-1.2.7.tar.gz'
+wget 'http://www.x.org/releases/X11R7.7/src/lib/xtrans-1.2.7.tar.gz'
 tar xf xtrans-1.2.7.tar.gz
 mv xtrans-1.2.7 $TMP_NAME;cd $TMP_NAME; 
 ./configure  --prefix=/usr/local;
@@ -1536,7 +1536,7 @@ TMP_NAME=inputproto
 echo $TMP_NAME
 mkdir ~/tmpBuilds;
 cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://www.x.org/releases/X11R7.7/src/proto/inputproto-2.2.tar.gz'
+wget 'http://www.x.org/releases/X11R7.7/src/proto/inputproto-2.2.tar.gz'
 tar xf inputproto-2.2.tar.gz
 mv inputproto-2.2 $TMP_NAME;cd $TMP_NAME; 
 ./configure  --prefix=/usr/local;
@@ -1548,7 +1548,7 @@ TMP_NAME=kbproto
 echo $TMP_NAME
 mkdir ~/tmpBuilds;
 cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://www.x.org/releases/X11R7.7/src/proto/kbproto-1.0.6.tar.gz'
+wget 'http://www.x.org/releases/X11R7.7/src/proto/kbproto-1.0.6.tar.gz'
 tar xf kbproto-1.0.6.tar.gz
 mv kbproto-1.0.6 $TMP_NAME;cd $TMP_NAME; 
 ./configure  --prefix=/usr/local;
@@ -1560,7 +1560,7 @@ TMP_NAME=xproto
 echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://www.x.org/releases/X11R7.7/src/proto/xproto-7.0.23.tar.gz'
+wget 'http://www.x.org/releases/X11R7.7/src/proto/xproto-7.0.23.tar.gz'
 tar xf xproto-7.0.23.tar.gz
 mv xproto-7.0.23 $TMP_NAME;cd $TMP_NAME; 
 ./configure  --prefix=/usr/local;
@@ -1572,7 +1572,7 @@ TMP_NAME=libX11
 echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://www.x.org/releases/X11R7.7/src/lib/libX11-1.5.0.tar.gz'
+wget 'http://www.x.org/releases/X11R7.7/src/lib/libX11-1.5.0.tar.gz'
 tar xf libX11-1.5.0.tar.gz
 mv libX11-1.5.0 $TMP_NAME;cd $TMP_NAME; 
 ./configure  --prefix=/usr/local;
@@ -1584,7 +1584,7 @@ TMP_NAME=libX11
 echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://github.com/mirror/libX11/archive/libX11-1.6.5.tar.gz'
+wget 'http://github.com/mirror/libX11/archive/libX11-1.6.5.tar.gz'
 tar xf libX11-1.6.5.tar.gz
 mv libX11-1.6.5 $TMP_NAME;cd $TMP_NAME; 
 ./configure  --prefix=/usr/local;
@@ -1596,7 +1596,7 @@ TMP_NAME=skia
 echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://github.com/google/skia/archive/chrome/m38_2125.tar.gz'
+wget 'http://github.com/google/skia/archive/chrome/m38_2125.tar.gz'
 tar xf m38_2125.tar.gz
 mv skia-chrome-m38_2125 $TMP_NAME;cd $TMP_NAME; 
 ./configure --enable-timers --prefix=/usr/local; #
@@ -1620,7 +1620,7 @@ TMP_NAME=xcb-proto
 echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://www.x.org/releases/X11R7.7/src/xcb/xcb-proto-1.7.1.tar.gz'
+wget 'http://www.x.org/releases/X11R7.7/src/xcb/xcb-proto-1.7.1.tar.gz'
 tar xf xcb-proto-1.7.1.tar.gz
 mv xcb-proto-1.7.1 $TMP_NAME;cd $TMP_NAME; 
 ./configure  --prefix=/usr/local;
@@ -1631,7 +1631,7 @@ TMP_NAME=xextproto
 echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://www.x.org/releases/X11R7.7/src/proto/xextproto-7.2.1.tar.gz'
+wget 'http://www.x.org/releases/X11R7.7/src/proto/xextproto-7.2.1.tar.gz'
 tar xf xextproto-7.2.1.tar.gz
 mv xextproto-7.2.1 $TMP_NAME;cd $TMP_NAME; 
 ./configure  --prefix=/usr/local;
@@ -1644,7 +1644,7 @@ TMP_NAME=renderproto
 echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://www.x.org/archive/individual/proto/renderproto-0.11.1.tar.gz'
+wget 'http://www.x.org/archive/individual/proto/renderproto-0.11.1.tar.gz'
 tar xf renderproto-0.11.1.tar.gz
 mv renderproto-0.11.1 $TMP_NAME;cd $TMP_NAME; 
 ./configure  --prefix=/usr/local;
@@ -1654,7 +1654,7 @@ TMP_NAME=libXrender
 echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://www.x.org/archive//individual/lib/libXrender-0.9.10.tar.gz'
+wget 'http://www.x.org/archive//individual/lib/libXrender-0.9.10.tar.gz'
 tar xf libXrender-0.9.10.tar.gz
 mv libXrender-0.9.10 $TMP_NAME;cd $TMP_NAME; 
 ./configure  --prefix=/usr/local;
@@ -1712,7 +1712,7 @@ cd ~/tmpBuilds; rm -r glibc;
 wget 'http://ftp.gnu.org/gnu/libc/glibc-2.25.tar.xz'
 tar xf glibc-2.25.tar.xz
 mv glibc-2.25 glibc; cd glibc
-wget 'https://ftp.gnu.org/gnu/libc/glibc-linuxthreads-2.5.tar.bz2'
+wget 'http://ftp.gnu.org/gnu/libc/glibc-linuxthreads-2.5.tar.bz2'
 tar xf glibc-linuxthreads-2.5.tar.bz2
 cd ..; mkdir build-glibc; cd build-glibc
 ../glibc/configure --disable-multi-arch --enable-add-ons=linuxthreads --enable-shared --enable-lock-elision=yes --enable-stack-protector=all  --enable-tunables --enable-mathvec --with-fp --prefix=/usr/local;
@@ -1744,7 +1744,7 @@ TMP_NAME=openssh
 echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://ftp.halifax.rwth-aachen.de/openbsd/OpenSSH/portable/openssh-7.5p1.tar.gz'
+wget 'http://ftp.halifax.rwth-aachen.de/openbsd/OpenSSH/portable/openssh-7.5p1.tar.gz'
 tar xf openssh-7.5p1.tar.gz
 mv openssh-7.5p1 $TMP_NAME;cd $TMP_NAME
 ./configure --with-ssh1 --with-kerberos5 --with-pam --with-ssl-engine --with-pie --prefix=/usr/local; 
@@ -1769,7 +1769,7 @@ TMP_NAME=guile
 echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://ftp.gnu.org/gnu/guile/guile-2.0.13.tar.xz'
+wget 'http://ftp.gnu.org/gnu/guile/guile-2.0.13.tar.xz'
 tar xf guile-2.0.13.tar.xz
 mv guile-2.0.13 $TMP_NAME;cd $TMP_NAME; 
 ./configure --prefix=/usr/local;# 
@@ -1786,12 +1786,12 @@ mv autogen-5.18.12 $TMP_NAME;cd $TMP_NAME;
 
 
 
-#https://www.x.org/pub/individual/util/util-macros-1.19.1.tar.bz2
+#http://www.x.org/pub/individual/util/util-macros-1.19.1.tar.bz2
 TMP_NAME=mkfontdir
 echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://www.x.org/releases/individual/app/mkfontdir-1.0.7.tar.gz'
+wget 'http://www.x.org/releases/individual/app/mkfontdir-1.0.7.tar.gz'
 tar xf mkfontdir-1.0.7.tar.gz
 mv mkfontdir-1.0.7 $TMP_NAME;cd $TMP_NAME; 
 ./configure  --prefix=/usr/local;
