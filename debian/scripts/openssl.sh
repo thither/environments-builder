@@ -2,7 +2,7 @@
 if [ ! -f $CUST_INST_PREFIX/bin/openssl ]; then
 	apt-get autoremove --purge -y openssl ca-certificates
 fi
-fn='openssl-1.1.0f.tar.gz'; tn='openssl-1.1.0f'; url='ftp://ftp.pca.dfn.de/pub/tools/net/openssl/source/openssl-1.1.0f.tar.gz';
+fn='openssl-1.1.0f.tar.gz'; tn='openssl-1.1.0f'; url='http://www.openssl.org/source/openssl-1.1.0f.tar.gz';
 set_source 'tar' 
 ./config  enable-md2 enable-rc5 enable-ubsan enable-ssl3 enable-ssl3-method threads zlib zlib-dynamic shared enable-weak-ssl-ciphers enable-ec_nistp_64_gcc_128 --prefix=$CUST_INST_PREFIX;# enable-asan enable-egd   --openssldir=$CUST_INST_PREFIX/ssl --prefix=$CUST_INST_PREFIX/ssl;
 make;make install;make all; 
