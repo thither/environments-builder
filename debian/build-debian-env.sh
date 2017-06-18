@@ -1219,10 +1219,10 @@ _env_setup(){
 	echo env_setup-$1
 	
 	if [ $1 == 'pre' ]; then
-		#if [ ! -f $CUST_INST_PREFIX/etc/environment.d ]; then
-		#	mkdir -p $CUST_INST_PREFIX/etc/environment.d
-		#	chmod -R 777 $CUST_INST_PREFIX/etc/environment.d/
-		#fi
+		if [ ! -d $CUST_INST_PREFIX/lib64 ]; then
+			mkdir -p $CUST_INST_PREFIX/lib;
+			ln -s  $CUST_INST_PREFIX/lib $CUST_INST_PREFIX/lib64;
+		fi
 
 		#tmp=`fgrep -c $ENV_SETTINGS_PATH /etc/profile`
 		#if [ $tmp -eq 0 ]; then
