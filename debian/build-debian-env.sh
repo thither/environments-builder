@@ -482,7 +482,7 @@ make;make install-strip;make install;make all;
 'gnutls')
 fn='gnutls-3.5.9.tar.xz'; tn='gnutls-3.5.9'; url='ftp://ftp.gnutls.org/gcrypt/gnutls/v3.5/gnutls-3.5.9.tar.xz';
 set_source 'tar' 
-configure_build --prefix=`_install_prefix`; 
+configure_build --disable-gtk-doc --prefix=`_install_prefix`; 
 make;make lib;make install-strip;make install;make all;
 		shift;;
 		
@@ -861,14 +861,16 @@ fn='hadoop-2.7.3.tar.gz'; tn='hadoop-2.7.3'; url='http://apache.crihan.fr/dist/h
 set_source 'tar' 
 if [ -d $CUST_JAVA_INST_PREFIX/$sn ]; then
 	rm -r $CUST_JAVA_INST_PREFIX/$sn;
-	rm -r /etc/opt/hadoop;
-else 
-    mkdir -p /etc/opt;
+else
+	if [ ! -d /etc/opt/hadoop ]; then
+		mv $CUST_JAVA_INST_PREFIX/$sn/etc/hadoop /etc/opt/;chmod -R 777 /etc/opt/hadoop;
+	fi
+	rm -r $CUST_JAVA_INST_PREFIX/$sn/etc/hadoop
 fi
 mv ../$sn $CUST_JAVA_INST_PREFIX/$sn;
 
-ln -s  $CUST_JAVA_INST_PREFIX/$sn/etc/hadoop /etc/opt/hadoop
-chmod -R 777 /etc/opt/hadoop
+ln -s /etc/opt/hadoop $CUST_JAVA_INST_PREFIX/$sn/etc/hadoop 
+
 echo "#!/usr/bin/env bash" > $ENV_SETTINGS_PATH/$sn.sh
 echo "export HADOOP_HOME=\"$CUST_JAVA_INST_PREFIX/$sn\"" >> $ENV_SETTINGS_PATH/$sn.sh
 echo "export HADOOP_CONF_DIR=\"$CUST_JAVA_INST_PREFIX/$sn/etc/hadoop\"" >> $ENV_SETTINGS_PATH/$sn.sh
@@ -1283,6 +1285,9 @@ fi
 #########
 
 _run_setup
+
+
+
 
 exit 1
 
