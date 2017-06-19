@@ -3,8 +3,8 @@ if [ ! -f $CUST_INST_PREFIX/bin/openssl ]; then
 	apt-get autoremove --purge -y openssl ca-certificates
 fi
 fn='openssl-1.1.0f.tar.gz'; tn='openssl-1.1.0f'; url='http://www.openssl.org/source/openssl-1.1.0f.tar.gz';
-set_source 'tar' 
-./config  enable-md2 enable-rc5 enable-ssl3 enable-ssl3-method threads zlib zlib-dynamic shared enable-weak-ssl-ciphers enable-ec_nistp_64_gcc_128 --prefix=$CUST_INST_PREFIX;#  enable-ubsan  enable-asan enable-egd   --openssldir=$CUST_INST_PREFIX/ssl --prefix=$CUST_INST_PREFIX/ssl;
+set_source 'tar'
+./config disable-msan disable-ubsan disable-asan disable-egd enable-md2 enable-rc5 enable-ssl3 enable-ssl3-method enable-weak-ssl-ciphers threads zlib zlib-dynamic shared enable-ec_nistp_64_gcc_128 --prefix=$CUST_INST_PREFIX;#  -DPEDANTIC -pedantic enable-ssl-trace  enable-ripemd  enable-blake2 --openssldir=$CUST_INST_PREFIX/ssl --prefix=$CUST_INST_PREFIX/ssl;
 make;make install;make all; 
 if [ -f $CUST_INST_PREFIX/bin/openssl ]; then
 	rm -r $CUST_INST_PREFIX/ssl/certs /etc/ssl/certs;mkdir /etc/ssl/certs;

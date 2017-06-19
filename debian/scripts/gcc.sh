@@ -3,7 +3,7 @@ fn='gcc-7.1.0.tar.gz'; tn='gcc-7.1.0'; url='http://mirrors.concertpass.com/gcc/r
 set_source 'tar' 
 ln -s /usr/include/asm-generic /usr/include/asm
 configure_build  --disable-multilib --target=x86_64-pc-linux-gnu --enable-default-pie --enable-gold=yes --enable-languages=all --enable-shared --enable-libiberty --enable-libssp --enable-libasan --enable-libtsan --enable-libgomp --enable-libgcc --enable-libstdc++ --enable-libada --enable-initfini-array --enable-vtable-verify  --enable-objc-gc --enable-lto --enable-tls --enable-threads=posix --with-long-double-128 --enable-decimal-float=yes --with-mpfr=$CUST_INST_PREFIX --with-mpc=$CUST_INST_PREFIX --with-isl=$CUST_INST_PREFIX --with-gmp=$CUST_INST_PREFIX --prefix=$CUST_INST_PREFIX; 
-#--enable-noexist#--enable-multilib  --with-multilib-list=m64
+#--enable-noexist#--enable-multilib  --with-multilib-list=m64 --libdir=$CUST_INST_PREFIX/lib
 make;make install;make all;
 
 if [ -f $CUST_INST_PREFIX/bin/gcc ]; then
