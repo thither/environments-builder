@@ -874,7 +874,7 @@ ln -s /etc/opt/hadoop $CUST_JAVA_INST_PREFIX/$sn/etc/hadoop
 echo "#!/usr/bin/env bash" > $ENV_SETTINGS_PATH/$sn.sh
 echo "export HADOOP_HOME=\"$CUST_JAVA_INST_PREFIX/$sn\"" >> $ENV_SETTINGS_PATH/$sn.sh
 echo "export HADOOP_CONF_DIR=\"$CUST_JAVA_INST_PREFIX/$sn/etc/hadoop\"" >> $ENV_SETTINGS_PATH/$sn.sh
-echo "export HADOOP_VERSION=\"2.8.2\"" >> $ENV_SETTINGS_PATH/$sn.sh
+echo "export HADOOP_VERSION=\"2.7.3\"" >> $ENV_SETTINGS_PATH/$sn.sh
 echo "export HADOOP_INCLUDE_PATH=\"$CUST_JAVA_INST_PREFIX/$sn/include\"" >> $ENV_SETTINGS_PATH/$sn.sh
 echo "export HADOOP_LIB_PATH=\"$CUST_JAVA_INST_PREFIX/$sn/lib\"" >> $ENV_SETTINGS_PATH/$sn.sh
 echo "export PATH=\$PATH:\"$CUST_JAVA_INST_PREFIX/$sn/bin\"" >> $ENV_SETTINGS_PATH/$sn.sh
@@ -1384,6 +1384,15 @@ make;
 
 make install;
 
+TMP_NAME=pypy-stm
+echo $TMP_NAME
+mkdir ~/tmpBuilds
+cd ~/tmpBuilds; rm -r $TMP_NAME;
+wget 'https://bitbucket.org/pypy/pypy/downloads/pypy-stm-2.5.1-linux64.tar.bz2'
+tar xf pypy-stm-2.5.1-linux64.tar.bz2
+mv pypy-stm-2.5.1-linux64 $TMP_NAME;cd $TMP_NAME
+./configure --prefix=/usr/local/libev; 
+make; make install;
 
 
 
