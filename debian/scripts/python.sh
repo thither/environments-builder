@@ -28,17 +28,15 @@ if [ -f $CUST_INST_PREFIX/bin/pip ]; then
 	pip install --upgrade h2 urllib3 dnspython pyDNS # dnslib  hypertable
 	pip install --upgrade https://github.com/eventlet/eventlet/archive/v0.19.0.tar.gz #eventlet
 
+	
+	pip install --upgrade msgpack-python
 	pip install --upgrade Wand
 	pip install --upgrade weasyprint                 
-	pip install --upgrade pylzma rarfile pysnappy  #zipfile
+	pip install --upgrade pylzma rarfile  #zipfile pysnappy
 	pip install --upgrade guess_language validate-email-address
 	pip install --upgrade paypalrestsdk pygeocoder python-google-places
 
-	cd $DOWNLOAD_PATH
-	wget  https://github.com/crs4/pydoop/archive/1.2.0.tar.gz
-	tar -zxvf 1.2.0.tar.gz
-	mv pydoop-1.2.0/pydoop  $CUST_INST_PREFIX/lib/python2.7/site-packages/
-	# pip install --upgrade pydoop #https://github.com/crs4/pydoop/archive/1.2.0.tar.gz
+	pip install --upgrade pydoop
 
 fi
 

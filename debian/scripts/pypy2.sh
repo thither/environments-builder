@@ -37,9 +37,10 @@ if [ -f 'pypy-c' ]; then
 	pypy_pip install --upgrade h2 urllib3 dnspython pyDNS # dnslib  hypertable
 	pypy_pip install --upgrade https://github.com/eventlet/eventlet/archive/v0.19.0.tar.gz #eventlet
 
+	pypy_pip install --upgrade msgpack-python
 	pypy_pip install --upgrade Wand
 	pypy_pip install --upgrade weasyprint                 
-	pypy_pip install --upgrade pylzma rarfile pysnappy  #zipfile
+	pypy_pip install --upgrade pylzma rarfile  #zipfile pysnappy
 	pypy_pip install --upgrade guess_language validate-email-address
 	pypy_pip install --upgrade paypalrestsdk pygeocoder python-google-places
 	pypy_pip install --upgrade acme
