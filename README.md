@@ -120,7 +120,7 @@ Logs are created in the BUILDS_LOG_PATH in a folder of date-time under filename 
         * gc
         * gperf
         * gperftools
-        * # libhoard
+        * #libhoard
         * glib
         * pkg-config
         * gcc
