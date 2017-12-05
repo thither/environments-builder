@@ -1,11 +1,18 @@
 #!/usr/bin/env bash
 tn='Python-3.7.0a2'; url='https://www.python.org/ftp/python/3.7.0/Python-3.7.0a2.tar.xz';
-set_source 'tar' 
+set_source 'tar';
+if [ ! -f $CUST_INST_PREFIX/bin/python3 ]; then
+	if [[ $os_r == 'Ubuntu' ]];then
+		apt-get autoremove -yq --purge python3
+	elif [ $os_r == 'openSUSE'] && [ $stage == 1 ];then
+		echo 'possible? zypper rm -y python3';
+	fi
+fi
 configure_build  --with-system-expat --with-system-ffi --enable-unicode --with-ensurepip=install --with-computed-gotos --enable-shared --enable-optimizations --enable-ipv6 --with-lto  --with-signal-module  --with-pth --with-pymalloc --with-fpectl  --prefix=$CUST_INST_PREFIX;   #
 do_make;do_make install;
 if [ -f $CUST_INST_PREFIX/bin/python3 ]; then
 	rm /usr/bin/py3; ln -s $CUST_INST_PREFIX/bin/python3 /usr/bin/py3;
-	echo $CUST_INST_PREFIX/include/python3 > $LD_CONF_PATH/python3.conf;
+	echo $CUST_INST_PREFIX/lib/python3 > $LD_CONF_PATH/python3.conf;
 	py3 -m ensurepip; rm /usr/bin/py3_pip; ln -s $CUST_INST_PREFIX/bin/pip3 /usr/bin/py3_pip;
 fi
 
