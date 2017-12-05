@@ -6,7 +6,7 @@ configure_build --disable-multilib --target=`_build` --enable-default-pie --enab
 #--enable-noexist#--enable-multilib  --with-multilib-list=m64 --libdir=$CUST_INST_PREFIX/lib
 do_make;do_make install;do_make all;
 
-if [ -f $CUST_INST_PREFIX != '/usr' ]; then
+if [ $CUST_INST_PREFIX != '/usr' ]; then
 	if [ -f $CUST_INST_PREFIX/bin/gcc ]; then
 		if [ -f /usr/bin/gcc ]; then rm /usr/bin/gcc;fi
 		if [ -f /usr/bin/cc ]; then rm /usr/bin/cc;fi
