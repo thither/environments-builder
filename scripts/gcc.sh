@@ -7,9 +7,8 @@ configure_build --disable-multilib --target=`_build` --enable-default-pie --enab
 do_make;do_make install;do_make all;
 
 if [ $CUST_INST_PREFIX != '/usr' ]; then
-	if [ -f $CUST_INST_PREFIX/bin/gcc ]; then
-		if [ -f /usr/bin/gcc ]; then rm /usr/bin/gcc;fi
-		if [ -f /usr/bin/cc ]; then rm /usr/bin/cc;fi
+	if [ -f $CUST_INST_PREFIX/bin/gcc ]; then		
+		if [ -f /usr/bin/gcc ]; then rm /usr/bin/gcc;rm /usr/bin/cc;fi
 		ln -s $CUST_INST_PREFIX/bin/gcc $CUST_INST_PREFIX/bin/cc
 	fi
 	if [ -f $CUST_INST_PREFIX/bin/cpp ] && [ -f /usr/bin/cpp ]; then rm /usr/bin/cpp;fi
