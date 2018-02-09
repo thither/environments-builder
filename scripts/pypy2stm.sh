@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 tn='pypy-pypy-333cd7c29400'; url='http://bitbucket.org/pypy/pypy/get/stmgc-c8.zip';
 set_source 'zip';
+if [ $only_dw == 1 ];then return;fi
+
 rm -r $BUILTS_PATH/$sn;export PYPY_USESSION_DIR=$BUILTS_PATH/$sn;mkdir -p $BUILTS_PATH/$sn; ln -s gcc $CUST_INST_PREFIX/bin/gcc-seg-gs;
 
 for n in ncurses panel term; do

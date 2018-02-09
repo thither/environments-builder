@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
-tn='gcc-7.2.0'; url='http://mirrors.concertpass.com/gcc/releases/gcc-7.2.0/gcc-7.2.0.tar.xz';
+tn='gcc-7.3.0'; url='http://mirrors.concertpass.com/gcc/releases/gcc-7.3.0/gcc-7.3.0.tar.xz';
 set_source 'tar';
+if [ $only_dw == 1 ];then return;fi
+
 ln -s /usr/include/asm-generic /usr/include/asm;
 configure_build --disable-multilib --target=`_build` --enable-default-pie --enable-gold=yes --enable-languages=all --enable-shared --enable-libiberty --enable-libssp --enable-libasan --enable-libtsan --enable-libgomp --enable-libgcc --enable-libstdc++ --enable-libada --enable-initfini-array --enable-vtable-verify  --enable-objc-gc --enable-lto --enable-tls --enable-threads=posix --with-long-double-128 --enable-decimal-float=yes --with-mpfr=$CUST_INST_PREFIX --with-mpc=$CUST_INST_PREFIX --with-isl=$CUST_INST_PREFIX --with-gmp=$CUST_INST_PREFIX --prefix=$CUST_INST_PREFIX; 
 #--enable-noexist#--enable-multilib  --with-multilib-list=m64 --libdir=$CUST_INST_PREFIX/lib

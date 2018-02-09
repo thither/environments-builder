@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 tn='openssl-1.1.0g'; url='http://www.openssl.org/source/openssl-1.1.0g.tar.gz';
 set_source 'tar';
+if [ $only_dw == 1 ];then return;fi
+
 if [ ! -f $CUST_INST_PREFIX/bin/openssl ]; then
 	if [[ $os_r == 'Ubuntu' ]];then
 		apt-get autoremove -yq --purge openssl ca-certificates

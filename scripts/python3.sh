@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
-tn='Python-3.7.0a2'; url='https://www.python.org/ftp/python/3.7.0/Python-3.7.0a2.tar.xz';
+tn='Python-3.7.0b1'; url='http://www.python.org/ftp/python/3.7.0/Python-3.7.0b1.tar.xz';
 set_source 'tar';
+if [ $only_dw == 1 ];then return;fi
+
 if [ ! -f $CUST_INST_PREFIX/bin/python3 ]; then
 	if [[ $os_r == 'Ubuntu' ]];then
 		apt-get autoremove -yq --purge python3
@@ -24,30 +26,34 @@ if [ -f $CUST_INST_PREFIX/bin/py3_pip ]; then
 	py3_pip install --upgrade setuptools
 	py3_pip install --upgrade pip
 	py3_pip install --upgrade setuptools
-	py3_pip install --upgrade pycparser
-	py3_pip install --upgrade thrift
 
-	py3_pip install --upgrade cffi greenlet
+	py3_pip install --upgrade cffi 
+	py3_pip install --upgrade greenlet
 	py3_pip install --upgrade psutil deepdiff
-	py3_pip install --upgrade xlrd lxml
-	py3_pip install --upgrade pycrypto
-	py3_pip install --upgrade cryptography 
-	py3_pip install --upgrade pyopenssl
+	py3_pip install --upgrade xlrd lxml	
+	py3_pip install --upgrade pycrypto 
+	py3_pip install --upgrade cryptography
+	py3_pip install --upgrade pyopenssl #LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" 
 
-	py3_pip install --upgrade h2 urllib3 dnspython  # pyDNS dnslib  hypertable
-	py3_pip install --upgrade https://github.com/eventlet/eventlet/archive/master.zip  #https://github.com/eventlet/eventlet/archive/v0.19.0.tar.gz #eventlet
-
+	py3_pip install --upgrade pycparser
 	
+	py3_pip install --upgrade h2 #https://github.com/python-hyper/hyper-h2/archive/master.zip
+	py3_pip install --upgrade urllib3 dnspython
+	py3_pip install --upgrade https://github.com/eventlet/eventlet/archive/v0.19.0.zip # https://github.com/eventlet/eventlet/archive/master.zip #eventlet
+	echo '' > "/usr/local/lib/python2.7/site-packages/eventlet/green/OpenSSL/rand.py"
+	sed -i "1s;^;import OpenSSL.SSL\nfor n in dir(OpenSSL.SSL):\n    exec(n+'=getattr(OpenSSL.SSL, \"'+n+'\")')\n;" /usr/local/lib/python2.7/site-packages/eventlet/green/OpenSSL/SSL.py
+	sed -i 's/from OpenSSL.SSL import \*//g' /usr/local/lib/python2.7/site-packages/eventlet/green/OpenSSL/SSL.py;
+	sed -i "1s;^;import OpenSSL.crypto\nfor n in dir(OpenSSL.crypto):\n    exec(n+'=getattr(OpenSSL.crypto, \"'+n+'\")')\n;" /usr/local/lib/python2.7/site-packages/eventlet/green/OpenSSL/crypto.py
+
+   
 	py3_pip install --upgrade msgpack-python
 	py3_pip install --upgrade Wand
 	py3_pip install --upgrade weasyprint                 
 	py3_pip install --upgrade pylzma rarfile  #zipfile pysnappy
-	py3_pip install --upgrade guess_language validate-email-address
-	py3_pip install --upgrade paypalrestsdk # pygeocoder python-google-places
-	py3_pip install --upgrade acme
+	py3_pip install --upgrade guess_language
+	py3_pip install --upgrade paypalrestsdk #pygeocoder python-google-places
+	py3_pip install --upgrade josepy acme
 
 	py3_pip install --upgrade https://github.com/kashirin-alex/libpyhdfs/archive/master.zip
 
-
 fi
-

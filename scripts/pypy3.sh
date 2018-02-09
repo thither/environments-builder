@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-tn='pypy3-v5.9.0-src'; url='http://bitbucket.org/pypy/pypy/downloads/pypy3-v5.9.0-src.tar.bz2';
+tn='pypy3-v5.10.1-src'; url='http://bitbucket.org/pypy/pypy/downloads/pypy3-v5.10.1-src.tar.bz2';
 set_source 'tar';
+if [ $only_dw == 1 ];then return;fi
 
 cd pypy/goal; (INCLUDEDIRS=-I$BUILDS_PATH/$sn/inlcude PYTHONPATH=../../pypy ../../rpython/bin/rpython  --thread --translation-jit_opencoder_model=big --shared --opt=jit targetpypystandalone.py) &
 while [ ! -f pypy3-c ]; do sleep 60; done; sleep 300; 
