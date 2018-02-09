@@ -13,8 +13,9 @@
      * --sources source-1 source-2  (builds and installs only the specified sources) or --source all
        * --help 
      * --verbose
+     * --only-dw - Downloads sources to download directory
      * --stage N
-  * recommend, execution cmd: ```nohup bash ~/builder/build-env.sh --no-reuse-make --sources all &> '/root/builder/built.log' &```
+  * recommend, execution cmd: ```nohup bash ~/builder/build-env.sh --sources all &> '/root/builder/built.log' &```
   
 ## Directories Configurations: 
   *  ```CUST_INST_PREFIX=/usr/local ``` (equal to the configure --prefix with most of the sources)
