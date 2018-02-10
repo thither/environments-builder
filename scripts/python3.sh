@@ -15,11 +15,11 @@ do_make;do_make install;
 if [ -f $CUST_INST_PREFIX/bin/python3 ]; then
 	rm /usr/bin/py3; ln -s $CUST_INST_PREFIX/bin/python3 /usr/bin/py3;
 	echo $CUST_INST_PREFIX/lib/python3 > $LD_CONF_PATH/python3.conf;
+	ldconfig
 	py3 -m ensurepip; rm /usr/bin/py3_pip; ln -s $CUST_INST_PREFIX/bin/pip3 /usr/bin/py3_pip;
 fi
 
-ldconfig
-if [ -f $CUST_INST_PREFIX/bin/py3_pip ]; then
+if [ -f /usr/bin/py3_pip ]; then
 	
 	rm -r ~/.cache/pip 
 

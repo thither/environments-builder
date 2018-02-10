@@ -103,7 +103,7 @@ echo '--sources:' ${only_sources[@]}
 echo '--help:' $help
 echo '--stage:' $stage
 echo '--test_make:' $test_make
-echo '--no-reuse-make:' $reuse_make
+echo '--reuse-make:' $reuse_make
 echo '--only-dw:' $only_dw
 #trap 'echo "trying to EXIT"' EXIT
 #trap 'echo "trying to SIGINT"' SIGINT
@@ -1011,7 +1011,7 @@ sed -i 's/1.5/1.6/g' lib/java/build.xml;
 ./bootstrap.sh; 
 cmake_build -DUSE_STD_THREAD=1 -DWITH_STDTHREADS=ON -DTHRIFT_COMPILER_HS=ON;
 do_make;do_make install;do_make all;
-cd lib/py/;
+cd $BUILDS_PATH/$sn/lib/py/;
 python setup.py install;
 pypy setup.py install;
 		shift;;	
@@ -1153,7 +1153,7 @@ rm -r $DOWNLOAD_PATH/$sn/$fn
 set_source 'zip';
 if [ $only_dw == 1 ];then return;fi
 echo '' > /root/builds/sources/hypertable/src/rb/ThriftClient/hypertable/gen-rb/hql_types.rb;
-cmake_build -DHADOOP_INCLUDE_PATH=$HADOOP_INCLUDE_PATH -DHADOOP_LIB_PATH=$HADOOP_LIB_PATH -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release; #  -DBUILD_SHARED_LIBS=ON
+cmake_build -DBUILD_SHARED_LIBS=ON -DUSE_JEMALLOC=ON -DHADOOP_INCLUDE_PATH=$HADOOP_INCLUDE_PATH -DHADOOP_LIB_PATH=$HADOOP_LIB_PATH -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release;
 do_make;do_make install;#make alltests;#  -DPACKAGE_OS_SPECIFIC=1  -DVERSION_MISC_SUFFIX=$( date  +"%Y-%m-%d_%H-%M")
 		shift;;
 
