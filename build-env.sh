@@ -1011,9 +1011,7 @@ sed -i 's/1.5/1.6/g' lib/java/build.xml;
 ./bootstrap.sh; 
 cmake_build -DUSE_STD_THREAD=1 -DWITH_STDTHREADS=ON -DTHRIFT_COMPILER_HS=ON;
 do_make;do_make install;do_make all;
-cd $BUILDS_PATH/$sn/lib/py/;
-python setup.py install;
-pypy setup.py install;
+#cd $BUILDS_PATH/$sn/lib/py/;python setup.py install;pypy setup.py install;
 		shift;;	
 		
 'attr')
@@ -1153,7 +1151,7 @@ rm -r $DOWNLOAD_PATH/$sn/$fn
 set_source 'zip';
 if [ $only_dw == 1 ];then return;fi
 echo '' > /root/builds/sources/hypertable/src/rb/ThriftClient/hypertable/gen-rb/hql_types.rb;
-cmake_build -DHADOOP_INCLUDE_PATH=$HADOOP_INCLUDE_PATH -DHADOOP_LIB_PATH=$HADOOP_LIB_PATH -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release;
+cmake_build -DLANGS=py2,pypy2 -DHADOOP_INCLUDE_PATH=$HADOOP_INCLUDE_PATH -DHADOOP_LIB_PATH=$HADOOP_LIB_PATH -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release;
 do_make;do_make install;#make alltests;#  -DPACKAGE_OS_SPECIFIC=1  -DVERSION_MISC_SUFFIX=$( date  +"%Y-%m-%d_%H-%M")
 		shift;;
 
@@ -1482,9 +1480,11 @@ compile_and_install(){
 		fi
 	fi
 	if [ $stage -eq 3 ]; then
-		do_install pypy2 nodejs thrift pybind11
+		do_install pypy2 pybind11
+		# do_install nodejs
+		do_install thrift 
 		do_install rrdtool hypertable # pypy2stm # ganglia 
-		do_install python3
+		# do_install python3
 	fi
 } 
 #########

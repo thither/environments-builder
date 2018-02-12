@@ -13,8 +13,8 @@ fi
 configure_build  --with-system-expat --with-system-ffi --enable-unicode --with-ensurepip=install --with-computed-gotos --enable-shared --enable-optimizations --enable-ipv6 --with-lto  --with-signal-module  --with-pth --with-pymalloc --with-fpectl  --prefix=$CUST_INST_PREFIX;   #
 do_make;do_make install;
 if [ -f $CUST_INST_PREFIX/bin/python3 ]; then
-	rm /usr/bin/py3; ln -s $CUST_INST_PREFIX/bin/python3 /usr/bin/py3;
-	echo $CUST_INST_PREFIX/lib/python3 > $LD_CONF_PATH/python3.conf;
+	rm /usr/bin/py3; ln -s $CUST_INST_PREFIX/bin/python3.7 /usr/bin/py3;
+	echo $CUST_INST_PREFIX/lib/python3.7 > $LD_CONF_PATH/python3.7.conf;
 	ldconfig
 	py3 -m ensurepip; rm /usr/bin/py3_pip; ln -s $CUST_INST_PREFIX/bin/pip3 /usr/bin/py3_pip;
 fi
