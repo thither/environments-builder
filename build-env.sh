@@ -395,6 +395,22 @@ configure_build --prefix=`_install_prefix`;
 do_make;do_make install-strip;do_make install;do_make all; 
 		shift;;
 		
+'libsvg')
+tn='libsvg-0.1.4'; url='http://cairographics.org/snapshots/libsvg-0.1.4.tar.gz';
+set_source 'tar';
+if [ $only_dw == 1 ];then return;fi
+configure_build --prefix=`_install_prefix`;
+do_make;do_make install-strip;do_make install;do_make all; 
+		shift;;
+
+'libjpeg')
+tn='jpeg-9c'; url='http://www.ijg.org/files/jpegsrc.v9c.tar.gz';
+set_source 'tar';
+if [ $only_dw == 1 ];then return;fi
+configure_build --prefix=`_install_prefix`;
+do_make;do_make install-strip;do_make install;do_make all;
+		shift;;	
+
 'm4')
 tn='m4-1.4.18'; url='http://ftp.gnu.org/gnu/m4/m4-1.4.18.tar.xz';
 set_source 'tar';
@@ -889,14 +905,6 @@ configure_build --enable-releasemode --enable-editline --enable-gcov --enable-se
 do_make;do_make install;do_make all; 
 		shift;;	
 		
-'libjpeg')
-tn='jpeg-9c'; url='http://www.ijg.org/files/jpegsrc.v9c.tar.gz';
-set_source 'tar';
-if [ $only_dw == 1 ];then return;fi
-configure_build --prefix=`_install_prefix`;
-do_make;do_make install-strip;do_make install;do_make all;
-		shift;;	
-
 'imagemagick')
 tn='ImageMagick-6.7.7-10'; url='http://www.imagemagick.org/download/releases/ImageMagick-6.7.7-10.tar.xz'; #http://github.com/dahlia/wand/blob/f97277be6d268038a869e59b0d6c3780d7be5664/wand/version.py
 set_source 'tar';
@@ -1151,7 +1159,8 @@ rm -r $DOWNLOAD_PATH/$sn/$fn
 set_source 'zip';
 if [ $only_dw == 1 ];then return;fi
 cmake_build -DLANGS=py2,py3,pypy2 -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release;
-do_make;do_make install;#make alltests;#  -DPACKAGE_OS_SPECIFIC=1  -DVERSION_MISC_SUFFIX=$( date  +"%Y-%m-%d_%H-%M")
+do_make;do_make install;##  -DPACKAGE_OS_SPECIFIC=1  -DVERSION_MISC_SUFFIX=$( date  +"%Y-%m-%d_%H-%M")
+if [ $test_make == 1 ];then make alltests; fi
 		shift;;
 
 'llvm')
@@ -1369,6 +1378,7 @@ sed -i 's/ncurses/ncursesw/g' configure;
 configure_build --prefix=`_install_prefix`; 
 do_make;do_make install;
 		shift;;	
+		
 'lsof')
 tn='lsof_4.89'; url='http://www.mirrorservice.org/sites/lsof.itap.purdue.edu/pub/tools/unix/lsof/lsof_4.89.tar.gz';
 set_source 'tar';
@@ -1378,6 +1388,15 @@ tar -xf lsof_4.89_src.tar;cd lsof_4.89_src;
 do_make;install -v -m0755 -o root -g root lsof `_install_prefix`/bin;
 		shift;;	
 
+'graphviz')
+tn='graphviz-2.40.1'; url='https://graphviz.gitlab.io/pub/graphviz/stable/SOURCES/graphviz.tar.gz';
+set_source 'tar';
+if [ $only_dw == 1 ];then return;fi
+configure_build --prefix=`_install_prefix`; 
+do_make;do_make install;
+		shift;;	
+
+		
 'ncurses')
 tn='ncurses-6.1'; url='http://ftp.gnu.org/gnu/ncurses/ncurses-6.1.tar.gz';
 set_source 'tar';
@@ -1466,8 +1485,8 @@ compile_and_install(){
 		fi
 		do_install libconfuse apr apr-util libsigcplusplus log4cpp cronolog
 		do_install re2 sparsehash 
-		do_install libpng libjpeg  
 		do_install libjansson libxml2 libxslt libuv libcares
+		do_install libsvg libpng libjpeg
 		do_install openjdk apache-ant apache-maven sigar
 		do_install gmock protobuf apache-zookeeper apache-hadoop libgsasl libhdfs3
 		do_install fonts itstool freetype harfbuzz fontconfig 
@@ -1483,7 +1502,8 @@ compile_and_install(){
 		# do_install nodejs
 		# do_install python3
 		do_install thrift 
-		do_install rrdtool hypertable # pypy2stm # ganglia 
+		do_install rrdtool graphviz
+		do_install hypertable # pypy2stm # ganglia 
 	fi
 } 
 #########
