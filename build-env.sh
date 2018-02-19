@@ -26,7 +26,6 @@ elif [[ $os_r == *"openSUSE"* ]]; then
 	os_r='openSUSE';
 fi
 
-
 build_target='node'
 reuse_make=0
 test_make=0
@@ -837,7 +836,7 @@ cp sigar-bin/include/*.h `_install_prefix`/include; cp sigar-bin/lib/libsigar-am
 tn='db-6.2.32'; url='http://download.oracle.com/berkeley-db/db-6.2.32.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-cust_conf_path='dist/';configure_build --enable-shared --enable-cxx --enable-tcl --enable-dbm --prefix=`_install_prefix`; # --enable-java --enable-smallbuild
+dist/configure  CXXFLAGS="-std=c++17 -O3 -flto -fuse-linker-plugin -ffat-lto-objects -m64 -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURC" CFLAGS="-O3 -flto -fuse-linker-plugin -ffat-lto-objects -m64 -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE"  --enable-shared --enable-cxx --enable-tcl --enable-dbm --enable-posixmutexes --enable-o_direct --enable-stl --enable-atomicfileread --prefix=`_install_prefix`  --build=`_build`; # --enable-java --enable-smallbuild
 do_make;do_make install;do_make all; 
 		shift;;
 
@@ -1250,6 +1249,15 @@ if [ $only_dw == 1 ];then return;fi
 ./configure --disable-python --disable-tcl --disable-perl --disable-ruby --disable-lua --disable-docs --disable-examples --build=`_build` --prefix=`_install_prefix`;
 do_make;do_make install;	
 		shift;;	
+
+'ruby')
+tn='ruby-2.5.0'; url='http://cache.ruby-lang.org/pub/ruby/2.5/ruby-2.5.0.tar.gz';
+set_source 'tar';
+if [ $only_dw == 1 ];then return;fi
+configure_build --prefix=`_install_prefix`;
+do_make;do_make install;	
+gem install sinatra rack thin json titleize syck;
+		shift;;	
 		
 'ganglia')
 tn='ganglia-3.7.2'; url='http://sourceforge.net/projects/ganglia/files/ganglia%20monitoring%20core/3.7.2/ganglia-3.7.2.tar.gz/download';
@@ -1494,7 +1502,8 @@ compile_and_install(){
 		do_install imagemagick
 		
 		if [ $build_target == 'monitoring' ] || [ $build_target == 'all' ];then
-			do_install php ganglia-web
+			do_install ruby #
+			#do_install php ganglia-web
 		fi
 	fi
 	if [ $stage -eq 3 ]; then
@@ -1714,10 +1723,6 @@ mv httpd-2.2.32 $TMP_NAME;cd $TMP_NAME
 ./configure --prefix=/usr/local; 
 make; make install;
  
-http://httpd.apache.org/[preferred]/httpd/mod_fcgid/mod_fcgid-2.3.9.tar.gz
-
-http://cache.ruby-lang.org/pub/ruby/2.4/ruby-2.4.1.tar.gz
-http://github.com/macournoyer/thin/archive/v1.7.0.tar.gz
 
 TMP_NAME=proxygen; 
 echo $TMP_NAME
