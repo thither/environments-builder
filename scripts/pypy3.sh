@@ -12,8 +12,8 @@ cd  pypy/goal/;
 while [ ! -f pypy3-c ]; do sleep 60; done;
 
 if [ -f 'pypy3-c' ]; then
-	./pypy3-c ../tool/build_cffi_imports.py --without-tk;
-	./pypy3-c ../tool/release/package.py --without-tk --archive-name $sn --targetdir $DOWNLOAD_PATH/$sn.tar.bz2;
+	python ../tool/build_cffi_imports.py ;
+	python ../tool/release/package.py --without-tk --archive-name $sn --targetdir $DOWNLOAD_PATH/$sn.tar.bz2;
 
 	cd $BUILDS_PATH/$sn;rm -rf built_pkg; mkdir built_pkg; cd built_pkg; tar -xf $DOWNLOAD_PATH/$sn.tar.bz2;
 	rm -rf /opt/pypy3;mv pypy3 /opt/;
