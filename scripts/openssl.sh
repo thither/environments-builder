@@ -4,11 +4,7 @@ set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 
 if [ ! -f $CUST_INST_PREFIX/bin/openssl ]; then
-	if [[ $os_r == 'Ubuntu' ]];then
-		apt-get autoremove -yq --purge openssl ca-certificates
-	elif [ $os_r == 'openSUSE'] && [ $stage == 1 ];then
-		echo 'possible? zypper rm -y openssl ca-certificates';
-	fi
+	rm_os_pkg $sn;
 fi
 ./config disable-msan disable-ubsan disable-asan disable-egd enable-md2 enable-rc5 enable-ssl3 enable-ssl3-method enable-weak-ssl-ciphers threads zlib zlib-dynamic shared enable-ec_nistp_64_gcc_128 --prefix=$CUST_INST_PREFIX;#  -DPEDANTIC -pedantic enable-ssl-trace  enable-ripemd  enable-blake2 --openssldir=$CUST_INST_PREFIX/ssl --prefix=$CUST_INST_PREFIX/ssl;
 do_make;do_make install;do_make all; 

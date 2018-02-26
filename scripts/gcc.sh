@@ -3,9 +3,16 @@ tn='gcc-7.3.0'; url='http://mirrors.concertpass.com/gcc/releases/gcc-7.3.0/gcc-7
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 
+intermediate='';
+target=--target=`_build`;
+if [ $stage -eq 0 ]; then 
+	target="";
+	intermediate='--disable-checking'; 
+fi;
+
 ln -s /usr/include/asm-generic /usr/include/asm;
-configure_build --disable-multilib --target=`_build` --enable-default-pie --enable-gold=yes --enable-languages=all --enable-shared --enable-libiberty --enable-libssp --enable-libasan --enable-libtsan --enable-libgomp --enable-libgcc --enable-libstdc++ --enable-libada --enable-initfini-array --enable-vtable-verify  --enable-objc-gc --enable-lto --enable-tls --enable-threads=posix --with-long-double-128 --enable-decimal-float=yes --with-mpfr=$CUST_INST_PREFIX --with-mpc=$CUST_INST_PREFIX --with-isl=$CUST_INST_PREFIX --with-gmp=$CUST_INST_PREFIX --prefix=$CUST_INST_PREFIX; 
-#--enable-noexist#--enable-multilib  --with-multilib-list=m64 --libdir=$CUST_INST_PREFIX/lib
+config_dest;`src_path`/configure $intermediate --enable-targets=x86-64-linux --disable-multilib --enable-default-pie --enable-gold=yes --enable-languages=all --enable-shared --enable-libiberty --enable-libssp --enable-libasan --enable-libtsan --enable-libgomp --enable-libgcc --enable-libstdc++ --enable-libada --enable-initfini-array --enable-vtable-verify  --enable-objc-gc --enable-lto --enable-tls --enable-threads=posix --with-long-double-128 --enable-decimal-float=yes --with-mpfr=$CUST_INST_PREFIX --with-mpc=$CUST_INST_PREFIX --with-isl=$CUST_INST_PREFIX --with-gmp=$CUST_INST_PREFIX --prefix=$CUST_INST_PREFIX --build=`_build` $target; 
+#--enable-noexist#--enable-multilib  --with-multilib-list=m64 --libdir=$CUST_INST_PREFIX/lib  
 do_make;do_make install;do_make all;
 
 if [ $CUST_INST_PREFIX != '/usr' ]; then

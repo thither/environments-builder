@@ -6,31 +6,23 @@ if [ $only_dw == 1 ];then return;fi
 for n in ncurses panel term; do sed -i 's/'$n'/'$n'w/g' lib_pypy/_curses_build.py; sed -i 's/#include <'$n'w.h>/#include <'$n'.h>/g' lib_pypy/_curses_build.py; done;
 sed -i 's/ncurses/ncursesw/g' pypy/module/_minimal_curses/fficurses.py;
 
-(PYPY_LOCALBASE=$BUILDS_PATH/$sn python rpython/bin/rpython --make-jobs=$NUM_PROCS --lto --no-shared --translation-backendopt-print_statistics --opt=jit pypy/goal/targetpypystandalone.py) & 
-while [ ! -f pypy-c ]; do sleep 60; done; sleep 300; 
-	
-mv pypy-c pypy-tmp;
-#(PYPY_LOCALBASE=$BUILDS_PATH/$sn ./pypy-tmp rpython/bin/rpython --lto --shared --thread --make-jobs=$NUM_PROCS --translation-jit_opencoder_model=big --translation-backendopt-print_statistics --opt=jit pypy/goal/targetpypystandalone.py) &
-(PYPY_LOCALBASE=$BUILDS_PATH/$sn ./pypy-tmp rpython/bin/rpython --lto --shared --thread --make-jobs=$NUM_PROCS --no-profopt --gc=incminimark --gcremovetypeptr --continuation  --translation-backendopt-inline --translation-backendopt-mallocs --translation-backendopt-constfold --translation-backendopt-stack_optimization --translation-backendopt-storesink  --translation-backendopt-remove_asserts --translation-backendopt-really_remove_asserts --if-block-merge --translation-withsmallfuncsets=3 --translation-jit_profiler=off --translation-jit_opencoder_model=big --translation-backendopt-print_statistics --opt=jit pypy/goal/targetpypystandalone.py  --allworkingmodules --objspace-std-intshortcut --objspace-std-newshortcut --objspace-std-optimized_list_getitem --objspace-std-withprebuiltint --objspace-std-withspecialisedtuple --objspace-std-withtproxy) &
-while [ ! -f pypy-c ]; do sleep 60; done; sleep 300; 
+cd pypy/goal;
+(CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" PYPY_LOCALBASE=$BUILDS_PATH/$sn python ../../rpython/bin/rpython --lto --shared --thread --make-jobs=$NUM_PROCS --no-profopt --gc=incminimark --gcremovetypeptr --continuation  --translation-backendopt-inline --translation-backendopt-mallocs --translation-backendopt-constfold --translation-backendopt-stack_optimization --translation-backendopt-storesink  --translation-backendopt-remove_asserts --translation-backendopt-really_remove_asserts --if-block-merge --translation-withsmallfuncsets=3 --translation-jit_profiler=off --translation-jit_opencoder_model=big --translation-backendopt-print_statistics --opt=jit targetpypystandalone.py  --allworkingmodules --objspace-std-intshortcut --objspace-std-newshortcut --objspace-std-optimized_list_getitem --objspace-std-withprebuiltint --objspace-std-withspecialisedtuple --objspace-std-withtproxy) &
+while [ ! -f pypy-c ]; do sleep 60; done;
 #--clever-malloc-removal --clever-malloc-removal-threshold=20   #http://doc.pypy.org/en/latest/config/commandline.html#general-translation-options
 
 if [ -f 'pypy-c' ]; then	
-	cp pypy-c pypy/goal/;cp libpypy-c.so pypy/goal/;
-	./pypy-c pypy/tool/build_cffi_imports.py --without-tk;
-	./pypy-c pypy/tool/release/package.py --without-tk --archive-name $sn --targetdir $DOWNLOAD_PATH/$sn.tar.bz2;
+	./pypy-c ../tool/build_cffi_imports.py --without-tk;
+	./pypy-c ../tool/release/package.py --without-tk --archive-name $sn --targetdir $DOWNLOAD_PATH/$sn.tar.bz2;
 
-	cd $BUILDS_PATH/$sn;rm -r built_pkg; mkdir built_pkg; cd built_pkg; tar -xf $DOWNLOAD_PATH/pypy2.tar.bz2;
-	rm -r /opt/pypy2;mv pypy2 /opt/;
-	rm /usr/bin/pypy; ln -s /opt/pypy2/bin/pypy /usr/bin/pypy
-	pypy -m ensurepip; rm /usr/bin/pypy_pip; ln -s /opt/pypy2/bin/pip /usr/bin/pypy_pip
+	cd $BUILDS_PATH/$sn;rm -rf built_pkg; mkdir built_pkg; cd built_pkg; tar -xf $DOWNLOAD_PATH/$sn.tar.bz2;
+	rm -rf /opt/pypy2;mv pypy2 /opt/;
+	rm -f /usr/bin/pypy; ln -s /opt/pypy2/bin/pypy /usr/bin/pypy
+	pypy -m ensurepip; rm -f /usr/bin/pypy_pip; ln -s /opt/pypy2/bin/pip /usr/bin/pypy_pip
 	
-	unset PYPY_LOCALBASE;
 	source /etc/profile;source ~/.bashrc;ldconfig;
 
-	# pypy_pip uninstall -y pyhdfs josepy acme paypalrestsdk guess_language pylzma rarfile cffi Wand weasyprint greenlet psutil deepdiff xlrd lxml pycrypto cryptography pyopenssl pycparser h2 urllib3 dnspython eventlet msgpack-python
-
-	rm -r ~/.cache/pip 
+	rm -rf ~/.cache/pip 
 	pypy_pip install --upgrade setuptools
 	pypy_pip install --upgrade pip
 	pypy_pip install --upgrade setuptools

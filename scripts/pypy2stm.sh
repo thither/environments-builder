@@ -12,7 +12,7 @@ done;
 sed -i 's/ncurses/ncursesw/g' pypy/module/_minimal_curses/fficurses.py;
 
 (PYPY_LOCALBASE=$BUILDS_PATH/$sn pypy rpython/bin/rpython --shared --thread --make-jobs=12 --translation-jit_profiler=off --translation-jit_opencoder_model=big --translation-backendopt-print_statistics --stm --opt=jit pypy/goal/targetpypystandalone.py) & 
-while [ ! -f pypy-c ]; do sleep 60; done; sleep 300; 
+while [ ! -f pypy-c ]; do sleep 60; done;
 
 if [ -f 'pypy-c' ]; then
 	cp pypy-c pypy/goal/;cp libpypy-c.so pypy/goal/;
