@@ -18,7 +18,7 @@ if [ -f 'pypy3-c' ]; then
 	cd $BUILDS_PATH/$sn;rm -rf built_pkg; mkdir built_pkg; cd built_pkg; tar -xf $DOWNLOAD_PATH/$sn.tar.bz2;
 	rm -rf /opt/pypy3;mv pypy3 /opt/;
 	rm -f /usr/bin/pypy3; ln -s /opt/pypy3/bin/pypy3 /usr/bin/pypy3
-	pypy3 -m ensurepip; rm -f /usr/bin/pypy3_pip; ln -s /opt/pypy3/bin/pip /usr/bin/pypy3_pip
+	pypy3 -m ensurepip; rm -f /usr/bin/pypy3_pip; ln -s /opt/pypy3/bin/pip3 /usr/bin/pypy3_pip
 	
 	source /etc/profile;source ~/.bashrc;ldconfig;
 
