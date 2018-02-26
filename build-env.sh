@@ -197,7 +197,7 @@ src_path() {
 }
 do_make() {
 	echo 'make args:' -j$NUM_PROCS  ${@:1} VERBOSE=1;
-	make  ${@:1} VERBOSE=1; # -j$NUM_PROCS
+	make -j$NUM_PROCS ${@:1} VERBOSE=1;
 }
 #########
 finalize_build() {
