@@ -328,7 +328,7 @@ do_make;do_make install;
 		shift;;
 
 'xz')
-tn='xz-5.2.3'; url='http://tukaani.org/xz/xz-5.2.3.tar.gz';
+tn='xz-5.2.3'; url='http://fossies.org/linux/misc/xz-5.2.3.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS -fPIC" CPPFLAGS="$ADD_O_FS -fPIC" --prefix=`_install_prefix` --build=`_build`; 
@@ -783,7 +783,7 @@ set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 ./bootstrap.sh --with-libraries=all --with-icu --prefix=`_install_prefix`; #
 #echo "using mpi ;" >> "project-config.jam"; --without-mpi --build-type=complete
-./b2 threading=multi link=static runtime-link=shared install; #
+./b2 threading=multi link=shared runtime-link=shared install; #
 		shift;;
 	
 'fuse')
@@ -813,7 +813,7 @@ do_make;do_make install;do_make all;
 tn='libgpg-error-1.27'; url='ftp://ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.27.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --with-pic --enable-static --enable-threads=posix --prefix=`_install_prefix` --build=`_build`;
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --with-pic=PIC --enable-static=yes --enable-threads=posix --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make install-strip;do_make install;do_make all;
 		shift;;	
 		
@@ -821,7 +821,7 @@ do_make;do_make install-strip;do_make install;do_make all;
 tn='libgcrypt-1.8.2'; url='ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.8.2.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --with-pic --enable-static --enable-m-guard --enable-hmac-binary-check --prefix=`_install_prefix` --build=`_build`;
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --with-pic=PIC --enable-static=yes --enable-m-guard --enable-hmac-binary-check --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make install-strip;do_make install;do_make all; #libcap =  --with-capabilities ,
 		shift;;	
 
@@ -984,7 +984,7 @@ set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 sed -i 's/1.5/1.6/g' lib/java/build.xml;
 ./bootstrap.sh;
-config_dest;cmake `src_path` -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC" -DBUILD_CPP=ON -DUSE_STD_THREAD=1 -DWITH_STDTHREADS=ON -DTHRIFT_COMPILER_HS=ON -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+config_dest;cmake `src_path` -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC" -DBUILD_TESTING=OFF -DBUILD_CPP=ON -DUSE_STD_THREAD=1 -DWITH_STDTHREADS=ON -DTHRIFT_COMPILER_HS=ON -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
 do_make;do_make install;do_make all;
 #cd `src_path`/lib/py/;python setup.py install;pypy setup.py install;
 		shift;;	
