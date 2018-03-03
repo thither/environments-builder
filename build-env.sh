@@ -282,8 +282,8 @@ do_make;do_make install;do_make all;
 tn='zlib-1.2.11'; url='http://zlib.net/zlib-1.2.11.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;`src_path`/configure --prefix=`_install_prefix`; 
-do_make;do_make install;do_make all; 
+config_dest;cmake `src_path` -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+do_make;do_make install;do_make all;
 		shift;;
 		
 'bzip2')
@@ -322,14 +322,16 @@ tn='snappy-1.1.7'; url='http://github.com/google/snappy/archive/1.1.7.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;cmake `src_path` -DCMAKE_C_FLAGS="$ADD_O_FS" -DCMAKE_CXX_FLAGS="$ADD_O_FS" -DSNAPPY_BUILD_TESTS=0 -DBUILD_SHARED_LIBS=1 -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
-make;make install; 	
+do_make;do_make install;
+config_dest;cmake `src_path` -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC" -DSNAPPY_BUILD_TESTS=0 -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+do_make;do_make install;
 		shift;;
 
 'xz')
 tn='xz-5.2.3'; url='http://tukaani.org/xz/xz-5.2.3.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --prefix=`_install_prefix` --build=`_build`; 
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS -fPIC" CPPFLAGS="$ADD_O_FS -fPIC" --prefix=`_install_prefix` --build=`_build`; 
 do_make;do_make lib;do_make install-strip;do_make install;do_make all; 
 		shift;;
 		
@@ -499,7 +501,7 @@ do_make;do_make lib;do_make install-strip;do_make install;do_make all;
 tn='libiconv-1.15'; url='http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.15.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-extra-encodings --prefix=`_install_prefix` --build=`_build`;
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-static --enable-extra-encodings --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make lib;do_make install-lib;do_make install-strip;do_make install;do_make all; 
 		shift;;
 		
@@ -604,7 +606,7 @@ do_make;do_make lib;do_make install;do_make all;
 tn='libevent-2.1.8-stable'; url='http://github.com/libevent/libevent/releases/download/release-2.1.8-stable/libevent-2.1.8-stable.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --prefix=`_install_prefix` --build=`_build`; 
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS -fPIC" CPPFLAGS="$ADD_O_FS -fPIC" --prefix=`_install_prefix` --build=`_build`; 
 do_make;do_make install-strip;do_make install;do_make all;  
 		shift;;
 	
@@ -676,7 +678,7 @@ do_make;do_make install;do_make all;
 tn='libunwind-1.2.1'; url='http://download.savannah.nongnu.org/releases/libunwind/libunwind-1.2.1.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-setjmp --enable-block-signals --enable-conservative-checks --enable-msabi-support --enable-minidebuginfo  --enable-conservative-checks --prefix=`_install_prefix` --build=`_build`;
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS " CPPFLAGS="$ADD_O_FS" --with-pic --enable-setjmp --enable-block-signals --enable-conservative-checks --enable-msabi-support --enable-minidebuginfo  --enable-conservative-checks --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make install-strip;do_make install;do_make all;
 		shift;;
 		
@@ -701,7 +703,7 @@ tn='libedit-20170329-3.1'; url='http://thrysoee.dk/editline/libedit-20170329-3.1
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 sed -i 's/-lncurses/-lncursesw/g' configure;
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --prefix=`_install_prefix` --build=`_build`; 
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --with-pic=yes --prefix=`_install_prefix` --build=`_build`; 
 do_make SHLIB_LIBS="-lncursesw";do_make install-strip;do_make install;do_make all;
 		shift;;
 
@@ -735,7 +737,8 @@ make;make install-strip;make install;make all;
 tn='libexpat-R_2_2_5/expat'; url='http://github.com/libexpat/libexpat/archive/R_2_2_5.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;cmake `src_path` -DCMAKE_C_FLAGS="$ADD_O_FS" -DCMAKE_CXX_FLAGS="$ADD_O_FS" -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+./buildconf.sh
+./configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-static --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make install;
 		shift;;
   		
@@ -756,10 +759,13 @@ do_make;do_make install-strip;do_make install;do_make all;
 		shift;;
 		
 're2')
-tn='re2-2018-02-01'; url='http://github.com/google/re2/archive/2018-02-01.tar.gz';
+tn='re2-2018-03-01'; url='http://github.com/google/re2/archive/2018-03-01.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-do_make;do_make lib; do_make install;do_make all; 
+config_dest;cmake `src_path` -DBUILD_SHARED_LIBS=ON -DCMAKE_C_FLAGS="$ADD_O_FS" -DCMAKE_CXX_FLAGS="$ADD_O_FS" -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+do_make;do_make install;
+config_dest;cmake `src_path` -DCMAKE_C_FLAGS="$ADD_O_FS" -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+do_make;do_make install;
 		shift;;
 	
 'icu4c')
@@ -767,7 +773,7 @@ tn='icu/source'; url='http://download.icu-project.org/files/icu4c/60.2/icu4c-60_
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 echo '' > LICENSE;
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-rpath --enable-plugins --prefix=`_install_prefix` --build=`_build`;
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-static --with-data-packaging=static --enable-plugins --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make lib;do_make install;do_make all;
 		shift;;
 		
@@ -777,7 +783,7 @@ set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 ./bootstrap.sh --with-libraries=all --with-icu --prefix=`_install_prefix`; #
 #echo "using mpi ;" >> "project-config.jam"; --without-mpi --build-type=complete
-./b2 threading=multi link=shared runtime-link=shared install; #
+./b2 threading=multi link=static runtime-link=shared install; #
 		shift;;
 	
 'fuse')
@@ -807,7 +813,7 @@ do_make;do_make install;do_make all;
 tn='libgpg-error-1.27'; url='ftp://ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.27.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-threads=posix --prefix=`_install_prefix` --build=`_build`;
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --with-pic --enable-static --enable-threads=posix --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make install-strip;do_make install;do_make all;
 		shift;;	
 		
@@ -815,7 +821,7 @@ do_make;do_make install-strip;do_make install;do_make all;
 tn='libgcrypt-1.8.2'; url='ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.8.2.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-m-guard --enable-hmac-binary-check --prefix=`_install_prefix` --build=`_build`;
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --with-pic --enable-static --enable-m-guard --enable-hmac-binary-check --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make install-strip;do_make install;do_make all; #libcap =  --with-capabilities ,
 		shift;;	
 
@@ -823,7 +829,7 @@ do_make;do_make install-strip;do_make install;do_make all; #libcap =  --with-cap
 tn='libssh-0.7.5'; url='http://red.libssh.org/attachments/download/218/libssh-0.7.5.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;cmake `src_path` -DCMAKE_C_FLAGS="$ADD_O_FS" -DCMAKE_CXX_FLAGS="$ADD_O_FS" -DWITH_GSSAPI=ON -DWITH_LIBZ=ON -DWITH_SSH1=ON -DWITH_GCRYPT=ON -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+config_dest;cmake `src_path` -DCMAKE_C_FLAGS="$ADD_O_FS" -DCMAKE_CXX_FLAGS="$ADD_O_FS" -DWITH_STATIC_LIB=ON -DWITH_LIBZ=ON -DWITH_SSH1=ON -DWITH_GCRYPT=ON -DWITH_GSSAPI=OFF -DWITH_EXAMPLES=OFF -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
 do_make;do_make install;do_make all; 
 		shift;;	
 
@@ -978,7 +984,7 @@ set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 sed -i 's/1.5/1.6/g' lib/java/build.xml;
 ./bootstrap.sh;
-config_dest;cmake `src_path` -DCMAKE_C_FLAGS="$ADD_O_FS" -DCMAKE_CXX_FLAGS="$ADD_O_FS" -DUSE_STD_THREAD=1 -DWITH_STDTHREADS=ON -DTHRIFT_COMPILER_HS=ON -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+config_dest;cmake `src_path` -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC" -DBUILD_CPP=ON -DUSE_STD_THREAD=1 -DWITH_STDTHREADS=ON -DTHRIFT_COMPILER_HS=ON -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
 do_make;do_make install;do_make all;
 #cd `src_path`/lib/py/;python setup.py install;pypy setup.py install;
 		shift;;	
@@ -1124,7 +1130,7 @@ tn='hypertable-master'; url='http://github.com/kashirin-alex/hypertable/archive/
 rm -rf $DOWNLOAD_PATH/$sn/$fn
 set_source 'zip';
 if [ $only_dw == 1 ];then return;fi
-config_dest;cmake `src_path` -Dfsbrokers=hdfs,mapr -Dlanguages=py2,pypy2,py3,java,js,php,rb -DUSE_TCMALLOC=ON -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release;
+config_dest;cmake `src_path` -DENABLE_SHARED=ON -DBUILD_WITH_STATIC=ON -Dfsbrokers=hdfs -Dlanguages=py2,pypy2 -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release;
 do_make;do_make install;##  -DPACKAGE_OS_SPECIFIC=1  -DVERSION_MISC_SUFFIX=$( date  +"%Y-%m-%d_%H-%M")
 make alltests;
 if [ $test_make == 1 ];then make alltests; fi
@@ -1404,7 +1410,7 @@ ncurses_args="--with-shared --enable-rpath --enable-overwrite --enable-getcap --
 if [ $stage -eq 0 ]; then
 	`src_path`/configure CFLAGS="-P $ADD_O_FS" CPPFLAGS="-P $ADD_O_FS" --without-libtool --without-gpm --without-hashed-db $ncurses_args --prefix=`_install_prefix` --build=`_build`;
 else	
-	`src_path`/configure CFLAGS="-P $ADD_O_FS" CPPFLAGS="-P $ADD_O_FS" --with-libtool --with-hashed-db --with-gpm $ncurses_args --prefix=`_install_prefix` --build=`_build`;
+	`src_path`/configure CFLAGS="-P $ADD_O_FS" CPPFLAGS="-P $ADD_O_FS" --with-termlib --with-cxx-shared --with-libtool  --without-hashed-db --with-gpm $ncurses_args --prefix=`_install_prefix` --build=`_build`;
 fi
 make;make install;
 		shift;;
@@ -1481,14 +1487,13 @@ compile_and_install(){
 		
 		if [ $build_target == 'all' ];then
 			do_install perl php nodejs python3
-			#do_install ganglia-web
+			#do_install ganglia-web # ganglia 
 		fi
 	fi
 	if [ $stage -eq 3 ]; then
 		do_install python pypy2 pybind11
 		do_install ruby graphviz rrdtool 
-		do_install perl php nodejs python3 pypy3
-		do_install thrift hypertable # pypy2stm # ganglia 
+		do_install thrift hypertable # pypy2stm python3 pypy3
 	fi
 } 
 #########
@@ -1715,10 +1720,7 @@ mv arrow-apache-arrow-0.7.1 $TMP_NAME; cd $TMP_NAME;
 mkdir $TMP_NAME'_build'; cd $TMP_NAME'_build';
 cmake ../cpp -DARROW_BUILD_TESTS=OFF -DARROW_PYTHON=on -DARROW_PLASMA=off -DPYTHON_LIBRARY=/opt/pypy2/bin/libpypy-c.so -DCMAKE_INSTALL_PREFIX=/usr/local; 
 make; make install;
-cmake ../python -DPYTHON_LIBRARY=/opt/pypy2/bin/libpypy-c.so -DCMAKE_INSTALL_PREFIX=/usr/local; 
-cd ../python;
-pypy setup.py build_ext --with-plasma --inplace  -DPYTHON_LIBRARY=/opt/pypy2/bin/libpypy-c.so 
- 
+
  
  
 TMP_NAME=apache-httpd
