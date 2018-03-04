@@ -313,7 +313,7 @@ do_make;do_make lib;do_make install-strip;do_make install;do_make all;
 tn='lzo-2.10'; url='http://www.oberhumer.com/opensource/lzo/download/lzo-2.10.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-shared --prefix=`_install_prefix` --build=`_build`;
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-shared=yes --enable-static=yes --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make install;
 		shift;;
 		
@@ -501,7 +501,7 @@ do_make;do_make lib;do_make install-strip;do_make install;do_make all;
 tn='libiconv-1.15'; url='http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.15.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-static --enable-extra-encodings --prefix=`_install_prefix` --build=`_build`;
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-shared=yes --enable-static=yes --enable-extra-encodings --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make lib;do_make install-lib;do_make install-strip;do_make install;do_make all; 
 		shift;;
 		
@@ -614,7 +614,7 @@ do_make;do_make install-strip;do_make install;do_make all;
 tn='libatomic_ops-7.6.2'; url='http://www.hboehm.info/gc/gc_source/libatomic_ops-7.6.2.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-shared --prefix=`_install_prefix` --build=`_build`;
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-shared=yes --enable-static=yes --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make install-strip;do_make install;do_make all;
 		shift;;
 		
@@ -646,7 +646,7 @@ do_make;do_make lib;do_make install-strip;do_make install;do_make all;
 tn='tcl8.6.6'; url='ftp://sunsite.icm.edu.pl/pub/programming/tcl/tcl8_6/tcl8.6.6-src.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-cd unix;./configure --enable-threads --enable-shared --enable-64bit --prefix=`_install_prefix` --build=`_build`; 
+cd unix;./configure --enable-threads --enable-shared=yes --enable-static=yes --enable-64bit --prefix=`_install_prefix` --build=`_build`; 
 make;make install-strip;make install;make all; 
 		shift;;
 'tk')
@@ -654,7 +654,7 @@ tn='tk8.6.6'; url='ftp://sunsite.icm.edu.pl/pub/programming/tcl/tcl8_6/tk8.6.6-s
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 cd unix;
-./configure --enable-threads --enable-shared --enable-64bit --prefix=`_install_prefix` --build=`_build`; #- --enable-xft  -with-tcl=`_install_prefix`/lib/
+./configure --enable-threads --enable-shared=yes --enable-static=yes --enable-64bit --prefix=`_install_prefix` --build=`_build`; #- --enable-xft  -with-tcl=`_install_prefix`/lib/
 do_make;do_make install-strip;do_make install;do_make all;
 		shift;;
 
@@ -662,7 +662,7 @@ do_make;do_make install-strip;do_make install;do_make all;
 tn='expect5.45.4'; url='http://fossies.org/linux/misc/expect5.45.4.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-threads --enable-64bit --enable-shared --prefix=`_install_prefix` --build=`_build`;
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-threads --enable-64bit --enable-shared=yes --enable-static=yes --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make install;do_make all;
 		shift;;
 	
@@ -711,7 +711,7 @@ do_make SHLIB_LIBS="-lncursesw";do_make install-strip;do_make install;do_make al
 tn='termcap-1.3.1'; url='http://ftp.gnu.org/gnu/termcap/termcap-1.3.1.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-shared --prefix=`_install_prefix` --build=`_build`;
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-shared=yes --enable-static=yes --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make install;do_make all;
 		shift;;
 		
@@ -720,7 +720,7 @@ tn='readline-7.0'; url='http://ftp.gnu.org/gnu/readline/readline-7.0.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 sed -i 's/-lncurses/-lncursesw/g' configure;
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-shared --with-curses --enable-multibyte --prefix=`_install_prefix` --build=`_build`;
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-shared=yes --enable-static=yes --with-curses --enable-multibyte --prefix=`_install_prefix` --build=`_build`;
 make SHLIB_LIBS="-lncursesw";make install;
 		shift;;
 
@@ -738,7 +738,7 @@ tn='libexpat-R_2_2_5/expat'; url='http://github.com/libexpat/libexpat/archive/R_
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 ./buildconf.sh
-./configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-static --prefix=`_install_prefix` --build=`_build`;
+./configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-shared=yes --enable-static=yes --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make install;
 		shift;;
   		
@@ -773,7 +773,7 @@ tn='icu/source'; url='http://download.icu-project.org/files/icu4c/60.2/icu4c-60_
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 echo '' > LICENSE;
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-static --with-data-packaging=static --enable-plugins --prefix=`_install_prefix` --build=`_build`;
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-shared=yes --enable-static=yes --with-data-packaging=static --enable-plugins --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make lib;do_make install;do_make all;
 		shift;;
 		
@@ -805,7 +805,7 @@ cp sigar-bin/include/*.h `_install_prefix`/include; cp sigar-bin/lib/libsigar-am
 tn='db-6.2.32'; url='http://download.oracle.com/berkeley-db/db-6.2.32.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-dist/configure  CXXFLAGS="-std=c++17 -O3 -flto -fuse-linker-plugin -ffat-lto-objects -m64 -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURC" CFLAGS="-O3 -flto -fuse-linker-plugin -ffat-lto-objects -m64 -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE"  --enable-shared --enable-cxx --enable-tcl --enable-dbm --enable-posixmutexes --enable-o_direct --enable-stl --enable-atomicfileread --prefix=`_install_prefix`  --build=`_build`; # --enable-java --enable-smallbuild
+dist/configure  CXXFLAGS="-std=c++17 -O3 -flto -fuse-linker-plugin -ffat-lto-objects -m64 -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURC" CFLAGS="-O3 -flto -fuse-linker-plugin -ffat-lto-objects -m64 -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE"  --enable-shared=yes --enable-static=yes --enable-cxx --enable-tcl --enable-dbm --enable-posixmutexes --enable-o_direct --enable-stl --enable-atomicfileread --prefix=`_install_prefix`  --build=`_build`; # --enable-java --enable-smallbuild
 do_make;do_make install;do_make all; 
 		shift;;
 
@@ -878,7 +878,7 @@ do_make;do_make install;do_make all;
 tn='ImageMagick-6.7.7-10'; url='http://www.imagemagick.org/download/releases/ImageMagick-6.7.7-10.tar.xz'; #http://github.com/dahlia/wand/blob/f97277be6d268038a869e59b0d6c3780d7be5664/wand/version.py
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-shared --with-jpeg=yes --with-quantum-depth=16 --enable-hdri --enable-pipes --enable-hugepages --disable-docs --with-aix-soname=both --with-modules --with-jemalloc --with-umem --prefix=`_install_prefix` --build=`_build`;
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-shared=yes --enable-static=yes --with-jpeg=yes --with-quantum-depth=16 --enable-hdri --enable-pipes --enable-hugepages --disable-docs --with-aix-soname=both --with-modules --with-jemalloc --with-umem --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make install-strip;do_make install;do_make all;
 		shift;;	
 		
@@ -994,8 +994,9 @@ tn='attr-2.4.48'; url='http://git.savannah.nongnu.org/cgit/attr.git/snapshot/att
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 ./autogen.sh;
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-gettext=yes --enable-shared=yes --prefix=`_install_prefix` --build=`_build`; 
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-gettext=yes --enable-shared=yes --enable-static=yes --prefix=`_install_prefix` --build=`_build`; 
 do_make;do_make install;
+rm /usr/local/lib/libattr.so.1;
 		shift;;	
 
 'libjansson')
@@ -1130,7 +1131,7 @@ tn='hypertable-master'; url='http://github.com/kashirin-alex/hypertable/archive/
 rm -rf $DOWNLOAD_PATH/$sn/$fn
 set_source 'zip';
 if [ $only_dw == 1 ];then return;fi
-config_dest;cmake `src_path` -DENABLE_SHARED=ON -DBUILD_WITH_STATIC=ON -Dfsbrokers=hdfs -Dlanguages=py2,pypy2 -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release;
+config_dest;cmake `src_path` -DHT_TEST_WITH=BOTH -DHT_ENABLE_SHARED=ON -DBUILD_WITH_STATIC=ON -Dfsbrokers=hdfs -Dlanguages=py2,pypy2 -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release;
 do_make;do_make install;##  -DPACKAGE_OS_SPECIFIC=1  -DVERSION_MISC_SUFFIX=$( date  +"%Y-%m-%d_%H-%M")
 make alltests;
 if [ $test_make == 1 ];then make alltests; fi
@@ -1237,7 +1238,7 @@ gem install sinatra rack thin json titleize syck;
 tn='ganglia-3.7.2'; url='http://sourceforge.net/projects/ganglia/files/ganglia%20monitoring%20core/3.7.2/ganglia-3.7.2.tar.gz/download';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-./configure --with-gmetad --enable-status --enable-shared --enable-static --enable-python --disable-perl --prefix=`_install_prefix` --build=`_build`;
+./configure --with-gmetad --enable-status --enable-shared=yes --enable-static=yes --enable-python --disable-perl --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make install;
 		shift;;	
 		
@@ -1277,7 +1278,7 @@ do_make;do_make install;
 tn='php-7.2.2'; url='http://mirror.cogentco.com/pub/php/php-7.2.2.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-shared --enable-json --prefix=`_install_prefix`=`_install_prefix` --build=`_build`; 
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-shared=yes --enable-static=yes --enable-json --prefix=`_install_prefix`=`_install_prefix` --build=`_build`; 
 do_make;do_make install;	
 		shift;;
  
@@ -1294,7 +1295,7 @@ do_make install; #/usr/share/ganglia-webfrontend
 tn='libmnl-1.0.4'; url='http://www.netfilter.org/projects/libmnl/files/libmnl-1.0.4.tar.bz2';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-static --enable-shared --prefix=`_install_prefix` --build=`_build`; 
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-shared=yes --enable-static=yes --prefix=`_install_prefix` --build=`_build`; 
 do_make;do_make install;	
 		shift;;
 		
@@ -1302,7 +1303,7 @@ do_make;do_make install;
 tn='libnftnl-1.0.9'; url='http://www.netfilter.org/projects/libnftnl/files/libnftnl-1.0.9.tar.bz2';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-static --enable-shared --prefix=`_install_prefix` --build=`_build`; 
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-shared=yes --enable-static=yes --prefix=`_install_prefix` --build=`_build`; 
 do_make;do_make install;	
 		shift;;
 		
@@ -1345,7 +1346,7 @@ tn='glibc-2.27'; url='http://ftp.gnu.org/gnu/libc/glibc-2.27.tar.xz';
 set_source 'tar'; 
 if [ $only_dw == 1 ];then return;fi
 wget 'http://ftp.gnu.org/gnu/libc/glibc-linuxthreads-2.5.tar.bz2';tar xf glibc-linuxthreads-2.5.tar.bz2;
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --disable-multi-arch --enable-kernel=4.0.0 --enable-shared --enable-lock-elision=yes --enable-stack-protector=all --enable-tunables --enable-mathvec --with-fp --prefix=`_install_prefix` --build=`_build`; 
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --disable-multi-arch --enable-kernel=4.0.0 --enable-shared=yes --enable-static=yes --enable-lock-elision=yes --enable-stack-protector=all --enable-tunables --enable-mathvec --with-fp --prefix=`_install_prefix` --build=`_build`; 
 do_make; #do_make install;
 		shift;;	
 		
