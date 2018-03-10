@@ -176,9 +176,6 @@ set_source() {
 	download $url
 	archive_type=$1;
 	extract;
-	#if [ $1=='tar' ]; then
-	#	extract
-	#fi
 	cd `src_path`;
 }
 mv_child_as_parent() {
@@ -213,6 +210,7 @@ finalize_build() {
 			echo -e $paths > $LD_CONF_PATH/$sn.conf;
 		fi
 	fi
+
 	source /etc/profile
 	source ~/.bashrc
 	cd $BUILDS_ROOT; ldconfig
@@ -1131,7 +1129,7 @@ tn='hypertable-master'; url='http://github.com/kashirin-alex/hypertable/archive/
 rm -rf $DOWNLOAD_PATH/$sn/$fn
 set_source 'zip';
 if [ $only_dw == 1 ];then return;fi
-config_dest;cmake `src_path` -DHT_TEST_WITH=BOTH -DHT_ENABLE_SHARED=ON -DBUILD_WITH_STATIC=ON -Dfsbrokers=hdfs -Dlanguages=py2,pypy2 -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release;
+config_dest;cmake `src_path` -DHT_O_LEVEL=5 -Dfsbrokers=hdfs -Dlanguages=py2,pypy2 -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release;
 do_make;do_make install;##  -DPACKAGE_OS_SPECIFIC=1  -DVERSION_MISC_SUFFIX=$( date  +"%Y-%m-%d_%H-%M")
 make alltests;
 if [ $test_make == 1 ];then make alltests; fi
