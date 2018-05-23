@@ -1130,7 +1130,7 @@ tn='hypertable-master'; url='http://github.com/kashirin-alex/hypertable/archive/
 rm -rf $DOWNLOAD_PATH/$sn/$fn
 set_source 'zip';
 if [ $only_dw == 1 ];then return;fi
-config_dest;cmake `src_path` -DHT_O_LEVEL=5 -Dfsbrokers=hdfs -Dlanguages=py2,pypy2 -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release;
+config_dest;cmake `src_path` -DHT_O_LEVEL=5 -Dfsbrokers=hdfs -Dlanguages=java,ruby,perl,js,py3,pypy3,py2,pypy2 -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release;
 do_make;do_make install;##  -DPACKAGE_OS_SPECIFIC=1  -DVERSION_MISC_SUFFIX=$( date  +"%Y-%m-%d_%H-%M")
 make alltests;
 if [ $test_make == 1 ];then make alltests; fi
@@ -1249,7 +1249,7 @@ if [ $only_dw == 1 ];then return;fi
 do_make;do_make install;
 		shift;;	
 		
-'pkg-config')
+'pkgconfig')
 tn='pkg-config-0.29.2'; url='http://pkg-config.freedesktop.org/releases/pkg-config-0.29.2.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
@@ -1363,7 +1363,7 @@ do_make; #do_make install;
 tn='perl-5.26.2'; url='http://www.cpan.org/src/5.0/perl-5.26.2.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-./Configure -de -A ccflags="$ADD_O_FS" -Duse64bitall -Dusethreads --Dprefix=`_install_prefix`; 
+./Configure -de -A ccflags="$ADD_O_FS" -Duse64bitall -Dusethreads -Dprefix=`_install_prefix`; 
 do_make;do_make install;
 if [ -f $CUST_INST_PREFIX/bin/perl ] && [ -f /usr/bin/perl ]; then
 	apt-get autoremove -yq --purge perl;
@@ -1475,7 +1475,7 @@ compile_and_install(){
 		do_install libffi p11-kit gnutls tcltk pcre pcre2  # tk openmpi 
 		do_install gdbm expect attr patch #musl
 		do_install jemalloc gc gperf gperftools  # libhoard
-		do_install glib pkg-config gcc  # glibc
+		do_install glib pkgconfig gcc  # glibc
 		
 		do_install coreutils gdb bash lsof curl wget sqlite berkeley-db python boost  #perl
 	fi
@@ -1495,14 +1495,14 @@ compile_and_install(){
 		do_install imagemagick
 		
 		if [ $build_target == 'all' ];then
-			do_install perl php nodejs python3
+			do_install perl php nodejs python3 pypy3 # pypy2stm 
 			#do_install ganglia-web # ganglia 
 		fi
 	fi
 	if [ $stage -eq 3 ]; then
 		do_install python pypy2 pybind11
 		do_install ruby graphviz rrdtool 
-		do_install thrift hypertable # pypy2stm python3 pypy3
+		do_install thrift hypertable
 	fi
 } 
 #########
