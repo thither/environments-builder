@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-tn='Python-2.7.14'; url='http://www.python.org/ftp/python/2.7.14/Python-2.7.14.tgz';
+tn='Python-2.7.15'; url='http://www.python.org/ftp/python/2.7.15/Python-2.7.15.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 
@@ -16,7 +16,7 @@ config_dest;`src_path`/configure CFLAGS="-P $ADD_O_FS" CPPFLAGS="-P $ADD_O_FS" \
 				--with-computed-gotos --with-lto --with-signal-module --with-pth --with-pymalloc --with-fpectl                \
 				--enable-shared --enable-unicode=ucs4 --enable-optimizations --enable-ipv6           \
 				--prefix=$CUST_INST_PREFIX --target=`_build`; 
-do_make;do_make install;
+do_make build_all;do_make install;
 source /etc/profile;source ~/.bashrc;ldconfig;
 
 if [ -f $CUST_INST_PREFIX/bin/pip ] && [ $stage -ne 0 ]; then
@@ -53,7 +53,7 @@ if [ -f $CUST_INST_PREFIX/bin/pip ] && [ $stage -ne 0 ]; then
 	pip install --upgrade  msgpack-python
 	pip install --upgrade  Wand
 	pip install --upgrade  weasyprint                 
-	pip install --upgrade  pylzma rarfile  #zipfile pysnappy
+	pip install --upgrade  brotli pylzma rarfile  #zipfile pysnappy
 	pip install --upgrade  guess_language
 	pip install --upgrade  paypalrestsdk #pygeocoder python-google-places
 	pip install --upgrade  josepy acme

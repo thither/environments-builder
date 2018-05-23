@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-tn='pypy2-v5.10.0-src'; url='http://bitbucket.org/pypy/pypy/downloads/pypy2-v5.10.0-src.tar.bz2';
+tn='pypy2-v6.0.0-src'; url='http://bitbucket.org/pypy/pypy/downloads/pypy2-v6.0.0-src.tar.bz2';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 
@@ -46,7 +46,7 @@ if [ -f 'pypy-c' ]; then
 	pypy_pip install --upgrade msgpack-python
 	pypy_pip install --upgrade Wand
 	pypy_pip install --upgrade weasyprint                 
-	pypy_pip install --upgrade pylzma rarfile  #zipfile pysnappy
+	pypy_pip install --upgrade brotli pylzma rarfile  #zipfile pysnappy
 	pypy_pip install --upgrade guess_language
 	pypy_pip install --upgrade paypalrestsdk #pygeocoder python-google-places
 	pypy_pip install --upgrade josepy acme

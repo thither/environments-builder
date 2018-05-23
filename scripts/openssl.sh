@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-tn='openssl-1.1.0g'; url='http://www.openssl.org/source/openssl-1.1.0g.tar.gz';
+tn='openssl-1.1.0h'; url='http://www.openssl.org/source/openssl-1.1.0h.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 
@@ -10,7 +10,7 @@ fi
 do_make;do_make install;do_make all; 
 if [ -f $CUST_INST_PREFIX/bin/openssl ]; then
 	rm -r $CUST_INST_PREFIX/ssl/certs /etc/ssl/certs;mkdir -p /etc/ssl/certs;
-	wget --no-check-certificate -O /etc/ssl/certs/certs.pem https://curl.haxx.se/ca/cacert.pem; #https://curl.haxx.se/docs/caextract.html 
+	wget --no-check-certificate -O /etc/ssl/certs/certs.pem http://curl.haxx.se/ca/cacert.pem; #https://curl.haxx.se/docs/caextract.html 
 
 	ln -s /etc/ssl/certs $CUST_INST_PREFIX/ssl/certs;
 	echo "#!/usr/bin/env bash" > $ENV_SETTINGS_PATH/$sn.sh
@@ -20,3 +20,6 @@ if [ -f $CUST_INST_PREFIX/bin/openssl ]; then
 	
 fi
 #sctp - https://sourceforge.net/projects/lksctp/files/lksctp-tools/lksctp-tools-1.0.17.tar.gz/download
+
+#  cat "/etc/ssl/certs/certs.pem" | awk '{print > "cert" (1+n) ".pem"} /-----END CERTIFICATE-----/ {n++}'
+#  for file in cert*;do echo yes | keytool -import -file "$file" -alias $file -keystore ../cacerts.jks -storepass 123456; done;
