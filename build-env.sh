@@ -1208,6 +1208,14 @@ config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --prefi
 do_make;do_make install;	
 		shift;;	
 		
+'fribidi')
+tn='fribidi-1.0.3'; url='http://github.com/fribidi/fribidi/releases/download/v1.0.3/fribidi-1.0.3.tar.bz2';
+set_source 'tar';
+if [ $only_dw == 1 ];then return;fi
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --prefix=`_install_prefix` --build=`_build`;
+do_make;do_make install;	
+		shift;;	
+		
 'pango')
 tn='pango-1.42.1'; url='http://ftp.acc.umu.se/pub/GNOME/sources/pango/1.42/pango-1.42.1.tar.xz';
 set_source 'tar';
@@ -1247,6 +1255,7 @@ set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make install;
+cp /usr/lib/x86_64-linux-gnu/pkgconfig/*.pc `_install_prefix`/lib/$sn/;
 		shift;;	
 	
 'gdb')
@@ -1311,7 +1320,7 @@ tn='nftables-0.8.5'; url='https://netfilter.org/projects/nftables/files/nftables
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 apt-get autoremove --purge -y iptables
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --prefix=`_install_prefix` --build=`_build`;
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --disable-man-doc --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make install;	
 		shift;;
 
@@ -1482,7 +1491,7 @@ compile_and_install(){
 		do_install openjdk apache-ant apache-maven sigar
 		do_install gmock protobuf apache-zookeeper apache-hadoop libgsasl # libhdfs3
 		do_install fonts itstool freetype harfbuzz fontconfig 
-		do_install pixman cairo cairomm gobject-ispec pango 
+		do_install pixman cairo cairomm gobject-ispec fribidi pango 
 		do_install imagemagick
 		
 		if [ $build_target == 'all' ];then
