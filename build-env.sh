@@ -777,7 +777,7 @@ do_make;do_make lib;do_make install;do_make all;
 		shift;;
 		
 'boost')
-tn='boost_1_67_0'; url='http://dl.bintray.com/boostorg/release/1.67.0/source/boost_1_67_0.tar.bz2';
+tn='boost_1_66_0'; url='http://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.bz2';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 ./bootstrap.sh --with-libraries=all --with-icu --prefix=`_install_prefix`; #
@@ -979,6 +979,7 @@ fi
 		
 'thrift')
 tn='thrift-0.10.0'; url='http://archive.apache.org/dist/thrift/0.10.0/thrift-0.10.0.tar.gz';
+#tn='thrift-0.11.0'; url='http://archive.apache.org/dist/thrift/0.11.0/thrift-0.11.0.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 sed -i 's/1.5/1.6/g' lib/java/build.xml;
@@ -1078,7 +1079,7 @@ rm -rf $CUST_JAVA_INST_PREFIX/$sn/conf;ln -s /etc/opt/zookeeper $CUST_JAVA_INST_
 		shift;;	
 		
 'nodejs')
-tn='node-v10.1.0'; url='http://nodejs.org/dist/latest-v10.x/node-v10.1.0.tar.xz';
+tn='node-v10.2.1'; url='http://nodejs.org/dist/latest-v10.x/node-v10.2.1.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 ./configure --no-cross-compiling --prefix=`_install_prefix`; #--with-intl=none 
@@ -1501,6 +1502,7 @@ compile_and_install(){
 	fi
 	if [ $stage -eq 3 ]; then
 		do_install python pypy2 pybind11
+			do_install perl php nodejs python3 pypy3
 		do_install ruby graphviz rrdtool 
 		do_install thrift hypertable
 	fi
