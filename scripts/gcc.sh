@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-#tn='gcc-7.3.0'; url='http://mirrors.concertpass.com/gcc/releases/gcc-7.3.0/gcc-7.3.0.tar.xz';
-tn='gcc-8.1.0'; url='http://mirrors.concertpass.com/gcc/releases/gcc-8.1.0/gcc-8.1.0.tar.xz'; 
+tn='gcc-7.3.0'; url='http://mirrors.concertpass.com/gcc/releases/gcc-7.3.0/gcc-7.3.0.tar.xz';
+#tn='gcc-8.1.0'; url='http://mirrors.concertpass.com/gcc/releases/gcc-8.1.0/gcc-8.1.0.tar.xz'; 
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 
@@ -29,3 +29,8 @@ if [ $CUST_INST_PREFIX != '/usr' ]; then
 fi;
 
 # --with-cloog=$CUST_INST_PREFIX --disable-cloog-version-check --enable-fixed-point  --enable-stage1-checking=all  --enable-stage1-languages=all #http://gcc.gnu.org/install/configure.html
+
+#sed -i 's/if __cplusplus >= 201103L \&\& defined(__STRICT_ANSI__)/if __cplusplus >= 211103L \&\& defined(__STRICT_ANSI__)/g' $CUST_INST_PREFIX/include/c++/8.1.0/bits/stl_map.h;
+#sed -i 's/ifdef __STRICT_ANSI__/if __cplusplus >= 211103L \&\& defined(__STRICT_ANSI__)/g' $CUST_INST_PREFIX/include/c++/8.1.0/bits/stl_set.h;
+
+
