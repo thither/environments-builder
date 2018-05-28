@@ -13,7 +13,7 @@ fi;
 
 ln -s /usr/include/asm-generic /usr/include/asm;
 config_dest;`src_path`/configure $intermediate --enable-targets=x86-64-linux --disable-multilib --enable-default-pie --enable-gold=yes --enable-languages=c,c++,fortran,lto,objc,obj-c++  --enable-static --enable-shared --enable-libiberty --enable-libssp --enable-libasan --enable-libtsan --enable-libgomp --enable-libgcc --enable-libstdc++ --enable-libada --enable-initfini-array --enable-vtable-verify  --enable-objc-gc --enable-lto --enable-tls --enable-threads=posix --with-long-double-128 --enable-decimal-float=yes --with-mpfr=$CUST_INST_PREFIX --with-mpc=$CUST_INST_PREFIX --with-isl=$CUST_INST_PREFIX --with-gmp=$CUST_INST_PREFIX --prefix=$CUST_INST_PREFIX --build=`_build` $target; 
-#--enable-noexist#--enable-multilib  --with-multilib-list=m64 --libdir=$CUST_INST_PREFIX/lib   --enable-static  c,c++,fortran,lto,objc,obj-c++
+#--enable-noexist#--enable-multilib  --with-multilib-list=m64 --libdir=$CUST_INST_PREFIX/lib   --enable-static  c,c++,fortran,lto,objc,obj-c++  --with-ld=$CUST_INST_PREFIX/bin/ld 
 do_make;do_make install;do_make all;
 
 if [ $CUST_INST_PREFIX != '/usr' ]; then
@@ -26,6 +26,16 @@ if [ $CUST_INST_PREFIX != '/usr' ]; then
 	if [ -f $CUST_INST_PREFIX/bin/g++ ] && [ -f /usr/bin/g++ ]; then rm /usr/bin/g++;fi
 	if [ -f $CUST_INST_PREFIX/bin/ar ] && [ -f /usr/bin/ar ]; then mv /usr/bin/ar /usr/bin/ar_os;fi
 	if [ -f $CUST_INST_PREFIX/bin/ranlib ] && [ -f /usr/bin/ranlib ]; then mv /usr/bin/ranlib /usr/bin/ranlib_os;fi
+	if [ -f $CUST_INST_PREFIX/bin/ld ] && [ ! -f $CUST_INST_PREFIX/bin/real-ld ]; then 
+		rm -f /usr/bin/ld;
+		ln -s $CUST_INST_PREFIX/bin/ld $CUST_INST_PREFIX/bin/real-ld;
+		ln -s $CUST_INST_PREFIX/bin/ld.gold $CUST_INST_PREFIX/bin/real-ld.gold;
+		ln -s $CUST_INST_PREFIX/bin/ld.bfd $CUST_INST_PREFIX/bin/real-ld.bfd;
+		ln -s $CUST_INST_PREFIX/bin/ld $CUST_INST_PREFIX/bin/x86_64-linux-gnu-ld;
+		ln -s $CUST_INST_PREFIX/bin/ld.gold $CUST_INST_PREFIX/bin/x86_64-linux-gnu-ld.gold;
+		ln -s $CUST_INST_PREFIX/bin/ld.bfd $CUST_INST_PREFIX/bin/x86_64-linux-gnu-ld.bfd;
+	fi
+
 fi;
 
 # --with-cloog=$CUST_INST_PREFIX --disable-cloog-version-check --enable-fixed-point  --enable-stage1-checking=all  --enable-stage1-languages=all #http://gcc.gnu.org/install/configure.html

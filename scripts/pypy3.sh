@@ -6,7 +6,7 @@ if [ $only_dw == 1 ];then return;fi
 for n in ncurses panel term; do sed -i 's/'$n'/'$n'w/g' lib_pypy/_curses_build.py; sed -i 's/#include <'$n'w.h>/#include <'$n'.h>/g' lib_pypy/_curses_build.py; done;
 sed -i 's/ncurses/ncursesw/g' pypy/module/_minimal_curses/fficurses.py;
 
-cd  pypy/goal/;
+cd pypy/goal/;
 (CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" PYPY_LOCALBASE=$BUILDS_PATH/$sn python ../../rpython/bin/rpython --lto --shared --thread --make-jobs=$NUM_PROCS --no-profopt --gc=incminimark --gcremovetypeptr --continuation  --translation-backendopt-inline --translation-backendopt-mallocs --translation-backendopt-constfold --translation-backendopt-stack_optimization --translation-backendopt-storesink  --translation-backendopt-remove_asserts --translation-backendopt-really_remove_asserts --if-block-merge --translation-withsmallfuncsets=3 --translation-jit_profiler=off --translation-jit_opencoder_model=big --translation-backendopt-print_statistics --opt=jit targetpypystandalone.py  --allworkingmodules --objspace-std-intshortcut --objspace-std-newshortcut --objspace-std-optimized_list_getitem --objspace-std-withprebuiltint --objspace-std-withspecialisedtuple --objspace-std-withtproxy) &
 # (PYPY_LOCALBASE=$BUILDS_PATH/$sn pypy ../../rpython/bin/rpython) &
 while [ ! -f pypy3-c ]; do sleep 60; done;

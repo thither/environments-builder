@@ -7,7 +7,7 @@ if [ ! -f $CUST_INST_PREFIX/bin/python3 ]; then
 	rm_os_pkg $sn;
 fi
 config_dest;`src_path`/configure CFLAGS="-P $ADD_O_FS" CPPFLAGS="-P $ADD_O_FS" --with-system-expat --with-system-ffi --with-ensurepip=install --with-computed-gotos --enable-shared --enable-optimizations --enable-ipv6 --with-lto --with-pymalloc --prefix=$CUST_INST_PREFIX; 
-do_make;do_make install;
+do_make build_all;do_make install;
 mv $CUST_INST_PREFIX/include/python3.7m / $CUST_INST_PREFIX/include/python3.7
 if [ -f $CUST_INST_PREFIX/bin/python3 ]; then
 	rm -f /usr/bin/py3; ln -s $CUST_INST_PREFIX/bin/python3.7 /usr/bin/py3;
@@ -21,7 +21,7 @@ source /etc/profile;source ~/.bashrc;ldconfig;
 ./bootstrap.sh --with-python=`_install_prefix`/bin/python3.7 --prefix=`_install_prefix`;
 ./b2 --with-python  threading=multi link=shared runtime-link=shared install;)
 
-if [ -f /usr/bin/py3_pip ] && [ $stage -eq 3 ]; then
+if [ -f /usr/bin/py3_pip ] && [ $stage -ne 0 ]; then
 	
 	rm -rf ~/.cache/pip 
 
