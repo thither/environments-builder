@@ -213,7 +213,8 @@ finalize_build() {
 
 	source /etc/profile
 	source ~/.bashrc
-	cd $BUILDS_ROOT; ldconfig
+	cd $BUILDS_ROOT; 
+	rm /etc/ld.so.cache;ldconfig;
 	echo 'finished:' $sn;
 	echo -e '\n\n\n'
 }
@@ -434,13 +435,13 @@ do_make; do_make lib;do_make install-strip;do_make install;do_make all;
 tn='texinfo-6.5'; url='http://ftp.gnu.org/gnu/texinfo/texinfo-6.5.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-sed -i 's/ncurses/ncursesw/g' configure;
+sed -i 's/ncurses/ncursesw/g' configure;sed -i 's/tinfo ncursesw/tinfow ncursesw/g' configure;
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-threads=posix --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make install-strip;do_make install;do_make all; 
 		shift;;
 		
 'flex')
-tn='flex-2.6.4'; url='http://github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz';
+tn='flex-2.6.3'; url='http://github.com/westes/flex/releases/download/v2.6.3/flex-2.6.3.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --prefix=`_install_prefix` --build=`_build`;
@@ -677,7 +678,7 @@ do_make;do_make install;do_make all;
 tn='libunwind-1.2.1'; url='http://download.savannah.nongnu.org/releases/libunwind/libunwind-1.2.1.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS " CPPFLAGS="$ADD_O_FS" --with-pic --enable-setjmp --enable-block-signals --enable-conservative-checks --enable-msabi-support --enable-minidebuginfo  --enable-conservative-checks --prefix=`_install_prefix` --build=`_build`;
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS " CPPFLAGS="$ADD_O_FS" --with-pic --disable-debug-frame --disable-cxx-exceptions --disable-debug --disable-documentation --disable-minidebuginfo --disable-msabi-support --enable-coredump  --enable-ptrace --enable-setjmp --enable-block-signals --enable-conservative-checks --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make install-strip;do_make install;do_make all;
 		shift;;
 		
@@ -698,10 +699,11 @@ do_make;do_make install-strip;do_make install;do_make all;
 		shift;;
 
 'libeditline')
-tn='libedit-20170329-3.1'; url='http://thrysoee.dk/editline/libedit-20170329-3.1.tar.gz';
+tn='libedit-20180525-3.1'; url='http://thrysoee.dk/editline/libedit-20180525-3.1.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-sed -i 's/-lncurses/-lncursesw/g' configure;
+sed -i 's/-lncurses/-lncursesw -ltinfow/g' configure;
+
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --with-pic=yes --prefix=`_install_prefix` --build=`_build`; 
 do_make SHLIB_LIBS="-lncursesw";do_make install-strip;do_make install;do_make all;
 		shift;;
@@ -718,7 +720,7 @@ do_make;do_make install;do_make all;
 tn='readline-7.0'; url='http://ftp.gnu.org/gnu/readline/readline-7.0.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-sed -i 's/-lncurses/-lncursesw/g' configure;
+sed -i 's/-lncurses/-lncursesw -ltinfow/g' configure;sed -i 's/TERMCAP_LIB=-lncursesw -ltinfow/TERMCAP_LIB="-lncursesw -ltinfow"/g' configure;
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-shared=yes --enable-static=yes --with-curses --enable-multibyte --prefix=`_install_prefix` --build=`_build`;
 make SHLIB_LIBS="-lncursesw";make install;
 		shift;;
@@ -915,7 +917,7 @@ if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --with-default-fonts=`_install_prefix`/share/fonts/ --enable-iconv  --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make install-strip;do_make install;do_make all;
 sn='harfbuzz';_do_build --with-fontconfig=yes --with-freetype=yes;sn='fontconfig';
-fc-cache -f;
+finalize_build;fc-cache -f;
 		shift;;		
 	
 'fonts')
@@ -996,7 +998,7 @@ if [ $only_dw == 1 ];then return;fi
 ./autogen.sh;
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-gettext=yes --enable-shared=yes --enable-static=yes --prefix=`_install_prefix` --build=`_build`; 
 do_make;do_make install;
-rm -f /usr/local/lib/libattr.so.1;
+rm -f /usr/local/lib/libattr.so;
 		shift;;	
 
 'libjansson')
@@ -1548,7 +1550,7 @@ _os_releases(){
 		
 		if [ ! -f $CUST_INST_PREFIX/bin/gcc ] && [ ! -f /usr/bin/gcc ]; then
 			if [ $os_r == 'Ubuntu' ];then
-				front_state=$DEBIAN_FRONTEND;export DEBIAN_FRONTEND=noninteractive;			
+				front_state=$DEBIAN_FRONTEND;export DEBIAN_FRONTEND=noninteractive;		
 				apt-get install -yq --reinstall libblkid-dev libmount-dev uuid-dev;
 				echo '' > /var/log/dpkg.log;
 				apt-get install -yq --reinstall make pkg-config build-essential gcc 
