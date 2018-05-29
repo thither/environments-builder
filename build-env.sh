@@ -998,7 +998,7 @@ if [ $only_dw == 1 ];then return;fi
 ./autogen.sh;
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-gettext=yes --enable-shared=yes --enable-static=yes --prefix=`_install_prefix` --build=`_build`; 
 do_make;do_make install;
-rm -f /usr/local/lib/libattr.so;
+rm -f /usr/local/lib/libattr.so;rm -f /usr/local/lib/libattr.so.1;
 		shift;;	
 
 'libjansson')
@@ -1490,7 +1490,7 @@ compile_and_install(){
 		do_install libconfuse apr apr-util libsigcplusplus log4cpp cronolog
 		do_install re2 sparsehash 
 		do_install libjansson libxml2 libxslt libuv libcares
-		do_install libsvg libpng libjpeg
+		do_install libpng libjpeg libsvg
 		do_install openjdk apache-ant apache-maven sigar
 		do_install gmock protobuf apache-zookeeper apache-hadoop libgsasl # libhdfs3
 		do_install fonts itstool freetype harfbuzz fontconfig 
