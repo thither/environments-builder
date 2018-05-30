@@ -365,6 +365,14 @@ if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make install-strip;do_make install;do_make all; 
 		shift;;
+		
+'librsvg')
+tn='librsvg-2.42.4'; url='http://github.com/GNOME/librsvg/archive/2.42.4.tar.gz';
+set_source 'tar';
+if [ $only_dw == 1 ];then return;fi
+config_dest;`src_path`/autogen.sh CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --prefix=`_install_prefix` --build=`_build`;
+do_make;do_make install-strip;do_make install;do_make all; 
+		shift;;
 
 'libjpeg')
 tn='jpeg-9c'; url='http://www.ijg.org/files/jpegsrc.v9c.tar.gz';
@@ -547,7 +555,7 @@ do_make;do_make install-strip;do_make install;do_make all;
 		shift;;
 
 'p11-kit')
-tn='p11-kit-0.23.10'; url='http://github.com/p11-glue/p11-kit/releases/download/0.23.10/p11-kit-0.23.10.tar.gz';
+tn='p11-kit-0.23.10'; url='http://github.com/p11-glue/p11-kit/releases/download/0.23.10/p11-kit-0.23.10.tar.gz'; #gnutls(readyness)
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --without-trust-paths --prefix=`_install_prefix` --build=`_build`;
@@ -784,6 +792,7 @@ set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 ./bootstrap.sh --with-libraries=all --with-icu --prefix=`_install_prefix`; #
 #echo "using mpi ;" >> "project-config.jam"; --without-mpi --build-type=complete
+#./b2 threading=multi link=static runtime-link=shared install; #
 ./b2 threading=multi link=shared runtime-link=shared install; #
 		shift;;
 	
@@ -827,7 +836,7 @@ do_make;do_make install-strip;do_make install;do_make all; #libcap =  --with-cap
 		shift;;	
 
 'libssh')
-tn='libssh-0.7.5'; url='http://red.libssh.org/attachments/download/218/libssh-0.7.5.tar.xz';
+tn='libssh-0.7.5'; url='http://git.libssh.org/projects/libssh.git/snapshot/libssh-0.7.5.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;cmake `src_path` -DCMAKE_C_FLAGS="$ADD_O_FS" -DCMAKE_CXX_FLAGS="$ADD_O_FS" -DWITH_STATIC_LIB=ON -DWITH_LIBZ=ON -DWITH_SSH1=ON -DWITH_GCRYPT=ON -DWITH_GSSAPI=OFF -DWITH_EXAMPLES=OFF -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
@@ -980,8 +989,8 @@ fi
 		shift;;	
 		
 'thrift')
-tn='thrift-0.10.0'; url='http://archive.apache.org/dist/thrift/0.10.0/thrift-0.10.0.tar.gz';
-#tn='thrift-0.11.0'; url='http://archive.apache.org/dist/thrift/0.11.0/thrift-0.11.0.tar.gz';
+#tn='thrift-0.10.0'; url='http://archive.apache.org/dist/thrift/0.10.0/thrift-0.10.0.tar.gz';
+tn='thrift-0.11.0'; url='http://archive.apache.org/dist/thrift/0.11.0/thrift-0.11.0.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 sed -i 's/1.5/1.6/g' lib/java/build.xml;
@@ -998,7 +1007,7 @@ if [ $only_dw == 1 ];then return;fi
 ./autogen.sh;
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-gettext=yes --enable-shared=yes --enable-static=yes --prefix=`_install_prefix` --build=`_build`; 
 do_make;do_make install;
-rm -f /usr/local/lib/libattr.so;rm -f /usr/local/lib/libattr.so.1;
+rm -f `_install_prefix`/lib/libattr.so;rm -f `_install_prefix`/lib/libattr.so.1;
 		shift;;	
 
 'libjansson')
@@ -1081,7 +1090,7 @@ rm -rf $CUST_JAVA_INST_PREFIX/$sn/conf;ln -s /etc/opt/zookeeper $CUST_JAVA_INST_
 		shift;;	
 		
 'nodejs')
-tn='node-v10.2.1'; url='http://nodejs.org/dist/latest-v10.x/node-v10.2.1.tar.xz';
+tn='node-v10.3.0'; url='http://nodejs.org/dist/latest/node-v10.3.0.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 ./configure --no-cross-compiling --prefix=`_install_prefix`; #--with-intl=none 
@@ -1265,7 +1274,7 @@ cp /usr/lib/x86_64-linux-gnu/pkgconfig/*.pc `_install_prefix`/lib/$sn/;
 tn='gdb-8.1'; url='http://ftp.gnu.org/gnu/gdb/gdb-8.1.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --prefix=`_install_prefix` --build=`_build`;
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --with-curses --enable-lto --enable-objc-gc --enable-vtable-verify --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make install;
 		shift;;	
 
@@ -1322,7 +1331,7 @@ do_make;do_make install;
 tn='nftables-0.8.5'; url='https://netfilter.org/projects/nftables/files/nftables-0.8.5.tar.bz2';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-apt-get autoremove --purge -y iptables
+rm_os_pkg iptables;
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --disable-man-doc --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make install;	
 		shift;;
@@ -1369,7 +1378,7 @@ if [ $only_dw == 1 ];then return;fi
 ./Configure -de -A ccflags="$ADD_O_FS" -Duse64bitall -Dusethreads -Dprefix=`_install_prefix`; 
 do_make;do_make install;
 if [ -f $CUST_INST_PREFIX/bin/perl ] && [ -f /usr/bin/perl ]; then
-	apt-get autoremove -yq --purge perl;
+	rm_os_pkg perl;
 fi
 		shift;;	
 		
@@ -1424,7 +1433,7 @@ if [ $stage -eq 0 ]; then
 else	
 	`src_path`/configure CFLAGS="-P $ADD_O_FS" CPPFLAGS="-P $ADD_O_FS" --with-termlib --with-cxx-shared --with-libtool  --without-hashed-db --with-gpm $ncurses_args --prefix=`_install_prefix` --build=`_build`;
 fi
-make;make install;
+make;ldconfig;make install;
 		shift;;
 		
 'ncursestw')
@@ -1490,7 +1499,7 @@ compile_and_install(){
 		do_install libconfuse apr apr-util libsigcplusplus log4cpp cronolog
 		do_install re2 sparsehash 
 		do_install libjansson libxml2 libxslt libuv libcares
-		do_install libpng libjpeg libsvg
+		do_install libpng libjpeg libsvg #librsvg
 		do_install openjdk apache-ant apache-maven sigar
 		do_install gmock protobuf apache-zookeeper apache-hadoop libgsasl # libhdfs3
 		do_install fonts itstool freetype harfbuzz fontconfig 
@@ -1503,8 +1512,9 @@ compile_and_install(){
 		fi
 	fi
 	if [ $stage -eq 3 ]; then
-		do_install python pypy2 pybind11
+		do_install python pypy2 
 			do_install perl php nodejs python3 pypy3
+		do_install pybind11
 		do_install ruby graphviz rrdtool 
 		do_install thrift hypertable
 	fi
