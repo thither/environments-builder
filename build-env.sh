@@ -730,7 +730,7 @@ set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 sed -i 's/-lncurses/-lncursesw -ltinfow/g' configure;sed -i 's/TERMCAP_LIB=-lncursesw -ltinfow/TERMCAP_LIB="-lncursesw -ltinfow"/g' configure;
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-shared=yes --enable-static=yes --with-curses --enable-multibyte --prefix=`_install_prefix` --build=`_build`;
-make SHLIB_LIBS="-lncursesw";make install;
+make SHLIB_LIBS="-lncursesw -ltinfow";make install;
 		shift;;
 
 'gdbm')
@@ -1274,7 +1274,7 @@ cp /usr/lib/x86_64-linux-gnu/pkgconfig/*.pc `_install_prefix`/lib/$sn/;
 tn='gdb-8.1'; url='http://ftp.gnu.org/gnu/gdb/gdb-8.1.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --with-curses --enable-lto --enable-objc-gc --enable-vtable-verify --prefix=`_install_prefix` --build=`_build`;
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-lto --enable-objc-gc --enable-vtable-verify --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make install;
 		shift;;	
 
@@ -1433,7 +1433,7 @@ if [ $stage -eq 0 ]; then
 else	
 	`src_path`/configure CFLAGS="-P $ADD_O_FS" CPPFLAGS="-P $ADD_O_FS" --with-termlib --with-cxx-shared --with-libtool  --without-hashed-db --with-gpm $ncurses_args --prefix=`_install_prefix` --build=`_build`;
 fi
-make;ldconfig;make install;
+make;rm /etc/ld.so.cache;ldconfig;make install;
 		shift;;
 		
 'ncursestw')
