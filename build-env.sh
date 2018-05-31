@@ -1427,12 +1427,12 @@ tn='ncurses-6.1'; url='http://ftp.gnu.org/gnu/ncurses/ncurses-6.1.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;
-ncurses_args="--with-shared --enable-rpath --enable-overwrite --enable-getcap --enable-ext-colors --enable-ext-mouse --enable-sp-funcs --enable-pc-file --enable-const --enable-sigwinch --enable-hashmap --enable-widec ";
+ncurses_args="--enable-termcap --with-shared --enable-rpath --enable-overwrite --enable-getcap --enable-ext-colors --enable-ext-mouse --enable-sp-funcs --enable-pc-file --enable-const --enable-sigwinch --enable-hashmap --enable-widec ";
 if [ $stage -eq 0 ]; then
 	`src_path`/configure CFLAGS="-P $ADD_O_FS" CPPFLAGS="-P $ADD_O_FS" --without-libtool --without-gpm --without-hashed-db $ncurses_args --prefix=`_install_prefix` --build=`_build`;
 else	
-	`src_path`/configure CFLAGS="-P $ADD_O_FS" CPPFLAGS="-P $ADD_O_FS" --with-termlib --with-cxx-shared --with-libtool  --without-hashed-db --with-gpm $ncurses_args --prefix=`_install_prefix` --build=`_build`;
-fi
+	`src_path`/configure CFLAGS="-P $ADD_O_FS" CPPFLAGS="-P $ADD_O_FS" --with-cxx-shared --with-libtool --without-hashed-db --with-gpm $ncurses_args --prefix=`_install_prefix` --build=`_build`;
+fi  # --with-termlib
 make;make install;
 		shift;;
 		
