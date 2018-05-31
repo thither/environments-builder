@@ -211,11 +211,12 @@ finalize_build() {
 		fi
 	fi
 
-	source /etc/profile
-	source ~/.bashrc
-	cd $BUILDS_ROOT; 
-	rm /etc/ld.so.cache;ldconfig;
+	source /etc/profile;
+	source ~/.bashrc;
+	rm /etc/ld.so.cache;
+	ldconfig;
 	echo 'finished:' $sn;
+	cd $BUILDS_ROOT; 
 	echo -e '\n\n\n'
 }
 #########
@@ -989,13 +990,13 @@ fi
 		shift;;	
 		
 'thrift')
-#tn='thrift-0.10.0'; url='http://archive.apache.org/dist/thrift/0.10.0/thrift-0.10.0.tar.gz';
-tn='thrift-0.11.0'; url='http://archive.apache.org/dist/thrift/0.11.0/thrift-0.11.0.tar.gz';
+tn='thrift-0.10.0'; url='http://archive.apache.org/dist/thrift/0.10.0/thrift-0.10.0.tar.gz';
+#tn='thrift-0.11.0'; url='http://archive.apache.org/dist/thrift/0.11.0/thrift-0.11.0.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 sed -i 's/1.5/1.6/g' lib/java/build.xml;
 ./bootstrap.sh;
-config_dest;cmake `src_path` -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC" -DBUILD_TESTING=OFF -DBUILD_CPP=ON -DUSE_STD_THREAD=1 -DWITH_STDTHREADS=ON -DTHRIFT_COMPILER_HS=ON -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+config_dest;cmake `src_path` -D -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_CPP_FLAGS="$ADD_O_FS -fPIC -std=c++17 " -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC -std=c++17 " -DBUILD_TESTING=OFF -DBUILD_CPP=ON -DUSE_STD_THREAD=1 -DWITH_STDTHREADS=ON -DTHRIFT_COMPILER_HS=ON -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
 do_make;do_make install;do_make all;
 #cd `src_path`/lib/py/;python setup.py install;pypy setup.py install;
 		shift;;	
@@ -1142,7 +1143,7 @@ tn='hypertable-master'; url='http://github.com/kashirin-alex/hypertable/archive/
 rm -rf $DOWNLOAD_PATH/$sn/$fn
 set_source 'zip';
 if [ $only_dw == 1 ];then return;fi
-config_dest;cmake `src_path` -DHT_O_LEVEL=5 -Dfsbrokers=hdfs -Dlanguages=java,ruby,perl,js,py3,pypy3,py2,pypy2 -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release;
+config_dest;cmake `src_path` -DHT_O_LEVEL=5 -Dfsbrokers=hdfs -Dlanguages=php,java,ruby,perl,js,py3,pypy3,py2,pypy2 -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release;
 do_make;do_make install;##  -DPACKAGE_OS_SPECIFIC=1  -DVERSION_MISC_SUFFIX=$( date  +"%Y-%m-%d_%H-%M")
 make alltests;
 if [ $test_make == 1 ];then make alltests; fi
@@ -1298,7 +1299,7 @@ do_make;do_make install;
 tn='php-7.2.5'; url='http://mirror.cogentco.com/pub/php/php-7.2.5.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-shared=yes --enable-static=yes --enable-json --prefix=`_install_prefix`=`_install_prefix` --build=`_build`; 
+config_dest;`src_path`/configure --enable-shared=yes --enable-static=yes --enable-json --prefix=`_install_prefix`=`_install_prefix` --build=`_build`; 
 do_make;do_make install;	
 		shift;;
  
