@@ -793,7 +793,7 @@ set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 ./bootstrap.sh --with-libraries=all --with-icu --prefix=`_install_prefix`; #
 #echo "using mpi ;" >> "project-config.jam"; --without-mpi --build-type=complete
-#./b2 threading=multi link=static runtime-link=shared install; #
+#./b2 -a threading=multi link=static runtime-link=shared install; #
 ./b2 threading=multi link=shared runtime-link=shared install; #
 		shift;;
 	
@@ -996,7 +996,7 @@ set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 sed -i 's/1.5/1.6/g' lib/java/build.xml;
 ./bootstrap.sh;
-config_dest;cmake `src_path` -D -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_CPP_FLAGS="$ADD_O_FS -fPIC -std=c++17 " -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC -std=c++17 " -DBUILD_TESTING=OFF -DBUILD_CPP=ON -DUSE_STD_THREAD=1 -DWITH_STDTHREADS=ON -DTHRIFT_COMPILER_HS=ON -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+config_dest;cmake `src_path` -D -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_CPP_FLAGS="$ADD_O_FS -fPIC " -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC " -DBUILD_TESTING=OFF -DBUILD_CPP=ON -DUSE_STD_THREAD=1 -DWITH_STDTHREADS=ON -DTHRIFT_COMPILER_HS=ON -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
 do_make;do_make install;do_make all;
 #cd `src_path`/lib/py/;python setup.py install;pypy setup.py install;
 		shift;;	
@@ -1143,10 +1143,9 @@ tn='hypertable-master'; url='http://github.com/kashirin-alex/hypertable/archive/
 rm -rf $DOWNLOAD_PATH/$sn/$fn
 set_source 'zip';
 if [ $only_dw == 1 ];then return;fi
-config_dest;cmake `src_path` -DHT_O_LEVEL=5 -Dfsbrokers=hdfs -Dlanguages=php,java,ruby,perl,js,py3,pypy3,py2,pypy2 -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release;
-do_make;do_make install;##  -DPACKAGE_OS_SPECIFIC=1  -DVERSION_MISC_SUFFIX=$( date  +"%Y-%m-%d_%H-%M")
+config_dest;cmake `src_path` -DHT_O_LEVEL=6 -Dfsbrokers=hdfs -Dlanguages=py2,pypy2 -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release;
+do_make;do_make install;##  -DPACKAGE_OS_SPECIFIC=1  -DVERSION_MISC_SUFFIX=$( date  +"%Y-%m-%d_%H-%M") # php,java,ruby,perl,js,py3,pypy3,
 make alltests;
-if [ $test_make == 1 ];then make alltests; fi
 		shift;;
 
 'llvm')
@@ -1508,13 +1507,12 @@ compile_and_install(){
 		do_install imagemagick
 		
 		if [ $build_target == 'all' ];then
-			do_install perl php nodejs python3 pypy3 # pypy2stm 
+			do_install perl php nodejs  pypy3 # pypy2stm 
 			#do_install ganglia-web # ganglia 
 		fi
 	fi
 	if [ $stage -eq 3 ]; then
-		do_install python pypy2 
-			do_install perl php nodejs python3 pypy3
+		do_install python pypy2 python3
 		do_install pybind11
 		do_install ruby graphviz rrdtool 
 		do_install thrift hypertable
