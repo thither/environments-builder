@@ -1143,7 +1143,7 @@ tn='hypertable-master'; url='http://github.com/kashirin-alex/hypertable/archive/
 rm -rf $DOWNLOAD_PATH/$sn/$fn
 set_source 'zip';
 if [ $only_dw == 1 ];then return;fi
-config_dest;cmake `src_path` -DHT_O_LEVEL=6 -Dfsbrokers=hdfs -Dlanguages=py2,pypy2 -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release;
+config_dest;cmake `src_path` -DHT_O_LEVEL=5 -Dfsbrokers=hdfs -Dlanguages=py2,pypy2 -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release;
 do_make;do_make install;##  -DPACKAGE_OS_SPECIFIC=1  -DVERSION_MISC_SUFFIX=$( date  +"%Y-%m-%d_%H-%M") # php,java,ruby,perl,js,py3,pypy3,
 make alltests;
 		shift;;
