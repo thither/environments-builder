@@ -1143,7 +1143,10 @@ tn='hypertable-master'; url='http://github.com/kashirin-alex/hypertable/archive/
 rm -rf $DOWNLOAD_PATH/$sn/$fn
 set_source 'zip';
 if [ $only_dw == 1 ];then return;fi
-config_dest;cmake `src_path` -DHT_O_LEVEL=5 -Dfsbrokers=hdfs -Dlanguages=py2,pypy2 -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release;
+if [ $build_target == 'node' ];then
+	ht_opts="-Dfsbrokers=hdfs -Dlanguages=py2,pypy2";
+fi
+config_dest;cmake `src_path` -DHT_O_LEVEL=5 $ht_opts -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release;
 do_make;do_make install;##  -DPACKAGE_OS_SPECIFIC=1  -DVERSION_MISC_SUFFIX=$( date  +"%Y-%m-%d_%H-%M") # php,java,ruby,perl,js,py3,pypy3,
 make alltests;
 		shift;;
@@ -1486,14 +1489,14 @@ compile_and_install(){
 		do_install libexpat libunistring libidn2 libsodium unbound
 		do_install libffi p11-kit gnutls tcltk pcre pcre2  # tk openmpi 
 		do_install gdbm expect attr patch #musl
-		do_install jemalloc gc gperf gperftools  # libhoard
+		do_install gc gperf gperftools  # libhoard jemalloc
 		do_install glib pkgconfig gcc  # glibc
 		
 		do_install coreutils gdb bash lsof curl wget sqlite berkeley-db python boost  #perl
 	fi
 	if [ $stage -eq 2 ]; then
 		do_install libmnl libnftnl nftables
-		if [ $build_target == 'all' ];then
+		if [ $build_target == 'all-tmp' ];then
 			do_install llvm clang 
 		fi
 		do_install libconfuse apr apr-util libsigcplusplus log4cpp cronolog
@@ -1507,7 +1510,7 @@ compile_and_install(){
 		do_install imagemagick
 		
 		if [ $build_target == 'all' ];then
-			do_install perl php nodejs  pypy3 # pypy2stm 
+			do_install perl php nodejs pypy3 # pypy2stm 
 			#do_install ganglia-web # ganglia 
 		fi
 	fi
