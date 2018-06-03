@@ -12,8 +12,9 @@ if [ $stage -eq 0 ]; then
 fi;
 
 ln -s /usr/include/asm-generic /usr/include/asm;
-config_dest;`src_path`/configure $intermediate --enable-targets=x86-64-linux --disable-multilib --enable-default-pie --enable-gold=yes --enable-languages=c,c++,fortran,lto,objc,obj-c++  --enable-static --enable-shared --enable-libiberty --enable-libssp --enable-libasan --enable-libtsan --enable-libgomp --enable-libgcc --enable-libstdc++ --enable-libada --enable-initfini-array --enable-vtable-verify  --enable-objc-gc --enable-lto --enable-tls --enable-threads=posix --with-long-double-128 --enable-decimal-float=yes --with-mpfr=$CUST_INST_PREFIX --with-mpc=$CUST_INST_PREFIX --with-isl=$CUST_INST_PREFIX --with-gmp=$CUST_INST_PREFIX --prefix=$CUST_INST_PREFIX --build=`_build` $target; 
-#--enable-noexist#--enable-multilib  --with-multilib-list=m64 --libdir=$CUST_INST_PREFIX/lib   --enable-static  c,c++,fortran,lto,objc,obj-c++  --with-ld=$CUST_INST_PREFIX/bin/ld 
+config_dest;`src_path`/configure $intermediate --with-pic --enable-targets=x86-64-linux --disable-multilib --enable-default-pie --enable-gold=yes --enable-languages=c,c++,fortran,lto,objc,obj-c++ --enable-static --enable-shared --enable-libiberty --enable-libssp --enable-libasan --enable-libtsan --enable-libgomp --enable-libgcc --enable-libstdc++ --enable-libada --enable-initfini-array --enable-vtable-verify --enable-objc-gc --enable-lto --enable-tls --enable-threads=posix --with-long-double-128 --enable-decimal-float=yes --with-mpfr=$CUST_INST_PREFIX --with-mpc=$CUST_INST_PREFIX --with-isl=$CUST_INST_PREFIX --with-gmp=$CUST_INST_PREFIX --prefix=$CUST_INST_PREFIX --build=`_build` $target; 
+# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=58638
+#--enable-noexist#--enable-multilib  --with-multilib-list=m64 --libdir=$CUST_INST_PREFIX/lib    c,c++,fortran,lto,objc,obj-c++  --with-ld=$CUST_INST_PREFIX/bin/ld 
 do_make;do_make install;do_make all;
 
 if [ $CUST_INST_PREFIX != '/usr' ]; then
