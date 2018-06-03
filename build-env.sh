@@ -1003,10 +1003,9 @@ do_make;do_make install;do_make all;
 tn='attr-2.4.47'; url='http://download.savannah.nongnu.org/releases/attr/attr-2.4.47.src.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-./autogen.sh;
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-gettext=yes --enable-shared=yes --enable-static=yes --prefix=`_install_prefix` --build=`_build`; 
+echo "PKG_MAJOR=2">VERSION;echo "PKG_MINOR=4">>VERSION;echo "PKG_REVISION=47">>VERSION;echo "PKG_BUILD=0">>VERSION;chmod 755 VERSION;
+`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-gettext=yes --enable-shared=yes --enable-static=yes --prefix=`_install_prefix` --build=`_build`; 
 do_make;do_make install;
-rm -f `_install_prefix`/lib/libattr.so;rm -f `_install_prefix`/lib/libattr.so.1;
 		shift;;	
 
 'libjansson')
@@ -1486,11 +1485,11 @@ compile_and_install(){
 		do_install bison texinfo flex binutils gettext nettle libtasn1 libiconv
 		do_install libexpat libunistring libidn2 libsodium unbound
 		do_install libffi p11-kit gnutls tcltk pcre pcre2  # tk openmpi 
-		do_install gdbm expect attr patch #musl
+		do_install gdbm expect attr patch # musl
 		do_install gc gperf gperftools  # libhoard jemalloc
 		do_install glib pkgconfig gcc  # glibc
 		
-		do_install coreutils gdb bash lsof curl wget sqlite berkeley-db python   #perl
+		do_install coreutils gdb bash lsof curl wget sqlite berkeley-db python   # perl
 	fi
 	if [ $stage -eq 2 ]; then
 		do_install boost
@@ -1501,7 +1500,7 @@ compile_and_install(){
 		do_install libconfuse apr apr-util libsigcplusplus log4cpp cronolog
 		do_install re2 sparsehash 
 		do_install libjansson libxml2 libxslt libuv libcares
-		do_install libpng libjpeg libsvg #librsvg
+		do_install libpng libjpeg libsvg # librsvg
 		do_install openjdk apache-ant apache-maven sigar
 		do_install gmock protobuf apache-zookeeper apache-hadoop libgsasl # libhdfs3
 		do_install fonts itstool freetype harfbuzz fontconfig 
