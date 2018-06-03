@@ -47,7 +47,7 @@ while [ $# -gt 0 ]; do
 
   case $1 in
     --reuse-make) 	
-		reuse_make=0
+		reuse_make=$(($2));
 	;;
     --test-make)  		
 		test_make=1
@@ -792,10 +792,8 @@ tn='boost_1_66_0'; url='http://dl.bintray.com/boostorg/release/1.66.0/source/boo
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 ./bootstrap.sh --with-libraries=all --with-icu --prefix=`_install_prefix`; #
-#echo "using mpi ;" >> "project-config.jam"; --without-mpi --build-type=complete
-#./b2 -a threading=multi link=static runtime-link=shared install; #
-./b2 threading=multi link=shared runtime-link=shared install; #
-		shift;;
+./b2 -a threading=multi runtime-link=shared --with-system --with-filesystem --with-iostreams --with-program_options --with-thread --with-chrono install;
+shift;;
 	
 'fuse')
 tn='fuse-3.1.1'; url='http://github.com/libfuse/libfuse/releases/download/fuse-3.1.1/fuse-3.1.1.tar.gz';
@@ -1002,7 +1000,7 @@ do_make;do_make install;do_make all;
 		shift;;	
 		
 'attr')
-tn='attr-2.4.48'; url='http://git.savannah.nongnu.org/cgit/attr.git/snapshot/attr-2.4.48.tar.gz';
+tn='attr-2.4.47'; url='http://download.savannah.nongnu.org/releases/attr/attr-2.4.47.src.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 ./autogen.sh;
@@ -1492,9 +1490,10 @@ compile_and_install(){
 		do_install gc gperf gperftools  # libhoard jemalloc
 		do_install glib pkgconfig gcc  # glibc
 		
-		do_install coreutils gdb bash lsof curl wget sqlite berkeley-db python boost  #perl
+		do_install coreutils gdb bash lsof curl wget sqlite berkeley-db python   #perl
 	fi
 	if [ $stage -eq 2 ]; then
+		do_install boost
 		do_install libmnl libnftnl nftables
 		if [ $build_target == 'all-tmp' ];then
 			do_install llvm clang 
