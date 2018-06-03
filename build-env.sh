@@ -1003,7 +1003,6 @@ do_make;do_make install;do_make all;
 tn='attr-2.4.47'; url='http://download.savannah.nongnu.org/releases/attr/attr-2.4.47.src.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-echo "PKG_MAJOR=2">VERSION;echo "PKG_MINOR=4">>VERSION;echo "PKG_REVISION=47">>VERSION;echo "PKG_BUILD=0">>VERSION;chmod 755 VERSION;
 `src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-gettext=yes --enable-shared=yes --enable-static=yes --prefix=`_install_prefix` --build=`_build`; 
 do_make;do_make install;
 		shift;;	
