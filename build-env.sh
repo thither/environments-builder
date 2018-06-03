@@ -792,7 +792,7 @@ tn='boost_1_66_0'; url='http://dl.bintray.com/boostorg/release/1.66.0/source/boo
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 ./bootstrap.sh --with-libraries=all --with-icu --prefix=`_install_prefix`; #
-./b2 -a threading=multi runtime-link=shared --with-system --with-filesystem --with-iostreams --with-program_options --with-thread --with-chrono install;
+./b2 -a threading=multi runtime-link=shared --with-thread --with-system --with-filesystem --with-iostreams --with-program_options --with-thread --with-chrono install;
 shift;;
 	
 'fuse')
