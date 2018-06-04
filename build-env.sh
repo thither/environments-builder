@@ -1297,7 +1297,7 @@ do_make;do_make install;
 tn='php-7.2.5'; url='http://mirror.cogentco.com/pub/php/php-7.2.5.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;`src_path`/configure --enable-shared=yes --enable-static=yes --enable-json --prefix=`_install_prefix`=`_install_prefix` --build=`_build`; 
+config_dest;`src_path`/configure --enable-shared=yes --enable-static=yes --enable-json --prefix=`_install_prefix` --build=`_build`; 
 do_make;do_make install;	
 		shift;;
  
