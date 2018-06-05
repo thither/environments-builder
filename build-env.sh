@@ -1379,6 +1379,8 @@ do_make;do_make install;
 if [ -f $CUST_INST_PREFIX/bin/perl ] && [ -f /usr/bin/perl ]; then
 	rm_os_pkg perl;
 fi
+PERL_MM_USE_DEFAULT=1 perl -MCPAN -e "install Class::Accessor";
+PERL_MM_USE_DEFAULT=1 perl -MCPAN -e "install Bit::Vector";
 		shift;;	
 		
 'bash')
