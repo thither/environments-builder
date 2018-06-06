@@ -60,4 +60,8 @@ if [ -f $CUST_INST_PREFIX/bin/pip ] && [ $stage -ne 0 ]; then
 
 	pip install --upgrade  https://github.com/kashirin-alex/libpyhdfs/archive/master.zip
 
+	
+	#pip install --upgrade ninja;
+	#pip install --upgrade http://chromium.googlesource.com/external/gyp/+archive/master.tar.gz;
+	pip install --upgrade Cython
 fi
