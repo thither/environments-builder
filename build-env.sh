@@ -278,7 +278,14 @@ if [ $only_dw == 1 ];then return;fi
 ./bootstrap --prefix=`_install_prefix`;
 do_make;do_make install;do_make all;
 		shift;;
-
+		
+'lz4')
+tn='lz4-1.8.2'; url='http://github.com/lz4/lz4/archive/v1.8.2.tar.gz';
+set_source 'tar';
+if [ $only_dw == 1 ];then return;fi
+do_make DESTDIR=`_install_prefix`;do_make install;
+		shift;;
+		
 'zlib')
 tn='zlib-1.2.11'; url='http://zlib.net/zlib-1.2.11.tar.gz';
 set_source 'tar';
@@ -478,7 +485,7 @@ tn='keyutils-1.5.10'; url='http://people.redhat.com/~dhowells/keyutils/keyutils-
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 sed -i 's/\/usr\/bin\//\/usr\/local\/bin\//g' Makefile;
-make DESTDIR=`_install_prefix` SHAREDIR=share MANDIR=share LIBDIR=lib INCLUDEDIR=include; make DESTDIR=`_install_prefix` MANDIR=share SHAREDIR=share LIBDIR=lib INCLUDEDIR=include install;
+make DESTDIR="" SHAREDIR=`_install_prefix`/share MANDIR=`_install_prefix`/share LIBDIR=`_install_prefix`/lib INCLUDEDIR=`_install_prefix`/include  CFLAGS="$ADD_O_FS -fPIC" CPPFLAGS="$ADD_O_FS -fPIC" install all; 
 		shift;;
 	
 'gettext')
@@ -792,10 +799,18 @@ tn='boost_1_66_0'; url='http://dl.bintray.com/boostorg/release/1.66.0/source/boo
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 ./bootstrap.sh --with-libraries=all --with-icu --prefix=`_install_prefix`; #
-./b2 -a threading=multi runtime-link=shared --with-thread --with-system --with-filesystem --with-iostreams --with-program_options --with-thread --with-chrono install;
+./b2 -a threading=multi runtime-link=shared --with-python --with-context --with-coroutine --with-atomic --with-regex --with-random --with-date_time --with-thread --with-system --with-filesystem --with-iostreams --with-program_options --with-thread --with-chrono install;
 shift;;
 	
-'fuse')
+'fuse2')
+tn='fuse-2.9.7'; url='http://github.com/libfuse/libfuse/releases/download/fuse-2.9.7/fuse-2.9.7.tar.gz';
+set_source 'tar';
+if [ $only_dw == 1 ];then return;fi
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS -fPIC" CPPFLAGS="$ADD_O_FS -fPIC" --enable-static --enable-shared --with-pic --enable-lib --enable-util --prefix=`_install_prefix` --build=`_build`;
+do_make;do_make lib; do_make install-strip;do_make install;do_make all;
+		shift;;
+		
+'fuse3')
 tn='fuse-3.1.1'; url='http://github.com/libfuse/libfuse/releases/download/fuse-3.1.1/fuse-3.1.1.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
@@ -1408,6 +1423,63 @@ if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make install;
 		shift;;	
+
+'nspr')
+tn='nspr-4.19'; url='https://archive.mozilla.org/pub/nspr/releases/v4.19/src/nspr-4.19.tar.gz';
+set_source 'tar';
+if [ $only_dw == 1 ];then return;fi
+config_dest;`src_path`/nspr/configure CFLAGS="-I/usr/include/x86_64-linux-gnu $ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-strip  --enable-ipv6 --without-mozilla  --with-pthreads --enable-64bit --prefix=`_install_prefix` --build=`_build`;
+do_make;do_make install;
+		shift;;	
+		
+'nss')
+tn='nss-3.37.3'; url='http://archive.mozilla.org/pub/security/nss/releases/NSS_3_37_3_RTM/src/nss-3.37.3.tar.gz';
+set_source 'tar';
+if [ $only_dw == 1 ];then return;fi
+cd nss; #./build.sh;
+make BUILD_OPT=1 USE_64=1 NSS_USE_SYSTEM_SQLITE=1 nss_build_all;
+cd ../dist &&
+install -v -m755 Linux*/lib/*.so              /usr/lib              &&
+install -v -m644 Linux*/lib/{*.chk,libcrmf.a} /usr/lib              &&
+install -v -m755 -d                           /usr/include/nss      &&
+cp -v -RL {public,private}/nss/*              /usr/include/nss      &&
+chmod -v 644                                  /usr/include/nss/*    &&
+install -v -m755 Linux*/bin/{certutil,nss-config,pk12util} /usr/bin &&
+install -v -m644 Linux*/lib/pkgconfig/nss.pc  /usr/lib/pkgconfig
+		shift;;		
+
+'yasm')
+tn='yasm-1.3.0'; url='http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz';
+set_source 'tar';
+if [ $only_dw == 1 ];then return;fi
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --prefix=`_install_prefix` --build=`_build`;
+do_make;do_make install;
+		shift;;
+
+'libibverbs')
+tn='libibverbs-1.1.4'; url='http://www.openfabrics.org/downloads/libibverbs/libibverbs-1.1.4-1.24.gb89d4d7.tar.gz';
+set_source 'tar';
+if [ $only_dw == 1 ];then return;fi
+# ./autogen.sh
+config_dest;`src_path`/configure CFLAGS="-O3 -fPIC" CPPFLAGS="-O3 -fPIC" --with-pic --enable-shared --enable-static --prefix=`_install_prefix` --build=`_build`;
+do_make;do_make install;
+		shift;;
+
+'leveldb')
+tn='leveldb-6caf73ad9dae0ee91873bcb39554537b85163770'; url='http://github.com/google/leveldb/archive/6caf73ad9dae0ee91873bcb39554537b85163770.zip';
+set_source 'zip';
+if [ $only_dw == 1 ];then return;fi
+config_dest;cmake `src_path` -DCMAKE_C_FLAGS="$ADD_O_FS" -DCMAKE_CXX_FLAGS="$ADD_O_FS" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+do_make;do_make install;
+		shift;;
+
+'ceph')
+tn='ceph-13.2.0'; url='http://download.ceph.com/tarballs/ceph-13.2.0.tar.gz';
+set_source 'tar';
+if [ $only_dw == 1 ];then return;fi
+config_dest;cmake `src_path` -DCMAKE_C_FLAGS="$ADD_O_FS" -DCMAKE_CXX_FLAGS="$ADD_O_FS" -DBOOST_ROOT=`_install_prefix` -DWITH_SYSTEM_BOOST=ON -DENABLE_SHARED=ON -DWITH_MANPAGE=OFF -DWITH_OPENLDAP=OFF -DWITH_XFS=OFF -DWITH_BLUESTORE=OFF -DWITH_SPDK=OFF -DWITH_LTTNG=OFF -DWITH_BABELTRACE=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+do_make;do_make install;
+		shift;;
 		
 'ncurses')
 tn='ncurses-6.1'; url='http://ftp.gnu.org/gnu/ncurses/ncurses-6.1.tar.gz';
@@ -1480,8 +1552,8 @@ compile_and_install(){
 		do_install ncursesw libreadline
 		do_install m4 gmp mpfr mpc isl
 		do_install autoconf automake libtool gawk
-		do_install zlib bzip2 unrar gzip lzo snappy libzip unzip xz p7zip tar
-		do_install libatomic_ops libeditline libevent libunwind fuse pth
+		do_install zlib bzip2 unrar gzip lzo snappy libzip unzip xz p7zip tar lz4
+		do_install libatomic_ops libeditline libevent libunwind fuse2 fuse3 pth
 		do_install openssl libgpg-error libgcrypt kerberos libssh icu4c
 		do_install bison texinfo flex binutils gettext nettle libtasn1 libiconv
 		do_install libexpat libunistring libidn2 libsodium unbound
@@ -1511,6 +1583,7 @@ compile_and_install(){
 		if [ $build_target == 'all' ];then
 			do_install perl php nodejs pypy3 # pypy2stm 
 			#do_install ganglia-web # ganglia 
+			do_install keyutils nspr nss yasm libibverbs leveldb ceph
 		fi
 	fi
 	if [ $stage -eq 3 ]; then
@@ -1562,7 +1635,7 @@ _os_releases(){
 		if [ ! -f $CUST_INST_PREFIX/bin/gcc ] && [ ! -f /usr/bin/gcc ]; then
 			if [ $os_r == 'Ubuntu' ];then
 				front_state=$DEBIAN_FRONTEND;export DEBIAN_FRONTEND=noninteractive;		
-				apt-get install -yq --reinstall libblkid-dev libmount-dev uuid-dev;
+				apt-get install -yq --reinstall libblkid-dev libmount-dev uuid-dev libudev-dev ;
 				echo '' > /var/log/dpkg.log;
 				apt-get install -yq --reinstall make pkg-config build-essential gcc 
 				export DEBIAN_FRONTEND=$front_state;
@@ -1821,38 +1894,7 @@ make; make install;
 
 
 
-TMP_NAME=leveldb
-echo $TMP_NAME
-mkdir ~/tmpBuilds
-cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'http://github.com/google/leveldb/archive/v1.20.tar.gz'
-tar xf v1.20.tar.gz
-mv leveldb-1.20 $TMP_NAME;cd $TMP_NAME; 
-make;
-mv out-shared /usr/local/leveldb;
-echo /usr/local/leveldb > "/etc/ld.so.conf.d/leveldb.conf"
 
-TMP_NAME=libibverbs
-echo $TMP_NAME
-mkdir ~/tmpBuilds
-cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'http://www.openfabrics.org/downloads/libibverbs/libibverbs-1.1.4-1.24.gb89d4d7.tar.gz'  -O $TMP_NAME.tar.gz
-tar xf $TMP_NAME.tar.gz
-mv libibverbs-1.1.4 $TMP_NAME;cd $TMP_NAME
-./configure --prefix=/usr/local; 
-make; make install;
-
-TMP_NAME=ceph
-echo $TMP_NAME
-mkdir ~/tmpBuilds
-cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'http://download.ceph.com/tarballs/ceph-10.2.10.tar.gz'
-tar xf ceph-10.2.10.tar.gz
-mv ceph-10.2.10 $TMP_NAME;cd $TMP_NAME; 
-./autogen.sh;
-./configure --enable-client --disable-server --with-cryptopp --with-libzfs --without-cython --build=`uname -m`-Ubuntu-linux-gnu --prefix=/opt/ceph --without-fuse --without-libaio --without-libxfs --without-openldap
- make -j12;
-cmake  ~/tmpBuilds/ceph -DWITH_MANPAGE=OFF -DWITH_OPENLDAP=OFF -DWITH_SHARED=ON -DWITH_SPDK=OFF -DWITH_BLUESTORE=OFF -DWITH_LEVELDB=OFF -DWITH_NSS=OFF -DWITH_BLKIN=OFF -DWITH_LTTNG=OFF -DWITH_BABELTRACE=OFF
 
 
 TMP_NAME=gf-complete
