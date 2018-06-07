@@ -1485,7 +1485,7 @@ do_make;do_make install;
 tn='leveldb-6caf73ad9dae0ee91873bcb39554537b85163770'; url='http://github.com/google/leveldb/archive/6caf73ad9dae0ee91873bcb39554537b85163770.zip';
 set_source 'zip';
 if [ $only_dw == 1 ];then return;fi
-config_dest;cmake `src_path` -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+config_dest;cmake `src_path` -DBUILD_SHARED_LIBS=ON -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
 do_make;do_make install;
 		shift;;
 
@@ -1501,7 +1501,7 @@ make;make install-strip;
 tn='ceph-13.2.0'; url='http://download.ceph.com/tarballs/ceph-13.2.0.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;cmake `src_path` -DCMAKE_C_FLAGS="$ADD_O_FS" -DCMAKE_CXX_FLAGS="$ADD_O_FS" -DBOOST_ROOT=`_install_prefix` -DWITH_SYSTEM_BOOST=ON -DENABLE_SHARED=ON -DWITH_TESTS=OFF -DWITH_RADOSGW=ON -DWITH_MANPAGE=OFF -DWITH_OPENLDAP=OFF -DWITH_XFS=OFF -DWITH_BLUESTORE=OFF -DWITH_SPDK=OFF -DWITH_LTTNG=OFF -DWITH_BABELTRACE=OFF -DALLOCATOR=tcmalloc_minimal -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+config_dest;cmake `src_path` -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC -DPIC" -DCMAKE_CXX_FLAGS="-std=c++17 $ADD_O_FS -fPIC -DPIC" -DBOOST_ROOT=`_install_prefix` -DWITH_SYSTEM_BOOST=ON -DENABLE_SHARED=ON -DWITH_TESTS=OFF -DWITH_RADOSGW=ON -DWITH_MANPAGE=OFF -DWITH_OPENLDAP=OFF -DWITH_XFS=OFF -DWITH_BLUESTORE=OFF -DWITH_SPDK=OFF -DWITH_LTTNG=OFF -DWITH_BABELTRACE=OFF -DALLOCATOR=tcmalloc_minimal -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
 do_make;do_make install;
 		shift;;
 
