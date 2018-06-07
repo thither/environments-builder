@@ -501,7 +501,7 @@ tn='keyutils-1.5.10'; url='http://people.redhat.com/~dhowells/keyutils/keyutils-
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 sed -i 's/\/usr\/bin\//\/usr\/local\/bin\//g' Makefile;
-make DESTDIR="" SHAREDIR=`_install_prefix`/share MANDIR=`_install_prefix`/share LIBDIR=`_install_prefix`/lib INCLUDEDIR=`_install_prefix`/include  CFLAGS="$ADD_O_FS -fPIC" CPPFLAGS="$ADD_O_FS -fPIC" install all; 
+make DESTDIR="" SHAREDIR=`_install_prefix`/share MANDIR=`_install_prefix`/share LIBDIR=`_install_prefix`/lib INCLUDEDIR=`_install_prefix`/include  CFLAGS="-I. $ADD_O_FS -fPIC" CPPFLAGS="$ADD_O_FS -fPIC" install all; 
 		shift;;
 
 'gettext')
@@ -1020,8 +1020,8 @@ fi
 		shift;;	
 
 'thrift')
-tn='thrift-0.10.0'; url='http://archive.apache.org/dist/thrift/0.10.0/thrift-0.10.0.tar.gz';
-#tn='thrift-0.11.0'; url='http://archive.apache.org/dist/thrift/0.11.0/thrift-0.11.0.tar.gz';
+#tn='thrift-0.10.0'; url='http://archive.apache.org/dist/thrift/0.10.0/thrift-0.10.0.tar.gz';
+tn='thrift-0.11.0'; url='http://archive.apache.org/dist/thrift/0.11.0/thrift-0.11.0.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 sed -i 's/1.5/1.6/g' lib/java/build.xml;
@@ -1119,7 +1119,7 @@ rm -rf $CUST_JAVA_INST_PREFIX/$sn/conf;ln -s /etc/opt/zookeeper $CUST_JAVA_INST_
 		shift;;	
 
 'nodejs')
-tn='node-v10.3.0'; url='http://nodejs.org/dist/latest/node-v10.3.0.tar.xz';
+tn='node-v10.4.0'; url='http://nodejs.org/dist/v10.4.0/node-v10.4.0.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 ./configure --no-cross-compiling --prefix=`_install_prefix`; #--with-intl=none 
@@ -1453,7 +1453,7 @@ tn='nss-3.37.3'; url='http://archive.mozilla.org/pub/security/nss/releases/NSS_3
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 cd nss; #./build.sh;
-make BUILD_OPT=1 USE_64=1 NSS_USE_SYSTEM_SQLITE=1 nss_build_all;
+make NSPR_INCLUDE_DIR=`_install_prefix`/include/nspr BUILD_OPT=1 USE_64=1 NSS_USE_SYSTEM_SQLITE=1;
 cd ../dist &&
 install -v -m755 Linux*/lib/*.so              /usr/lib              &&
 install -v -m644 Linux*/lib/{*.chk,libcrmf.a} /usr/lib              &&
@@ -1485,7 +1485,7 @@ do_make;do_make install;
 tn='leveldb-6caf73ad9dae0ee91873bcb39554537b85163770'; url='http://github.com/google/leveldb/archive/6caf73ad9dae0ee91873bcb39554537b85163770.zip';
 set_source 'zip';
 if [ $only_dw == 1 ];then return;fi
-config_dest;cmake `src_path` -DCMAKE_C_FLAGS="$ADD_O_FS" -DCMAKE_CXX_FLAGS="$ADD_O_FS" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+config_dest;cmake `src_path` -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
 do_make;do_make install;
 		shift;;
 
@@ -1501,7 +1501,7 @@ make;make install-strip;
 tn='ceph-13.2.0'; url='http://download.ceph.com/tarballs/ceph-13.2.0.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;cmake `src_path` -DCMAKE_C_FLAGS="$ADD_O_FS" -DCMAKE_CXX_FLAGS="$ADD_O_FS" -DBOOST_ROOT=`_install_prefix` -DWITH_SYSTEM_BOOST=ON -DENABLE_SHARED=ON -DWITH_RADOSGW=OFF -DWITH_MANPAGE=OFF -DWITH_OPENLDAP=OFF -DWITH_XFS=OFF -DWITH_BLUESTORE=OFF -DWITH_SPDK=OFF -DWITH_LTTNG=OFF -DWITH_BABELTRACE=OFF -DALLOCATOR=tcmalloc_minimal -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+config_dest;cmake `src_path` -DCMAKE_C_FLAGS="$ADD_O_FS" -DCMAKE_CXX_FLAGS="$ADD_O_FS" -DBOOST_ROOT=`_install_prefix` -DWITH_SYSTEM_BOOST=ON -DENABLE_SHARED=ON -DWITH_TESTS=OFF -DWITH_RADOSGW=ON -DWITH_MANPAGE=OFF -DWITH_OPENLDAP=OFF -DWITH_XFS=OFF -DWITH_BLUESTORE=OFF -DWITH_SPDK=OFF -DWITH_LTTNG=OFF -DWITH_BABELTRACE=OFF -DALLOCATOR=tcmalloc_minimal -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
 do_make;do_make install;
 		shift;;
 
