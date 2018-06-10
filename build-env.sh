@@ -816,7 +816,10 @@ tn='boost_1_66_0'; url='http://dl.bintray.com/boostorg/release/1.66.0/source/boo
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 ./bootstrap.sh --with-libraries=all --with-icu --prefix=`_install_prefix`; #
-./b2 -a threading=multi runtime-link=shared --with-python --with-context --with-coroutine --with-atomic --with-regex --with-random --with-date_time --with-thread --with-system --with-filesystem --with-iostreams --with-program_options --with-thread --with-chrono install;
+./b2 -a cxxflags=-fPIC cflags=-fPIC threading=multi runtime-link=shared \
+		--with-python --with-context --with-coroutine --with-atomic --with-regex --with-random \
+		--with-date_time --with-thread --with-system --with-filesystem --with-iostreams \
+		--with-program_options --with-thread --with-chrono --with-test  install;
 		shift;;
 
 'fuse2')
@@ -1026,8 +1029,8 @@ set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 sed -i 's/1.5/1.6/g' lib/java/build.xml;
 ./bootstrap.sh;
-config_dest;cmake `src_path` -D -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_CPP_FLAGS="$ADD_O_FS -fPIC " -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC " -DBUILD_TESTING=OFF -DBUILD_CPP=ON -DUSE_STD_THREAD=1 -DWITH_STDTHREADS=ON -DTHRIFT_COMPILER_HS=ON -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
-do_make;do_make install;do_make all;
+config_dest;cmake `src_path` -D -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_CPP_FLAGS="$ADD_O_FS -fPIC " -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC " -DBUILD_TESTING=ON -DBUILD_CPP=ON -DUSE_STD_THREAD=1 -DWITH_STDTHREADS=ON -DTHRIFT_COMPILER_HS=ON -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+do_make;do_make install;do_make all;  #FORCE_BOOST_SMART_PTR=ON
 #cd `src_path`/lib/py/;python setup.py install;pypy setup.py install;
 		shift;;	
 
@@ -1174,7 +1177,7 @@ if [ $only_dw == 1 ];then return;fi
 if [ $build_target == 'node' ];then
 	ht_opts="-Dfsbrokers=hdfs -Dlanguages=py2,pypy2";
 fi
-config_dest;cmake `src_path` -DHT_O_LEVEL=5 $ht_opts -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release;
+config_dest;cmake `src_path` -DHT_NOT_STATIC_CORE=1 -DHT_O_LEVEL=5 $ht_opts -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release;
 do_make;do_make install;##  -DPACKAGE_OS_SPECIFIC=1  -DVERSION_MISC_SUFFIX=$( date  +"%Y-%m-%d_%H-%M") # php,java,ruby,perl,js,py3,pypy3,
 make alltests;
 		shift;;
@@ -1502,7 +1505,7 @@ tn='ceph-13.2.0'; url='http://download.ceph.com/tarballs/ceph-13.2.0.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;cmake `src_path` -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC -DPIC" -DCMAKE_CXX_FLAGS="-std=c++17 $ADD_O_FS -fPIC -DPIC" -DBOOST_ROOT=`_install_prefix` -DWITH_SYSTEM_BOOST=ON -DENABLE_SHARED=ON -DWITH_TESTS=OFF -DWITH_RADOSGW=ON -DWITH_MANPAGE=OFF -DWITH_OPENLDAP=OFF -DWITH_XFS=OFF -DWITH_BLUESTORE=OFF -DWITH_SPDK=OFF -DWITH_LTTNG=OFF -DWITH_BABELTRACE=OFF -DALLOCATOR=tcmalloc_minimal -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
-do_make;do_make install;
+make VERBOSE=1;do_make install;
 		shift;;
 
 'ncurses')
