@@ -7,9 +7,21 @@ for n in ncurses panel term; do sed -i 's/'$n'/'$n'w/g' lib_pypy/_curses_build.p
 sed -i 's/ncurses/ncursesw/g' pypy/module/_minimal_curses/fficurses.py;
 
 cd pypy/goal;
-(CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" PYPY_LOCALBASE=$BUILDS_PATH/$sn python ../../rpython/bin/rpython --lto --shared --thread --make-jobs=$NUM_PROCS --no-profopt --gc=incminimark --gcremovetypeptr --continuation  --translation-backendopt-inline --translation-backendopt-mallocs --translation-backendopt-constfold --translation-backendopt-stack_optimization --translation-backendopt-storesink  --translation-backendopt-remove_asserts --translation-backendopt-really_remove_asserts --if-block-merge --translation-withsmallfuncsets=3 --translation-jit_profiler=off --translation-jit_opencoder_model=big --translation-backendopt-print_statistics --opt=jit targetpypystandalone.py  --allworkingmodules --objspace-std-intshortcut --objspace-std-newshortcut --objspace-std-optimized_list_getitem --objspace-std-withprebuiltint --objspace-std-withspecialisedtuple --objspace-std-withtproxy) &
+(VERBOSE=1 CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" PYPY_LOCALBASE=$BUILDS_PATH/$sn python ../../rpython/bin/rpython \
+			--no-shared --thread --make-jobs=$NUM_PROCS \
+			--verbose --no-profopt --gc=incminimark --gcremovetypeptr --continuation \
+			--inline-threshold=33.4 --translation-backendopt-inline --listcompr \
+			--translation-backendopt-mallocs --translation-backendopt-constfold --translation-backendopt-stack_optimization \
+			--translation-backendopt-storesink --translation-backendopt-remove_asserts --translation-backendopt-really_remove_asserts \
+			--if-block-merge --translation-withsmallfuncsets=10 --translation-jit_opencoder_model=big --translation-jit_profiler=off \
+			--translation-rweakref \
+			--translation-backendopt-print_statistics \
+			--opt=jit targetpypystandalone.py --allworkingmodules --withmod-_file \
+			--objspace-std-intshortcut --objspace-std-newshortcut --objspace-std-optimized_list_getitem --objspace-std-withprebuiltint \
+			--objspace-std-methodcachesizeexp=15 --objspace-std-withliststrategies\
+			--objspace-std-withspecialisedtuple --objspace-std-withtproxy) &
 while [ ! -f pypy-c ]; do sleep 60; done;
-#--clever-malloc-removal --clever-malloc-removal-threshold=20   #http://doc.pypy.org/en/latest/config/commandline.html#general-translation-options
+# --clever-malloc-removal --clever-malloc-removal-threshold=33.4 --translation-split_gc_address_space    #http://doc.pypy.org/en/latest/config/commandline.html#general-translation-options
 
 if [ -f 'pypy-c' ]; then	
 	./pypy-c ../tool/build_cffi_imports.py --without-tk;
