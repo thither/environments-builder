@@ -29,6 +29,8 @@ if [[ $os_r == *"ubuntu"* ]]; then
 	os_r='ubuntu';
 elif [[ $os_r == *"openSUSE"* ]]; then 
 	os_r='openSUSE';
+elif [[ $os_r == *"arch"* ]]; then 
+	os_r='arch';
 fi
 
 build_target='node'
