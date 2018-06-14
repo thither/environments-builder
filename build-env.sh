@@ -23,10 +23,10 @@ ADD_O_FS_from_stage_2=$ADD_O_FS_from_stage_1
 ##################################################################
 ADD_O_FS=''
 
-os_r=$(cat /etc/issue.net);
+os_r=$(cat /usr/lib/os-release | grep "^ID=" |  sed 's/ID=//g');
 echo $os_r;
-if [[ $os_r == *"Ubuntu"* ]]; then 
-	os_r='Ubuntu';
+if [[ $os_r == *"ubuntu"* ]]; then 
+	os_r='ubuntu';
 elif [[ $os_r == *"openSUSE"* ]]; then 
 	os_r='openSUSE';
 fi
@@ -473,11 +473,11 @@ do_make;do_make install-strip;do_make install;do_make all;
 		shift;;
 
 'flex')
-tn='flex-2.6.3'; url='http://github.com/westes/flex/releases/download/v2.6.3/flex-2.6.3.tar.gz';
+tn='flex-2.6.4'; url='http://github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --prefix=`_install_prefix` --build=`_build`;
-do_make;do_make lib;do_make install-strip;do_make install;do_make all;
+./autogen.sh;`src_path`/configure CFLAGS="$ADD_O_FS -fPIC" CPPFLAGS="$ADD_O_FS -fPIC" --with-pic --enable-shared --enable-static --prefix=`_install_prefix` --build=`_build`;
+do_make;do_make install;
 		shift;;
 
 'coreutils')
@@ -492,7 +492,7 @@ do_make;do_make lib;do_make install-strip;do_make install;do_make all;
 tn='binutils-2.30'; url='http://ftp.ntua.gr/mirror/gnu/binutils/binutils-2.30.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS"  --enable-plugins --enable-gold=yes --enable-ld=yes --enable-libada --enable-libssp --enable-lto --enable-objc-gc --enable-vtable-verify  --with-system-zlib --with-mpfr=`_install_prefix` --with-mpc=`_install_prefix` --with-isl=`_install_prefix` --with-gmp=`_install_prefix` --prefix=`_install_prefix` --build=`_build`;
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-plugins --enable-gold=yes --enable-ld=yes --enable-libada --enable-libssp --enable-lto --enable-objc-gc --enable-vtable-verify --enable-shared=bfd --with-system-zlib --with-mpfr=`_install_prefix` --with-mpc=`_install_prefix` --with-isl=`_install_prefix` --with-gmp=`_install_prefix` --prefix=`_install_prefix` --build=`_build`;
 do_make tooldir=`_install_prefix`; do_make tooldir=`_install_prefix` install-strip;do_make tooldir=`_install_prefix` install;do_make tooldir=`_install_prefix` all; # libiberty> --enable-shared=opcodes --enable-shared=bfd --enable-host-shared --enable-stage1-checking=all --enable-stage1-languages=all 
 		shift;;
 
@@ -796,9 +796,9 @@ do_make;do_make install-strip;do_make install;do_make all;
 tn='re2-2018-04-01'; url='http://github.com/google/re2/archive/2018-04-01.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;cmake `src_path` -DBUILD_SHARED_LIBS=ON -DCMAKE_C_FLAGS="$ADD_O_FS" -DCMAKE_CXX_FLAGS="$ADD_O_FS" -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+config_dest;cmake `src_path` -DBUILD_SHARED_LIBS=ON -DCMAKE_CXX_FLAGS="$ADD_O_FS" -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
 do_make;do_make install;
-config_dest;cmake `src_path` -DCMAKE_C_FLAGS="$ADD_O_FS" -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+config_dest;cmake `src_path` -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
 do_make;do_make install;
 		shift;;
 
@@ -835,7 +835,7 @@ tn='fuse-3.1.1'; url='http://github.com/libfuse/libfuse/releases/download/fuse-3
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-lib --enable-util --prefix=`_install_prefix` --build=`_build`;
-do_make;do_make lib; do_make install-strip;do_make install;do_make all;
+do_make;do_make lib; do_make install-strip;do_make install;
 		shift;;
 
 'sigar')
@@ -1165,7 +1165,7 @@ do_make;do_make install;
 tn='pybind11-2.2.3'; url='http://github.com/pybind/pybind11/archive/v2.2.3.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;cmake `src_path` -DCMAKE_C_FLAGS="$ADD_O_FS" -DCMAKE_CXX_FLAGS="$ADD_O_FS"  -DPYBIND11_TEST=OFF  -DCMAKE_INSTALL_INCLUDEDIR=`_install_prefix`/include;
+config_dest;cmake `src_path` -DCMAKE_CXX_FLAGS="$ADD_O_FS"  -DPYBIND11_TEST=OFF  -DCMAKE_INSTALL_INCLUDEDIR=`_install_prefix`/include;
 do_make install;
 		shift;;
 
@@ -1178,8 +1178,8 @@ if [ $build_target == 'node' ];then
 	ht_opts="-Dfsbrokers=hdfs -Dlanguages=py2,pypy2";
 fi
 config_dest;cmake `src_path` -DHT_NOT_STATIC_CORE=1 -DHT_O_LEVEL=5 $ht_opts -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release;
-do_make;do_make install;##  -DPACKAGE_OS_SPECIFIC=1  -DVERSION_MISC_SUFFIX=$( date  +"%Y-%m-%d_%H-%M") # php,java,ruby,perl,js,py3,pypy3,
-make alltests;
+do_make install;##  -DPACKAGE_OS_SPECIFIC=1  -DVERSION_MISC_SUFFIX=$( date  +"%Y-%m-%d_%H-%M") # php,java,ruby,perl,js,py3,pypy3,
+make alltests; #if [ $test_make == 1 ];then make alltests; fi;
 		shift;;
 
 'llvm')
@@ -1302,6 +1302,7 @@ if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make install;
 cp /usr/lib/x86_64-linux-gnu/pkgconfig/*.pc `_install_prefix`/lib/$sn/;
+cp /usr/lib/pkgconfig/*.pc `_install_prefix`/lib/$sn/;
 		shift;;	
 
 'gdb')
@@ -1400,8 +1401,12 @@ tn='glibc-2.27'; url='http://ftp.gnu.org/gnu/libc/glibc-2.27.tar.xz';
 set_source 'tar'; 
 if [ $only_dw == 1 ];then return;fi
 wget 'http://ftp.gnu.org/gnu/libc/glibc-linuxthreads-2.5.tar.bz2';tar xf glibc-linuxthreads-2.5.tar.bz2;
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --disable-multi-arch --enable-kernel=4.0.0 --enable-shared=yes --enable-static=yes --enable-lock-elision=yes --enable-stack-protector=all --enable-tunables --enable-mathvec --with-fp --prefix=`_install_prefix` --build=`_build`; 
-do_make; #do_make install;
+config_dest;`src_path`/configure --disable-sanity-checks  --disable-nss-crypt \
+		--disable-multi-arch --enable-kernel=4.0.0 --enable-shared --enable-static \
+		--enable-lock-elision=yes --enable-stack-protector=all --enable-tunables --enable-mathvec \
+		--enable-pt_chown --disable-build-nscd --disable-nscd --disable-obsolete-nsl \
+		--with-fp --prefix=`_install_prefix`/`_build` --build=`_build`; # --enable-static-pie
+do_make; do_make install;
 		shift;;	
 
 'perl')
@@ -1504,7 +1509,7 @@ make;make install-strip;
 tn='ceph-13.2.0'; url='http://download.ceph.com/tarballs/ceph-13.2.0.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;cmake `src_path` -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC -DPIC" -DCMAKE_CXX_FLAGS="-std=c++17 $ADD_O_FS -fPIC -DPIC" -DBOOST_ROOT=`_install_prefix` -DWITH_SYSTEM_BOOST=ON -DENABLE_SHARED=ON -DWITH_TESTS=OFF -DWITH_RADOSGW=ON -DWITH_MANPAGE=OFF -DWITH_OPENLDAP=OFF -DWITH_XFS=OFF -DWITH_BLUESTORE=OFF -DWITH_SPDK=OFF -DWITH_LTTNG=OFF -DWITH_BABELTRACE=OFF -DALLOCATOR=tcmalloc_minimal -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+config_dest;cmake `src_path` -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC -DPIC" -DCMAKE_CXX_FLAGS="-std=c++17 $ADD_O_FS -fPIC -DPIC" -DBOOST_ROOT=`_install_prefix` -DWITH_SYSTEM_BOOST=ON -DENABLE_SHARED=ON -DWITH_TESTS=OFF -DWITH_RADOSGW=ON -DWITH_FUSE=OFF -DWITH_MANPAGE=OFF -DWITH_OPENLDAP=OFF -DWITH_XFS=OFF -DWITH_BLUESTORE=OFF -DWITH_SPDK=OFF -DWITH_LTTNG=OFF -DWITH_BABELTRACE=OFF -DALLOCATOR=tcmalloc_minimal -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
 make VERBOSE=1;do_make install;
 		shift;;
 
@@ -1624,7 +1629,7 @@ compile_and_install(){
 
 #########
 rm_os_pkg(){
-	if [ $os_r == 'Ubuntu' ]; then
+	if [ $os_r == 'ubuntu' ]; then
 		pkg=''
 		case $1 in
 			'python')
@@ -1641,6 +1646,23 @@ rm_os_pkg(){
 				shift;;
 		esac
 		apt-get autoremove -yq --purge $pkg;
+	elif [ $os_r == 'arch' ]; then
+		pkg=''
+		case $1 in
+			'python')
+				pkg="python2.7";
+				shift;;	
+			'python3')
+				pkg="python3*";
+				shift;;	
+			'openssl')
+				pkg="openssl ca-certificates*";
+				shift;;	
+			*)  
+				pkg=$1
+				shift;;
+		esac
+		pacman -R $pkg;
 	elif [ $os_r == 'openSUSE' ]; then
 		echo 'possible? zypper rm -y python2';
 	fi
@@ -1660,12 +1682,17 @@ _os_releases(){
 		echo 'os_releases-install: '$os_r
 		
 		if [ ! -f $CUST_INST_PREFIX/bin/gcc ] && [ ! -f /usr/bin/gcc ]; then
-			if [ $os_r == 'Ubuntu' ];then
+			if [ $os_r == 'ubuntu' ];then
 				front_state=$DEBIAN_FRONTEND;export DEBIAN_FRONTEND=noninteractive;		
 				apt-get install -yq --reinstall libblkid-dev libmount-dev uuid-dev libudev-dev ;
 				echo '' > /var/log/dpkg.log;
 				apt-get install -yq --reinstall make pkg-config build-essential gcc 
 				export DEBIAN_FRONTEND=$front_state;
+				
+			elif [ $os_r == 'arch' ];then
+				pacman -S --noconfirm libutil-linux
+				echo '' > /var/log/pacman.log;
+				pacman -S --noconfirm make pkg-config gcc
 				
 			elif [ $os_r == 'openSUSE' ]; then
 				zypper rm -y tar make gcc cpp g++ c++;
@@ -1680,11 +1707,15 @@ _os_releases(){
 		echo 'os_releases-uninstall: '$os_r
 		
 		if [ -f $CUST_INST_PREFIX/bin/make ] && [ -f $CUST_INST_PREFIX/bin/gcc ]; then
-			if [ $os_r == 'Ubuntu' ]; then
+			if [ $os_r == 'ubuntu' ]; then
 				front_state=$DEBIAN_FRONTEND;export DEBIAN_FRONTEND=noninteractive;
 				echo 'pkgs to remove';
 				apt-get autoremove -yq --purge $(zgrep -h ' install ' /var/log/dpkg.log* | sort | awk '{print $4}');
 				export DEBIAN_FRONTEND=$front_state;
+				
+			elif [ $os_r == 'arch' ];then
+				pacman -R --noconfirm $(cat  /var/log/pacman.log | grep " installed "  | sort | awk '{print $5}');
+				echo include $LD_CONF_PATH/*.conf > "/etc/ld.so.conf.d/usr.conf"
 				
 			elif [ $os_r == 'openSUSE' ]; then
 				zypper rm -y xz xz-lang tar tar-lang openssl ca-certificates python python-base make gcc cpp gcc-c++ binutils cpp48 gcc48 gcc48-c++ gcc-c++ libasan0 libatomic1 libcloog-isl4 libgomp1 libisl10 libitm1 libmpc3 libmpfr4 libstdc++48-devel libtsan0 site-config;
@@ -1721,8 +1752,14 @@ _env_setup(){
 			fi
 		fi
 
-		echo include $LD_CONF_PATH/*.conf > "/etc/ld.so.conf.d/usr.conf"
+		if [[ $os_r == 'arch' ]];then
+			echo "#!/usr/bin/env bash" > $ENV_SETTINGS_PATH/os.sh
+			echo "export CPATH=\$CPATH:\/usr/include" >> $ENV_SETTINGS_PATH/os.sh
+		fi
 		
+		echo include $LD_CONF_PATH/*.conf > "/etc/ld.so.conf.d/usr.conf"
+		echo "$CUST_INST_PREFIX/lib" >> "/etc/ld.so.conf.d/usr.conf"
+
 		echo '''source /etc/environment; CPATH=''; if [ -d '''$ENV_SETTINGS_PATH''' ]; then  for i in '''$ENV_SETTINGS_PATH'''*.sh; do    if [ -r $i ]; then       source $i;     fi;   done; unset i; fi; ''' > /etc/profile.d/custom_env.sh;
 		chmod -R 777 /etc/profile.d/custom_env.sh
 		
