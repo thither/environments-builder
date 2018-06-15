@@ -475,7 +475,7 @@ do_make;do_make install-strip;do_make install;do_make all;
 		shift;;
 
 'flex')
-tn='flex-2.6.4'; url='http://github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz';
+tn='flex-2.6.3'; url='http://github.com/westes/flex/releases/download/v2.6.3/flex-2.6.3.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS -fPIC" CPPFLAGS="$ADD_O_FS -fPIC" --with-pic --enable-shared --enable-static --prefix=`_install_prefix` --build=`_build`;
@@ -494,7 +494,7 @@ do_make;do_make lib;do_make install-strip;do_make install;do_make all;
 tn='binutils-2.30'; url='http://ftp.ntua.gr/mirror/gnu/binutils/binutils-2.30.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-plugins --enable-gold=yes --enable-ld=yes --enable-libada --enable-libssp --enable-lto --enable-objc-gc --enable-vtable-verify --enable-shared=bfd --with-system-zlib --with-mpfr=`_install_prefix` --with-mpc=`_install_prefix` --with-isl=`_install_prefix` --with-gmp=`_install_prefix` --prefix=`_install_prefix` --build=`_build`;
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-plugins --enable-gold=yes --enable-ld=yes --enable-libada --enable-libssp --enable-lto --enable-objc-gc --enable-vtable-verify --with-system-zlib --with-mpfr=`_install_prefix` --with-mpc=`_install_prefix` --with-isl=`_install_prefix` --with-gmp=`_install_prefix` --prefix=`_install_prefix` --build=`_build`;
 do_make tooldir=`_install_prefix`; do_make tooldir=`_install_prefix` install-strip;do_make tooldir=`_install_prefix` install;do_make tooldir=`_install_prefix` all; # libiberty> --enable-shared=opcodes --enable-shared=bfd --enable-host-shared --enable-stage1-checking=all --enable-stage1-languages=all 
 		shift;;
 
