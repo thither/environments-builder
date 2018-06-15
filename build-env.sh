@@ -478,7 +478,7 @@ do_make;do_make install-strip;do_make install;do_make all;
 tn='flex-2.6.4'; url='http://github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-./autogen.sh;`src_path`/configure CFLAGS="$ADD_O_FS -fPIC" CPPFLAGS="$ADD_O_FS -fPIC" --with-pic --enable-shared --enable-static --prefix=`_install_prefix` --build=`_build`;
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS -fPIC" CPPFLAGS="$ADD_O_FS -fPIC" --with-pic --enable-shared --enable-static --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make install;
 		shift;;
 
@@ -1411,6 +1411,15 @@ config_dest;`src_path`/configure --disable-sanity-checks  --disable-nss-crypt \
 do_make; do_make install;
 		shift;;	
 
+'util-linux')
+tn='util-linux-2.31'; url='http://www.kernel.org/pub/linux/utils/util-linux/v2.31/util-linux-2.31.tar.xz';
+set_source 'tar'; 
+if [ $only_dw == 1 ];then return;fi
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-shared --enable-static \
+						--prefix=`_install_prefix`/`_build` --build=`_build`;
+do_make; do_make install;
+		shift;;	
+
 'perl')
 tn='perl-5.26.2'; url='http://www.cpan.org/src/5.0/perl-5.26.2.tar.gz';
 set_source 'tar';
@@ -1581,6 +1590,9 @@ do_install() {
 #########
 compile_and_install(){
 	if [ $stage -eq 0 ] || [ $stage -eq 1 ]; then
+		if [ $os_r == 'arch' ]; then
+			do_install glibc util-linux
+		fi
 		do_install make cmake
 		do_install byacc
 		do_install ncursesw libreadline
@@ -1594,7 +1606,7 @@ compile_and_install(){
 		do_install libffi p11-kit gnutls tcltk pcre pcre2  # tk openmpi 
 		do_install gdbm expect attr patch # musl
 		do_install gc gperf gperftools  # libhoard jemalloc
-		do_install glib pkgconfig gcc  # glibc
+		do_install glib pkgconfig gcc 
 		
 		do_install coreutils gdb bash lsof curl wget sqlite berkeley-db python   # perl
 	fi
@@ -1848,16 +1860,6 @@ wget 'http://github.com/stevegrubb/libcap-ng/archive/v0.7.8.tar.gz'
 tar xf v0.7.8.tar.gz
 mv libcap-ng-0.7.8 $TMP_NAME;cd $TMP_NAME;
 ./autogen.sh;./configure --prefix=/usr/local; 
-make; make install;
-
-TMP_NAME=util-linux
-echo $TMP_NAME
-mkdir ~/tmpBuilds
-cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'https://www.kernel.org/pub/linux/utils/util-linux/v2.31/util-linux-2.31.tar.xz'
-tar xf util-linux-2.31.tar.xz
-mv util-linux-2.31 $TMP_NAME;cd $TMP_NAME
-./configure --prefix=/usr/local; 
 make; make install;
 
 
