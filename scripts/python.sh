@@ -38,7 +38,7 @@ if [ -f $CUST_INST_PREFIX/bin/pip ] && [ $stage -ne 0 ]; then
 	pip install --upgrade  pycrypto 
 	pip install --upgrade  cryptography
 	pip install --upgrade  pyopenssl #LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" 
-
+	pip install --upgrade  pycryptodomex
 	pip install --upgrade  pycparser
 	
 	pip install --upgrade  h2 #https://github.com/python-hyper/hyper-h2/archive/master.zip

@@ -34,6 +34,7 @@ if [ -f 'pypy3-c' ]; then
 	with_gmp=no pypy3_pip install --upgrade  pycrypto 
 	pypy3_pip install --upgrade cryptography
 	pypy3_pip install --upgrade pyopenssl #LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" 
+	pypy3_pip install --upgrade pycryptodomex
 
 	pypy3_pip install --upgrade h2 #https://github.com/python-hyper/hyper-h2/archive/master.zip
 	pypy3_pip install --upgrade urllib3 dnspython

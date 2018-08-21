@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-tn='Python-3.7.0b4'; url='http://www.python.org/ftp/python/3.7.0/Python-3.7.0b4.tar.xz';
+tn='Python-3.7.0rc1'; url='http://www.python.org/ftp/python/3.7.0/Python-3.7.0rc1.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 
@@ -36,7 +36,8 @@ if [ -f /usr/bin/py3_pip ] && [ $stage -ne 0 ]; then
 	py3_pip install --upgrade pycrypto 
 	py3_pip install --upgrade cryptography
 	py3_pip install --upgrade pyopenssl #LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" 
-
+	py3_pip install --upgrade pycryptodomex
+	
 	py3_pip install --upgrade pycparser
 	
 	py3_pip install --upgrade h2 #https://github.com/python-hyper/hyper-h2/archive/master.zip

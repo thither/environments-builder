@@ -47,6 +47,8 @@ if [ -f 'pypy-c' ]; then
 	pypy_pip install --upgrade cryptography
 	pypy_pip install --upgrade pyopenssl #LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" 
 
+	pypy_pip install --upgrade pycryptodomex
+	
 	pypy_pip install --upgrade h2 #https://github.com/python-hyper/hyper-h2/archive/master.zip
 	pypy_pip install --upgrade urllib3 dnspython
 	pypy_pip install --upgrade https://github.com/eventlet/eventlet/archive/v0.19.0.zip # https://github.com/eventlet/eventlet/archive/master.zip #eventlet
