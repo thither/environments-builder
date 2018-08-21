@@ -1519,8 +1519,8 @@ make;make install-strip;
 'ceph')
 tn='ceph-13.2.1'; url='http://download.ceph.com/tarballs/ceph_13.2.1.orig.tar.gz';
 set_source 'tar';
-if [ $only_dw == 1 ];then return;fi
-config_dest;cmake `src_path` -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC -DPIC" -DCMAKE_CXX_FLAGS="-std=c++17 $ADD_O_FS -fPIC -DPIC" -DLIBOATH_INCLUDE_DIR=/usr/local/include/ -DENABLE_SHARED=ON -DWITH_TESTS=OFF -DWITH_RADOSGW=ON -DWITH_FUSE=OFF -DWITH_MANPAGE=OFF -DWITH_OPENLDAP=OFF -DWITH_XFS=OFF -DWITH_BLUESTORE=OFF -DWITH_SPDK=OFF -DWITH_LTTNG=OFF -DWITH_BABELTRACE=OFF -DALLOCATOR=tcmalloc_minimal -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+if [ $only_dw == 1 ];then return;fi #  -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC -DPIC" -DCMAKE_CXX_FLAGS="-std=c++17 $ADD_O_FS -fPIC -DPIC"
+config_dest;cmake `src_path` -DLIBOATH_INCLUDE_DIR=/usr/local/include/ -DENABLE_SHARED=ON -DWITH_TESTS=OFF -DWITH_RADOSGW=ON -DWITH_FUSE=OFF -DWITH_MANPAGE=OFF -DWITH_OPENLDAP=OFF -DWITH_XFS=OFF -DWITH_BLUESTORE=OFF -DWITH_SPDK=OFF -DWITH_LTTNG=OFF -DWITH_BABELTRACE=OFF -DALLOCATOR=tcmalloc_minimal -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
 make VERBOSE=1;do_make install;
 		shift;;
 
