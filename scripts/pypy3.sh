@@ -48,7 +48,7 @@ if [ -f 'pypy3-c' ]; then
 	pypy3_pip install --upgrade guess_language
 	pypy3_pip install --upgrade paypalrestsdk #pygeocoder python-google-places
 	pypy3_pip install --upgrade josepy acme
-	pypy_pip install --upgrade fontTools
+	pypy3_pip install --upgrade fontTools
 
 	pypy3_pip install --upgrade https://github.com/kashirin-alex/libpyhdfs/archive/master.zip
 

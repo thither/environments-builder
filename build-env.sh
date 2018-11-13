@@ -1710,7 +1710,8 @@ compile_and_install(){
 		fi
 	fi
 	if [ $stage -eq 3 ]; then
-		do_install python pypy2 python3 spdylay
+		do_install spdylay
+		do_install python pypy2 python3 
 		do_install pybind11
 		do_install ruby graphviz rrdtool 
 		do_install thrift hypertable

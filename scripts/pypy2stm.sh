@@ -33,28 +33,28 @@ if [ -f 'pypy-c' ]; then
 	pypy2stm_pip install --upgrade pip
 	pypy2stm_pip install --upgrade setuptools
 
-	pypy2stm_pip install --upgrade cffi greenlet
+	pypy2stm_pip install --upgrade cffi 
+	pypy2stm_pip install --upgrade greenlet
 	pypy2stm_pip install --upgrade psutil deepdiff
 	pypy2stm_pip install --upgrade xlrd lxml	
 	with_gmp=no pypy2stm_pip install --upgrade  pycrypto 
 	pypy2stm_pip install --upgrade cryptography
 	pypy2stm_pip install --upgrade pyopenssl #LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" 
+	pypy2stm_pip install --upgrade pycryptodomex
 
 	pypy2stm_pip install --upgrade h2 #https://github.com/python-hyper/hyper-h2/archive/master.zip
-	pypy2stm_pip install --upgrade urllib3 dnspython pyDNS # dnslib  hypertable
-	pypy2stm_pip install --upgrade https://github.com/eventlet/eventlet/archive/v0.19.0.zip # https://github.com/eventlet/eventlet/archive/master.zip #eventlet
-	echo '' > "/opt/pypy2stm/site-packages/eventlet/green/OpenSSL/rand.py"
-	sed -i "1s;^;import OpenSSL.SSL\nfor n in dir(OpenSSL.SSL):\n    exec(n+'=getattr(OpenSSL.SSL, \"'+n+'\")')\n;" /opt/pypy2stm/site-packages/eventlet/green/OpenSSL/SSL.py
-	sed -i "1s;^;import OpenSSL.crypto\nfor n in dir(OpenSSL.crypto):\n    exec(n+'=getattr(OpenSSL.crypto, \"'+n+'\")')\n;" /opt/pypy2stm/site-packages/eventlet/green/OpenSSL/crypto.py
+	pypy2stm_pip install --upgrade urllib3 dnspython
+	pypy2stm_pip install --upgrade linuxfd https://github.com/kashirin-alex/eventlet/archive/master.zip 
 
-   
 	pypy2stm_pip install --upgrade msgpack-python
-	pypy2stm_pip install --upgrade Wand
-	pypy2stm_pip install --upgrade weasyprint                 
-	pypy2stm_pip install --upgrade pylzma rarfile  #zipfile pysnappy
-	pypy2stm_pip install --upgrade guess_language validate-email-address
+	pypy2stm_pip install --upgrade webp Pillow Wand
+	pypy2stm_pip install --upgrade weasyprint==0.42.3                 
+	pypy2stm_pip install --upgrade brotli pylzma rarfile zopfli  #zipfile pysnappy
+	pypy2stm_pip install --upgrade ply slimit
+	pypy2stm_pip install --upgrade guess_language
 	pypy2stm_pip install --upgrade paypalrestsdk #pygeocoder python-google-places
-	pypy2stm_pip install --upgrade acme
+	pypy2stm_pip install --upgrade josepy acme
+	pypy2stm_pip install --upgrade fontTools
 
 	pypy2stm_pip install --upgrade https://github.com/kashirin-alex/libpyhdfs/archive/master.zip
 

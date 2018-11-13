@@ -42,7 +42,7 @@ if [ -f /usr/bin/py3_pip ] && [ $stage -ne 0 ]; then
 	
 	py3_pip install --upgrade h2 #https://github.com/python-hyper/hyper-h2/archive/master.zip
 	py3_pip install --upgrade urllib3 dnspython
-	py3_pip install --upgrade linuxfd https://github.com/kashirin-alex/libpyhdfs/archive/master.zip
+	py3_pip install --upgrade linuxfd https://github.com/kashirin-alex/eventlet/archive/master.zip 
    
 	py3_pip install --upgrade msgpack-python
 	py3_pip install --upgrade  webp Pillow Wand

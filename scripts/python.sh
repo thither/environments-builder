@@ -43,8 +43,8 @@ if [ -f $CUST_INST_PREFIX/bin/pip ] && [ $stage -ne 0 ]; then
 	
 	pip install --upgrade  h2 #https://github.com/python-hyper/hyper-h2/archive/master.zip
 	pip install --upgrade  urllib3 dnspython
-	pip install --upgrade linuxfd https://github.com/kashirin-alex/libpyhdfs/archive/master.zip
-   
+   	pip install --upgrade linuxfd https://github.com/kashirin-alex/eventlet/archive/master.zip 
+
 	pip install --upgrade  msgpack-python
 	pip install --upgrade  webp Pillow Wand
 	pip install --upgrade  weasyprint==0.42.3                 
