@@ -274,7 +274,7 @@ do_make;do_make lib; do_make install;do_make all;
 		shift;;
 
 'cmake')
-tn='cmake-3.12.1'; url='http://cmake.org/files/v3.12/cmake-3.12.1.tar.gz';
+tn='cmake-3.12.3'; url='http://cmake.org/files/v3.12/cmake-3.12.3.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 ./bootstrap --prefix=`_install_prefix`;
@@ -282,14 +282,14 @@ do_make;do_make install;do_make all;
 		shift;;
 
 'lz4')
-tn='lz4-1.8.2'; url='http://github.com/lz4/lz4/archive/v1.8.2.tar.gz';
+tn='lz4-1.8.3'; url='http://github.com/lz4/lz4/archive/v1.8.3.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 do_make DESTDIR=`_install_prefix`;do_make install;
 		shift;;
 
 'brotli')
-tn='brotli-1.0.5'; url='http://github.com/google/brotli/archive/v1.0.5.tar.gz';
+tn='brotli-1.0.7'; url='http://github.com/google/brotli/archive/v1.0.7.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure-cmake --prefix=`_install_prefix` --pass-thru -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC";
@@ -297,7 +297,7 @@ do_make;do_make install;
 		shift;;
 
 'qazip')
-tn='QATzip-0.2.4'; url='http://github.com/intel/QATzip/archive/v0.2.4.tar.gz';
+tn='QATzip-0.2.6'; url='http://github.com/intel/QATzip/archive/v0.2.6.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS -fPIC" --prefix=`_install_prefix` --build=`_build`;
@@ -407,6 +407,15 @@ if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make install-strip;do_make install;do_make all;
 		shift;;	
+		
+'libwebp')
+tn='libwebp-1.0.0'; url='http://github.com/webmproject/libwebp/archive/v1.0.0.tar.gz';
+set_source 'tar';
+if [ $only_dw == 1 ];then return;fi
+./autogen.sh;
+config_dest;`src_path`/configure --enable-everything CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --prefix=`_install_prefix` --build=`_build`;
+do_make;do_make install;
+		shift;;	
 
 'm4')
 tn='m4-1.4.18'; url='http://ftp.gnu.org/gnu/m4/m4-1.4.18.tar.xz';
@@ -458,7 +467,7 @@ do_make;do_make install-strip;do_make install;do_make all;
 		shift;;
 
 'bison')
-tn='bison-3.0.5'; url='http://ftp.gnu.org/gnu/bison/bison-3.0.5.tar.gz';
+tn='bison-3.1'; url='http://ftp.gnu.org/gnu/bison/bison-3.1.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-threads=posix --prefix=`_install_prefix` --build=`_build`;
@@ -475,7 +484,7 @@ do_make;do_make install-strip;do_make install;do_make all;
 		shift;;
 
 'flex')
-tn='flex-2.6.3'; url='http://github.com/westes/flex/releases/download/v2.6.3/flex-2.6.3.tar.gz';
+tn='flex-2.6.4'; url='http://github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS -fPIC" CPPFLAGS="$ADD_O_FS -fPIC" --with-pic --enable-shared --enable-static --prefix=`_install_prefix` --build=`_build`;
@@ -564,10 +573,11 @@ do_make;do_make install-strip;do_make install;do_make all;
 		shift;;
 
 'unbound')
-tn='unbound-1.7.3'; url='http://www.unbound.net/downloads/unbound-1.7.3.tar.gz';
+tn='unbound-1.8.1'; url='http://nlnetlabs.nl/downloads/unbound/unbound-1.8.1.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-tfo-client --enable-tfo-server --enable-dnscrypt --prefix=`_install_prefix` --build=`_build`;
+config_dest;`src_path`/configure --enable-tfo-client --enable-tfo-server --enable-dnscrypt --prefix=`_install_prefix` --build=`_build`;
+# CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" 
 do_make;do_make lib;do_make install-lib;do_make install;do_make all; 
 		shift;;
 
@@ -581,7 +591,7 @@ do_make;do_make install-strip;do_make install;do_make all;
 		shift;;
 
 'p11-kit')
-tn='p11-kit-0.23.10'; url='http://github.com/p11-glue/p11-kit/releases/download/0.23.10/p11-kit-0.23.10.tar.gz'; #gnutls(readyness)
+tn='p11-kit-0.23.14'; url='http://github.com/p11-glue/p11-kit/releases/download/0.23.14/p11-kit-0.23.14.tar.gz'; #gnutls(readyness)
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --without-trust-paths --prefix=`_install_prefix` --build=`_build`;
@@ -589,7 +599,7 @@ do_make;do_make install-strip;do_make install;do_make all;
 		shift;;
 
 'gnutls')
-tn='gnutls-3.6.3'; url='http://www.gnupg.org/ftp/gcrypt/gnutls/v3.6/gnutls-3.6.3.tar.xz';
+tn='gnutls-3.6.4'; url='http://www.gnupg.org/ftp/gcrypt/gnutls/v3.6/gnutls-3.6.4.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --disable-gtk-doc --enable-openssl-compatibility --prefix=`_install_prefix` --build=`_build`;
@@ -613,7 +623,7 @@ do_make;do_make install-strip;do_make install;do_make all;
 		shift;;	
 
 'pcre2')
-tn='pcre2-10.31'; url='http://ftp.pcre.org/pub/pcre/pcre2-10.31.tar.gz';
+tn='pcre2-10.32'; url='http://ftp.pcre.org/pub/pcre/pcre2-10.32.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-rebuild-chartables --enable-newline-is-any --enable-pcre2-16 --enable-pcre2-32 --enable-jit --enable-pcre2grep-libz --enable-pcre2grep-libbz2 --enable-unicode-properties --enable-utf --enable-ucp  --prefix=`_install_prefix` --build=`_build`;
@@ -621,7 +631,7 @@ do_make;do_make install-strip;do_make install;do_make all;
 		shift;;
 
 'glib')
-tn='glib-2.56.2'; url='http://ftp.acc.umu.se/pub/gnome/sources/glib/2.56/glib-2.56.2.tar.xz';
+tn='glib-2.57.1'; url='http://ftp.acc.umu.se/pub/gnome/sources/glib/2.57/glib-2.57.1.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --with-libiconv=gnu --with-threads=posix --prefix=`_install_prefix` --build=`_build`;
@@ -645,7 +655,7 @@ do_make;do_make install-strip;do_make install;do_make all;
 		shift;;
 
 'libatomic_ops')
-tn='libatomic_ops-7.6.2'; url='http://www.hboehm.info/gc/gc_source/libatomic_ops-7.6.2.tar.gz';
+tn='libatomic_ops-7.6.6'; url='http://www.hboehm.info/gc/gc_source/libatomic_ops-7.6.6.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-shared=yes --enable-static=yes --prefix=`_install_prefix` --build=`_build`;
@@ -653,7 +663,7 @@ do_make;do_make install-strip;do_make install;do_make all;
 		shift;;
 
 'gc')
-tn='gc-7.6.4'; url='http://www.hboehm.info/gc/gc_source/gc-7.6.4.tar.gz';
+tn='gc-7.6.8'; url='http://www.hboehm.info/gc/gc_source/gc-7.6.8.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-single-obj-compilation --enable-large-config --enable-redirect-malloc --enable-sigrt-signals --enable-parallel-mark --enable-handle-fork --enable-cplusplus  --with-libatomic-ops=yes --prefix=`_install_prefix` --build=`_build`;
@@ -770,7 +780,7 @@ make;make install-strip;make install;make all;
 		shift;;
 
 'libexpat')
-tn='libexpat-R_2_2_5/expat'; url='http://github.com/libexpat/libexpat/archive/R_2_2_5.tar.gz';
+tn='libexpat-R_2_2_6/expat'; url='http://github.com/libexpat/libexpat/archive/R_2_2_6.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 ./buildconf.sh
@@ -795,7 +805,7 @@ do_make;do_make install-strip;do_make install;do_make all;
 		shift;;
 
 're2')
-tn='re2-2018-08-01'; url='http://github.com/google/re2/archive/2018-08-01.tar.gz';
+tn='re2-2018-10-01'; url='http://github.com/google/re2/archive/2018-10-01.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;cmake `src_path` -DBUILD_SHARED_LIBS=ON -DCMAKE_CXX_FLAGS="$ADD_O_FS" -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
@@ -805,7 +815,7 @@ do_make;do_make install;
 		shift;;
 
 'icu4c')
-tn='icu/source'; url='http://download.icu-project.org/files/icu4c/62.1/icu4c-62_1-src.tgz';
+tn='icu/source'; url='http://download.icu-project.org/files/icu4c/63.1/icu4c-63_1-src.tgz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 echo '' > LICENSE;
@@ -833,7 +843,7 @@ do_make;do_make lib; do_make install-strip;do_make install;do_make all;
 		shift;;
 
 'fuse3')
-tn='fuse-3.2.5'; url='http://github.com/libfuse/libfuse/releases/download/fuse-3.2.5/fuse-3.2.5.tar.xz';
+tn='fuse-3.2.6'; url='http://github.com/libfuse/libfuse/releases/download/fuse-3.2.6/fuse-3.2.6.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-lib --enable-util --prefix=`_install_prefix` --build=`_build`;
@@ -864,7 +874,7 @@ do_make;do_make install-strip;do_make install;do_make all;
 		shift;;	
 
 'libgcrypt')
-tn='libgcrypt-1.8.3'; url='ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.8.3.tar.gz';
+tn='libgcrypt-1.8.4'; url='ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.8.4.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --with-pic=PIC --enable-static=yes --enable-m-guard --enable-hmac-binary-check --prefix=`_install_prefix` --build=`_build`;
@@ -896,7 +906,7 @@ do_make;do_make lib;do_make install-strip;do_make install;do_make all;
 		shift;;	
 
 'libuv')
-tn='libuv-1.22.0'; url='http://github.com/libuv/libuv/archive/v1.22.0.tar.gz';
+tn='libuv-1.23.2'; url='http://github.com/libuv/libuv/archive/v1.23.2.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 ./autogen.sh;
@@ -921,10 +931,10 @@ do_make;do_make install;do_make all;
 		shift;;	
 
 'imagemagick')
-tn='ImageMagick-6.7.7-10'; url='http://www.imagemagick.org/download/releases/ImageMagick-6.7.7-10.tar.xz'; #http://github.com/dahlia/wand/blob/f97277be6d268038a869e59b0d6c3780d7be5664/wand/version.py
+tn='ImageMagick-6.9.10-14'; url='http://www.imagemagick.org/download/ImageMagick-6.9.10-14.tar.xz'; #http://github.com/dahlia/wand/blob/f97277be6d268038a869e59b0d6c3780d7be5664/wand/version.py
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-shared=yes --enable-static=yes --with-jpeg=yes --with-quantum-depth=16 --enable-hdri --enable-pipes --enable-hugepages --disable-docs --with-aix-soname=both --with-modules --with-jemalloc --with-umem --prefix=`_install_prefix` --build=`_build`;
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS"  --enable-shared=yes --enable-static=yes --with-jpeg=yes --with-webp=yes --with-quantum-depth=16 --enable-hdri --enable-pipes --enable-hugepages --disable-docs --with-aix-soname=both --with-modules --with-jemalloc --with-umem --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make install-strip;do_make install;do_make all;
 		shift;;	
 
@@ -938,7 +948,7 @@ do_make;do_make install;do_make all;
 		shift;;	
 
 'harfbuzz')
-tn='harfbuzz-1.8.7'; url='http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-1.8.7.tar.bz2';
+tn='harfbuzz-2.1.1'; url='http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-2.1.1.tar.bz2';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 if [ -z $1 ]; then opt='--with-freetype=yes --with-fontconfig=no'; else opt=${@:1};fi 
@@ -956,7 +966,7 @@ do_make;do_make install;do_make all;
 		shift;;	
 
 'fontconfig')
-tn='fontconfig-2.13.0'; url='http://www.freedesktop.org/software/fontconfig/release/fontconfig-2.13.0.tar.gz';
+tn='fontconfig-2.13.1'; url='http://www.freedesktop.org/software/fontconfig/release/fontconfig-2.13.1.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --with-default-fonts=`_install_prefix`/share/fonts/ --enable-iconv  --prefix=`_install_prefix` --build=`_build`;
@@ -1011,7 +1021,7 @@ echo "export ANT_HOME=\"$CUST_JAVA_INST_PREFIX/$sn\"" >> $ENV_SETTINGS_PATH/$sn.
 		shift;;	
 
 'apache-maven')	
-tn='apache-maven-3.5.4'; url='http://apache.mediamirrors.org/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz';
+tn='apache-maven-3.6.0'; url='http://apache.mediamirrors.org/maven/maven-3/3.6.0/binaries/apache-maven-3.6.0-bin.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 rm -rf  $CUST_JAVA_INST_PREFIX/$sn
@@ -1035,9 +1045,9 @@ config_dest;cmake `src_path` -D -DCMAKE_C_FLAGS="-flto -fuse-linker-plugin -ffat
 do_make;do_make install;do_make all;  #FORCE_BOOST_SMART_PTR=ON
 #cd `src_path`/lib/py/;python setup.py install;pypy setup.py install;
 		shift;;	
-
+		
 'attr')
-tn='attr-2.4.48'; url='http://download.savannah.nongnu.org/releases/attr/attr-2.4.48.tar.gz';
+tn='attr-2.4.47'; url='http://download.savannah.nongnu.org/releases/attr/attr-2.4.47.src.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 `src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-gettext=yes --enable-shared=yes --enable-static=yes --prefix=`_install_prefix` --build=`_build`; 
@@ -1053,7 +1063,7 @@ do_make install;
 		shift;;
 
 'curl')
-tn='curl-curl-7_61_0'; url='http://github.com/curl/curl/archive/curl-7_61_0.tar.gz';
+tn='curl-curl-7_62_0'; url='https://github.com/curl/curl/archive/curl-7_62_0.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;cmake `src_path` -DCMAKE_C_FLAGS="$ADD_O_FS" -DCMAKE_CXX_FLAGS="$ADD_O_FS" -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
@@ -1124,7 +1134,7 @@ rm -rf $CUST_JAVA_INST_PREFIX/$sn/conf;ln -s /etc/opt/zookeeper $CUST_JAVA_INST_
 		shift;;	
 
 'nodejs')
-tn='node-v10.8.0'; url='http://nodejs.org/dist/v10.8.0/node-v10.8.0.tar.xz';
+tn='node-v11.1.0'; url='http://nodejs.org/dist/latest-v11.x/node-v11.1.0.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 ./configure --no-cross-compiling --prefix=`_install_prefix`; #--with-intl=none 
@@ -1164,7 +1174,7 @@ do_make;do_make install;
 		shift;;
 
 'pybind11')
-tn='pybind11-2.2.3'; url='http://github.com/pybind/pybind11/archive/v2.2.3.tar.gz';
+tn='pybind11-2.2.4'; url='http://github.com/pybind/pybind11/archive/v2.2.4.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;cmake `src_path` -DCMAKE_CXX_FLAGS="$ADD_O_FS"  -DPYBIND11_TEST=OFF  -DCMAKE_INSTALL_INCLUDEDIR=`_install_prefix`/include;
@@ -1201,7 +1211,7 @@ do_make;do_make install;
 		shift;;
  
 'libconfuse')
-tn='confuse-3.2.1'; url='http://github.com/martinh/libconfuse/releases/download/v3.2.1/confuse-3.2.1.tar.xz';
+tn='confuse-3.2.2'; url='http://github.com/martinh/libconfuse/releases/download/v3.2.2/confuse-3.2.2.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --prefix=`_install_prefix` --build=`_build`;
@@ -1273,7 +1283,7 @@ do_make;do_make install;
 		shift;;	
 
 'pango')
-tn='pango-1.42.3'; url='http://ftp.acc.umu.se/pub/GNOME/sources/pango/1.42/pango-1.42.3.tar.xz';
+tn='pango-1.42.4'; url='http://ftp.acc.umu.se/pub/GNOME/sources/pango/1.42/pango-1.42.4.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --prefix=`_install_prefix` --build=`_build`;
@@ -1289,7 +1299,7 @@ do_make;do_make install;
 		shift;;	
 
 'ruby')
-tn='ruby-2.5.1'; url='http://cache.ruby-lang.org/pub/ruby/2.5/ruby-2.5.1.tar.gz';
+tn='ruby-2.5.3'; url='http://cache.ruby-lang.org/pub/ruby/2.5/ruby-2.5.3.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --prefix=`_install_prefix` --build=`_build`;
@@ -1316,7 +1326,7 @@ cp /usr/lib/pkgconfig/*.pc `_install_prefix`/lib/$sn/;
 		shift;;	
 
 'gdb')
-tn='gdb-8.1.1'; url='http://ftp.gnu.org/gnu/gdb/gdb-8.1.1.tar.xz';
+tn='gdb-8.2'; url='http://ftp.gnu.org/gnu/gdb/gdb-8.2.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-lto --enable-objc-gc --enable-vtable-verify --prefix=`_install_prefix` --build=`_build`;
@@ -1332,7 +1342,7 @@ do_make;do_make install;
 		shift;;
 		
 'php')
-tn='php-7.2.8'; url='http://mirror.cogentco.com/pub/php/php-7.2.8.tar.xz';
+tn='php-7.2.9'; url='http://mirror.cogentco.com/pub/php/php-7.2.9.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure --enable-shared=yes --enable-static=yes --enable-json --prefix=`_install_prefix` --build=`_build`; 
@@ -1421,7 +1431,7 @@ do_make; do_make install;
 		shift;;	
 
 'perl')
-tn='perl-5.29.1'; url='http://www.cpan.org/src/5.0/perl-5.29.1.tar.gz';
+tn='perl-5.28.0'; url='http://www.cpan.org/src/5.0/perl-5.28.0.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 ./Configure -de -A ccflags="$ADD_O_FS" -Duse64bitall -Dusethreads -Dprefix=`_install_prefix`; 
@@ -1430,7 +1440,9 @@ if [ -f $CUST_INST_PREFIX/bin/perl ] && [ -f /usr/bin/perl ]; then
 	rm_os_pkg perl;
 fi
 PERL_MM_USE_DEFAULT=1 perl -MCPAN -e "install Class::Accessor";
-PERL_MM_USE_DEFAULT=1 perl -MCPAN -e "install Bit::Vector";
+if [ $stage > 1 ]; then
+	PERL_MM_USE_DEFAULT=1 perl -MCPAN -e "install Bit::Vector";
+fi
 		shift;;	
 
 'bash')
@@ -1515,15 +1527,75 @@ if [ $only_dw == 1 ];then return;fi
 `src_path`/configure CFLAGS="-O3 -fPIC" CPPFLAGS="-O3 -fPIC" --with-pic --enable-shared --enable-static --prefix=`_install_prefix` --build=`_build`;
 make;make install-strip;
 		shift;;
+		
+'zstd')
+tn='zstd-1.3.7'; url='https://github.com/facebook/zstd/releases/download/v1.3.7/zstd-1.3.7.tar.gz';
+set_source 'tar';
+if [ $only_dw == 1 ];then return;fi
+config_dest;cmake `src_path`/build/cmake -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+do_make;do_make prefix=`_install_prefix` install;
+		shift;;	
+		
+'gflags')
+tn='gflags-2.2.1'; url='http://github.com/gflags/gflags/archive/v2.2.1.tar.gz';
+set_source 'tar';
+if [ $only_dw == 1 ];then return;fi
+config_dest;cmake `src_path` -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+do_make;do_make install;
+		shift;;	
+		
+'rocksdb')
+tn='rocksdb-rocksdb-5.14.3'; url='http://github.com/facebook/rocksdb/archive/rocksdb-5.14.3.tar.gz';
+set_source 'tar';
+if [ $only_dw == 1 ];then return;fi
+config_dest;cmake `src_path` -DWITH_TESTS=OFF -DWITH_ZSTD=ON -DWITH_ZLIB=ON -DWITH_LZ4=ON -DWITH_SNAPPY=ON -DWITH_BZ2=ON -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+do_make; PORTABLE=1 do_make static_lib;do_make shared_lib;do_make install;
+		shift;;	
+		
+'libaio')
+tn='libaio-0.3.92'; url='http://mirrors.edge.kernel.org/pub/linux/kernel/people/bcrl/aio/libaio-0.3.92.tar.gz';
+set_source 'tar';
+if [ $only_dw == 1 ];then return;fi
+make prefix=`_install_prefix` install;
+		shift;;		
 
 'ceph')
 tn='ceph-13.2.1'; url='http://download.ceph.com/tarballs/ceph_13.2.1.orig.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi #  -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC -DPIC" -DCMAKE_CXX_FLAGS="-std=c++17 $ADD_O_FS -fPIC -DPIC"
-config_dest;cmake `src_path` -DLIBOATH_INCLUDE_DIR=/usr/local/include/ -DENABLE_SHARED=ON -DWITH_TESTS=OFF -DWITH_RADOSGW=ON -DWITH_FUSE=OFF -DWITH_MANPAGE=OFF -DWITH_OPENLDAP=OFF -DWITH_XFS=OFF -DWITH_BLUESTORE=OFF -DWITH_SPDK=OFF -DWITH_LTTNG=OFF -DWITH_BABELTRACE=OFF -DALLOCATOR=tcmalloc_minimal -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+config_dest;cmake `src_path` -DLIBOATH_INCLUDE_DIR=/usr/local/include/ -DENABLE_SHARED=ON -DWITH_TESTS=OFF -DWITH_BLUEFS=ON -DWITH_RADOSGW=ON -DWITH_FUSE=OFF -DWITH_MANPAGE=OFF -DWITH_OPENLDAP=OFF -DWITH_XFS=OFF -DWITH_BLUESTORE=ON -DWITH_SPDK=OFF -DWITH_LTTNG=OFF -DWITH_BABELTRACE=OFF -DALLOCATOR=tcmalloc_minimal -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
 make VERBOSE=1;do_make install;
 		shift;;
 
+'spdylay')
+tn='spdylay-1.4.0'; url='http://github.com/tatsuhiro-t/spdylay/archive/v1.4.0.tar.gz';
+set_source 'tar';
+if [ $only_dw == 1 ];then return;fi
+autoreconf -i;automake;autoconf;
+./configure CFLAGS="-P $ADD_O_FS" CPPFLAGS="-P $ADD_O_FS" --prefix=`_install_prefix` --build=`_build`;
+do_make;do_make install;
+cd python;cython spdylay.pyx;
+pypy setup.py install;
+rm -r build;
+python setup.py install;
+		shift;;	
+	
+'go')
+tn='go'; url='https://dl.google.com/go/go1.11.src.tar.gz';
+set_source 'tar';
+if [ $only_dw == 1 ];then return;fi
+cd src;./all.bash -v
+		shift;;	
+
+	
+'libquic')
+tn='libquic-0.0.3-6e3a05d'; url='http://github.com/devsisters/libquic/archive/v0.0.3-6e3a05d.tar.gz';
+set_source 'tar';
+if [ $only_dw == 1 ];then return;fi
+config_dest;cmake `src_path`  -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC -DPIC" -DCMAKE_CXX_FLAGS="-std=c++17 $ADD_O_FS -fPIC -DPIC" -DGO_EXECUTABLE=NONE -DWITH_TESTS=OFF -DENABLE_SHARED=ONE=ON -DALLOCATOR=tcmalloc_minimal -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+do_make;do_make install;
+		shift;;	
+		
 'ncurses')
 tn='ncurses-6.1'; url='http://ftp.gnu.org/gnu/ncurses/ncurses-6.1.tar.gz';
 set_source 'tar';
@@ -1598,7 +1670,7 @@ compile_and_install(){
 		do_install ncursesw libreadline
 		do_install m4 gmp mpfr mpc isl
 		do_install autoconf automake libtool gawk
-		do_install zlib bzip2 unrar gzip lzo snappy libzip unzip xz p7zip tar lz4 brotli # qazip
+		do_install zlib bzip2 unrar gzip lzo snappy libzip unzip xz p7zip tar lz4 brotli zstd # qazip
 		do_install libatomic_ops libeditline libevent libunwind fuse2 fuse3 pth
 		do_install openssl libgpg-error libgcrypt kerberos libssh icu4c
 		do_install bison texinfo flex binutils gettext nettle libtasn1 libiconv
@@ -1608,7 +1680,7 @@ compile_and_install(){
 		do_install gc gperf gperftools  # libhoard jemalloc
 		do_install glib pkgconfig gcc 
 		
-		do_install coreutils gdb bash lsof curl wget sqlite berkeley-db python   # perl
+		do_install libaio coreutils gdb bash lsof curl wget sqlite berkeley-db python perl 
 	fi
 	if [ $stage -eq 2 ]; then
 		do_install boost
@@ -1619,7 +1691,7 @@ compile_and_install(){
 		do_install libconfuse apr apr-util libsigcplusplus log4cpp cronolog
 		do_install re2 sparsehash 
 		do_install libjansson libxml2 libxslt libuv libcares
-		do_install libpng libjpeg libsvg # librsvg
+		do_install libpng libjpeg libsvg libwebp # librsvg
 		do_install openjdk apache-ant apache-maven sigar
 		do_install gmock protobuf apache-zookeeper apache-hadoop libgsasl # libhdfs3
 		do_install fonts itstool freetype harfbuzz fontconfig 
@@ -1629,11 +1701,11 @@ compile_and_install(){
 		if [ $build_target == 'all' ];then
 			do_install perl php nodejs pypy3 # pypy2stm 
 			#do_install ganglia-web # ganglia 
-			do_install keyutils nspr nss yasm libibverbs leveldb oath-toolkit ceph
+			do_install keyutils nspr nss yasm libibverbs leveldb oath-toolkit rocksdb gflags ceph
 		fi
 	fi
 	if [ $stage -eq 3 ]; then
-		do_install python pypy2 python3
+		do_install python pypy2 python3 spdylay
 		do_install pybind11
 		do_install ruby graphviz rrdtool 
 		do_install thrift hypertable
@@ -1851,6 +1923,7 @@ exit 1
 
 # DRAFTS #######################################################################
  
+
 
 TMP_NAME=libcap-ng
 echo $TMP_NAME

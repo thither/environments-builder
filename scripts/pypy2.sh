@@ -51,21 +51,18 @@ if [ -f 'pypy-c' ]; then
 	
 	pypy_pip install --upgrade h2 #https://github.com/python-hyper/hyper-h2/archive/master.zip
 	pypy_pip install --upgrade urllib3 dnspython
-	pypy_pip install --upgrade https://github.com/eventlet/eventlet/archive/v0.19.0.zip # https://github.com/eventlet/eventlet/archive/master.zip #eventlet
-	echo '' > "/opt/pypy2/site-packages/eventlet/green/OpenSSL/rand.py"
-	sed -i "1s;^;import OpenSSL.SSL\nfor n in dir(OpenSSL.SSL):\n    exec(n+'=getattr(OpenSSL.SSL, \"'+n+'\")')\n;" /opt/pypy2/site-packages/eventlet/green/OpenSSL/SSL.py
-	sed -i 's/from OpenSSL.SSL import \*//g' /opt/pypy2/site-packages/eventlet/green/OpenSSL/SSL.py;
-	sed -i "1s;^;import OpenSSL.crypto\nfor n in dir(OpenSSL.crypto):\n    exec(n+'=getattr(OpenSSL.crypto, \"'+n+'\")')\n;" /opt/pypy2/site-packages/eventlet/green/OpenSSL/crypto.py
+	pypy_pip install --upgrade linuxfd https://github.com/kashirin-alex/eventlet/archive/master.zip 
 
 	pypy_pip install --upgrade msgpack-python
-	pypy_pip install --upgrade Wand
-	pypy_pip install --upgrade weasyprint                 
-	pypy_pip install --upgrade brotli pylzma rarfile  #zipfile pysnappy
+	pypy_pip install --upgrade webp Pillow Wand
+	pypy_pip install --upgrade weasyprint==0.42.3               
+	pypy_pip install --upgrade brotli pylzma rarfile zopfli  #zipfile pysnappy
+	pypy_pip install --upgrade ply slimit
 	pypy_pip install --upgrade guess_language
 	pypy_pip install --upgrade paypalrestsdk #pygeocoder python-google-places
 	pypy_pip install --upgrade josepy acme
+	pypy_pip install --upgrade fontTools
 
 	pypy_pip install --upgrade https://github.com/kashirin-alex/libpyhdfs/archive/master.zip
 
 fi
-

@@ -19,7 +19,7 @@ config_dest;`src_path`/configure $intermediate --with-pic --enable-targets=x86-6
 		--enable-lto --enable-tls --enable-threads=posix --with-long-double-128 --enable-decimal-float=yes \
 		--with-mpfr=$CUST_INST_PREFIX --with-mpc=$CUST_INST_PREFIX --with-isl=$CUST_INST_PREFIX --with-gmp=$CUST_INST_PREFIX \
 		--prefix=$CUST_INST_PREFIX --build=`_build` $target; 
-# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=58638  --enable-default-pie
+# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=58638  --enable-default-pie ,go
 #--enable-noexist#--enable-multilib  --with-multilib-list=m64 --libdir=$CUST_INST_PREFIX/lib    c,c++,fortran,lto,objc,obj-c++  --with-ld=$CUST_INST_PREFIX/bin/ld 
 do_make;do_make install;do_make all;
 
