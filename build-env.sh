@@ -1580,9 +1580,8 @@ autoreconf -i;automake;autoconf;
 ./configure CFLAGS="-P $ADD_O_FS" CPPFLAGS="-P $ADD_O_FS" --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make install;
 cd python;cython spdylay.pyx;
-pypy setup.py install;
-rm -r build;
-python setup.py install;
+pypy setup.py install;rm -r build;pypy3 setup.py install;rm -r build;
+python setup.py install;rm -r build;python3 setup.py install;
 		shift;;	
 	
 'go')
@@ -1710,8 +1709,7 @@ compile_and_install(){
 		fi
 	fi
 	if [ $stage -eq 3 ]; then
-		do_install spdylay
-		do_install python pypy2 python3 
+		do_install python pypy2 python3 spdylay
 		do_install pybind11
 		do_install ruby graphviz rrdtool 
 		do_install thrift hypertable
