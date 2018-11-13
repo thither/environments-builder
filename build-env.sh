@@ -484,9 +484,10 @@ do_make;do_make install-strip;do_make install;do_make all;
 		shift;;
 
 'flex')
-if [ $stage -eq 1 ]; then	
+if [ $stage -eq 0 ]; then	
 	tn='flex-2.6.3'; url='http://github.com/westes/flex/releases/download/v2.6.3/flex-2.6.3.tar.gz';
 else
+	rm -r $DOWNLOAD_PATH/$sn
 	tn='flex-2.6.4'; url='http://github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz';
 fi
 set_source 'tar';
