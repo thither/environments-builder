@@ -1703,13 +1703,13 @@ compile_and_install(){
 		do_install imagemagick
 		
 		if [ $build_target == 'all' ];then
-			do_install perl php nodejs python3 pypy3 # pypy2stm 
+			do_install perl php nodejs pypy3 # pypy2stm 
 			#do_install ganglia-web # ganglia 
 			do_install keyutils nspr nss yasm libibverbs leveldb oath-toolkit rocksdb gflags ceph
 		fi
 	fi
 	if [ $stage -eq 3 ]; then
-		do_install python pypy2 spdylay
+		do_install python pypy2 python3 spdylay
 		do_install pybind11
 		do_install ruby graphviz rrdtool 
 		do_install thrift hypertable
