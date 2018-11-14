@@ -3,9 +3,9 @@ tn='Python-3.7.1'; url='https://www.python.org/ftp/python/3.7.1/Python-3.7.1.tar
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 
-if [ ! -f $CUST_INST_PREFIX/bin/python3 ]; then
-	rm_os_pkg $sn;
-fi
+# if [ ! -f $CUST_INST_PREFIX/bin/python3 ]; then
+	#rm_os_pkg $sn;
+# fi
 config_dest;`src_path`/configure CFLAGS="-P $ADD_O_FS" CPPFLAGS="-P $ADD_O_FS" --with-system-expat --with-system-ffi --with-ensurepip=install --with-computed-gotos --enable-shared --enable-optimizations --enable-ipv6 --with-lto --with-pymalloc --prefix=$CUST_INST_PREFIX; 
 do_make build_all;do_make install;
 mv $CUST_INST_PREFIX/include/python3.7m / $CUST_INST_PREFIX/include/python3.7

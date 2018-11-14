@@ -54,7 +54,8 @@ if [ -f 'pypy-c' ]; then
 	pypy_pip install --upgrade linuxfd https://github.com/kashirin-alex/eventlet/archive/master.zip 
 
 	pypy_pip install --upgrade msgpack-python
-	pypy_pip install --upgrade webp Pillow Wand
+	pypy_pip install --upgrade webp 
+	pypy_pip install --upgrade Pillow Wand
 	pypy_pip install --upgrade weasyprint==0.42.3
 	pypy_pip install --upgrade brotli pylzma rarfile zopfli  #zipfile pysnappy
 	pypy_pip install --upgrade ply slimit
