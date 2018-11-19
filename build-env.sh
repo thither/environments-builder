@@ -691,8 +691,8 @@ config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --prefi
 do_make;do_make lib;do_make install-strip;do_make install;do_make all;
 		shift;;
 
-'tcltk')
-tn='tcl8.6.6'; url='ftp://sunsite.icm.edu.pl/pub/programming/tcl/tcl8_6/tcl8.6.6-src.tar.gz';
+'tcl')
+tn='tcl8.6.9'; url='http://prdownloads.sourceforge.net/tcl/tcl8.6.9-src.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 cd unix;./configure --enable-threads --enable-shared=yes --enable-static=yes --enable-64bit --prefix=`_install_prefix` --build=`_build`; 
@@ -700,7 +700,7 @@ make;make install-strip;make install;make all;
 		shift;;
 
 'tk')
-tn='tk8.6.6'; url='ftp://sunsite.icm.edu.pl/pub/programming/tcl/tcl8_6/tk8.6.6-src.tar.gz';
+tn='tk8.6.9'; url='http://prdownloads.sourceforge.net/tcl/tk8.6.9.1-src.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 cd unix;
@@ -887,7 +887,7 @@ do_make;do_make install-strip;do_make install;do_make all; #libcap =  --with-cap
 		shift;;	
 
 'libssh')
-tn='libssh-0.8.1'; url='http://git.libssh.org/projects/libssh.git/snapshot/libssh-0.8.1.tar.gz';
+tn='libssh-0.8.5'; url='http://git.libssh.org/projects/libssh.git/snapshot/libssh-0.8.5.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;cmake `src_path` -DCMAKE_C_FLAGS="$ADD_O_FS" -DCMAKE_CXX_FLAGS="$ADD_O_FS" -DWITH_STATIC_LIB=ON -DWITH_LIBZ=ON -DWITH_SSH1=ON -DWITH_GCRYPT=ON -DWITH_GSSAPI=OFF -DWITH_EXAMPLES=OFF -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
@@ -1679,7 +1679,7 @@ compile_and_install(){
 		do_install openssl libgpg-error libgcrypt kerberos libssh icu4c
 		do_install bison texinfo flex binutils gettext nettle libtasn1 libiconv
 		do_install libexpat libunistring libidn2 libsodium unbound
-		do_install libffi p11-kit gnutls tcltk pcre pcre2  # tk openmpi 
+		do_install libffi p11-kit gnutls tcl pcre pcre2  # tk openmpi 
 		do_install gdbm expect attr patch # musl
 		do_install gc gperf gperftools  # libhoard jemalloc
 		do_install glib pkgconfig gcc 
