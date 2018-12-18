@@ -467,7 +467,7 @@ do_make;do_make install-strip;do_make install;do_make all;
 		shift;;
 
 'bison')
-tn='bison-3.1'; url='http://ftp.gnu.org/gnu/bison/bison-3.1.tar.xz';
+tn='bison-3.2'; url='http://ftp.gnu.org/gnu/bison/bison-3.2.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-threads=posix --prefix=`_install_prefix` --build=`_build`;
@@ -749,7 +749,7 @@ do_make;do_make install-strip;do_make install;do_make all;
 		shift;;
 
 'libeditline')
-tn='libedit-20180525-3.1'; url='http://thrysoee.dk/editline/libedit-20180525-3.1.tar.gz';
+tn='libedit-20181209-3.1'; url='http://thrysoee.dk/editline/libedit-20181209-3.1.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 sed -i 's/-lncurses/-lncursesw/g' configure;
@@ -1139,7 +1139,7 @@ rm -rf $CUST_JAVA_INST_PREFIX/$sn/conf;ln -s /etc/opt/zookeeper $CUST_JAVA_INST_
 		shift;;	
 
 'nodejs')
-tn='node-v11.1.0'; url='http://nodejs.org/dist/latest-v11.x/node-v11.1.0.tar.xz';
+tn='node-v11.4.0'; url='http://nodejs.org/dist/latest-v11.x/node-v11.4.0.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 ./configure --no-cross-compiling --prefix=`_install_prefix`; #--with-intl=none 
@@ -1192,7 +1192,7 @@ rm -rf $DOWNLOAD_PATH/$sn/$fn
 set_source 'zip';
 if [ $only_dw == 1 ];then return;fi
 if [ $build_target == 'node' ];then
-	ht_opts="-Dfsbrokers=hdfs -Dlanguages=py2,pypy2,py3";
+	ht_opts="-Dfsbrokers=hdfs,mapr -Dlanguages=py2,pypy2,py3";
 fi
 config_dest;cmake `src_path` -DHT_O_LEVEL=5 $ht_opts -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release;
 do_make install;##  -DPACKAGE_OS_SPECIFIC=1  -DVERSION_MISC_SUFFIX=$( date  +"%Y-%m-%d_%H-%M") # php,java,rb,tl,js,py3,pypy3,
@@ -1565,10 +1565,10 @@ make prefix=`_install_prefix` install;
 		shift;;		
 
 'ceph')
-tn='ceph-13.2.1'; url='http://download.ceph.com/tarballs/ceph_13.2.1.orig.tar.gz';
+tn='ceph-13.2.2'; url='http://download.ceph.com/tarballs/ceph_13.2.2.orig.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi #  -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC -DPIC" -DCMAKE_CXX_FLAGS="-std=c++17 $ADD_O_FS -fPIC -DPIC"
-config_dest;cmake `src_path` -DLIBOATH_INCLUDE_DIR=/usr/local/include/ -DENABLE_SHARED=ON -DWITH_TESTS=OFF -DWITH_BLUEFS=ON -DWITH_RADOSGW=ON -DWITH_FUSE=OFF -DWITH_MANPAGE=OFF -DWITH_OPENLDAP=OFF -DWITH_XFS=OFF -DWITH_BLUESTORE=ON -DWITH_SPDK=OFF -DWITH_LTTNG=OFF -DWITH_BABELTRACE=OFF -DALLOCATOR=tcmalloc_minimal -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+config_dest;cmake `src_path` -DLIBOATH_INCLUDE_DIR=/usr/local/include/ -DENABLE_SHARED=ON -DWITH_TESTS=OFF -DWITH_BLUEFS=OFF-DWITH_RADOSGW=ON -DWITH_FUSE=OFF -DWITH_MANPAGE=OFF -DWITH_OPENLDAP=OFF -DWITH_XFS=OFF -DWITH_BLUESTORE=OFF -DWITH_SPDK=OFF -DWITH_LTTNG=OFF -DWITH_BABELTRACE=OFF -DALLOCATOR=tcmalloc_minimal -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
 make VERBOSE=1;do_make install;
 		shift;;
 
@@ -1643,7 +1643,24 @@ make;make install;
 echo "#!/usr/bin/env bash" > $ENV_SETTINGS_PATH/$sn.sh
 echo "export CPATH=\$CPATH:\$CUST_INST_PREFIX/include/$sn" >> $ENV_SETTINGS_PATH/$sn.sh
 		shift;;	
-
+	
+'pstack')
+tn='pstack'; url='http://code.lm7.fr/robotux/pstack/archive/pstack-1.3.tar.gz';
+set_source 'tar';
+if [ $only_dw == 1 ];then return;fi
+do_make; do_make install BINDIR=`_install_prefix`/bin  MANDIR=`_install_prefix`/share/man;
+		shift;;	
+		
+'doxygen')
+tn='doxygen-1.8.14'; url='http://doxygen.nl/files/doxygen-1.8.14.src.tar.gz';
+set_source 'tar';
+if [ $only_dw == 1 ];then return;fi
+config_dest;cmake `src_path` -DCMAKE_CXX_FLAGS="-liconv" -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+make;make install;
+		shift;;	
+		
+		
+		
     *)         echo "Unknown build: $sn";       shift;;
   esac
   
@@ -1685,6 +1702,7 @@ compile_and_install(){
 		do_install glib pkgconfig gcc 
 		
 		do_install libaio coreutils gdb bash lsof curl wget sqlite berkeley-db python perl 
+		do_install pstack
 	fi
 	if [ $stage -eq 2 ]; then
 		do_install boost
@@ -1706,6 +1724,7 @@ compile_and_install(){
 			do_install perl php nodejs pypy3 # pypy2stm 
 			#do_install ganglia-web # ganglia 
 			do_install keyutils nspr nss yasm libibverbs leveldb oath-toolkit rocksdb gflags ceph
+			do_install doxygen
 		fi
 	fi
 	if [ $stage -eq 3 ]; then
