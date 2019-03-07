@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-tn='openssl-1.1.0i'; url='http://www.openssl.org/source/openssl-1.1.0i.tar.gz';
+tn='openssl-1.1.0j'; url='http://www.openssl.org/source/openssl-1.1.0j.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 
@@ -11,7 +11,7 @@ fi
 	enable-ecdsa enable-md2 enable-rc5 \
 	enable-ssl3 enable-ssl3-method enable-weak-ssl-ciphers \
 	threads zlib zlib-dynamic shared enable-ec_nistp_64_gcc_128 --prefix=$CUST_INST_PREFIX;#  no-dso -DPEDANTIC -pedantic enable-ssl-trace  enable-ripemd  enable-blake2 --openssldir=$CUST_INST_PREFIX/ssl --prefix=$CUST_INST_PREFIX/ssl;
-do_make;do_make install;do_make all; 
+make; make install_sw;
 if [ -f $CUST_INST_PREFIX/bin/openssl ]; then
 	rm -r $CUST_INST_PREFIX/ssl/certs /etc/ssl/certs;mkdir -p /etc/ssl/certs;
 	wget --no-check-certificate -O /etc/ssl/certs/certs.pem http://curl.haxx.se/ca/cacert.pem; #https://curl.haxx.se/docs/caextract.html 

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-tn='Python-3.7.1'; url='https://www.python.org/ftp/python/3.7.1/Python-3.7.1.tar.xz';
+tn='Python-3.8.0a2'; url='http://www.python.org/ftp/python/3.8.0/Python-3.8.0a2.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 
@@ -8,17 +8,17 @@ if [ $only_dw == 1 ];then return;fi
 # fi
 config_dest;`src_path`/configure CFLAGS="-P $ADD_O_FS" CPPFLAGS="-P $ADD_O_FS" --with-system-expat --with-system-ffi --with-ensurepip=install --with-computed-gotos --enable-shared --enable-optimizations --enable-ipv6 --with-lto --with-pymalloc --prefix=$CUST_INST_PREFIX; 
 do_make build_all;do_make install;
-mv $CUST_INST_PREFIX/include/python3.7m / $CUST_INST_PREFIX/include/python3.7
+mv $CUST_INST_PREFIX/include/python3.8m / $CUST_INST_PREFIX/include/python3.8
 if [ -f $CUST_INST_PREFIX/bin/python3 ]; then
-	rm -f /usr/bin/py3; ln -s $CUST_INST_PREFIX/bin/python3.7 /usr/bin/py3;
-	echo $CUST_INST_PREFIX/lib/python3.7 > $LD_CONF_PATH/python3.7.conf;
+	rm -f /usr/bin/py3; ln -s $CUST_INST_PREFIX/bin/python3.8 /usr/bin/py3;
+	echo $CUST_INST_PREFIX/lib/python3.8 > $LD_CONF_PATH/python3.8.conf;
 	ldconfig
 	py3 -m ensurepip; rm /usr/bin/py3_pip; ln -s $CUST_INST_PREFIX/bin/pip3 /usr/bin/py3_pip;
 fi
 source /etc/profile;source ~/.bashrc;ldconfig;
 
 (cd $BUILDS_PATH/boost;
-./bootstrap.sh --with-python=`_install_prefix`/bin/python3.7 --prefix=`_install_prefix`;
+./bootstrap.sh --with-python=`_install_prefix`/bin/python3.8 --prefix=`_install_prefix`;
 ./b2 --with-python  threading=multi link=shared runtime-link=shared install;)
 
 if [ -f /usr/bin/py3_pip ] && [ $stage -ne 0 ]; then
