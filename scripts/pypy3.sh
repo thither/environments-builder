@@ -6,13 +6,32 @@ if [ $only_dw == 1 ];then return;fi
 for n in ncurses panel term; do sed -i 's/'$n'/'$n'w/g' lib_pypy/_curses_build.py; sed -i 's/#include <'$n'w.h>/#include <'$n'.h>/g' lib_pypy/_curses_build.py; done;
 sed -i 's/ncurses/ncursesw/g' pypy/module/_minimal_curses/fficurses.py;
 
-cd pypy/goal/;
-(CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" PYPY_LOCALBASE=$BUILDS_PATH/$sn python ../../rpython/bin/rpython --lto --shared --thread --make-jobs=$NUM_PROCS --no-profopt --gc=incminimark --gcremovetypeptr --continuation  --translation-backendopt-inline --translation-backendopt-mallocs --translation-backendopt-constfold --translation-backendopt-stack_optimization --translation-backendopt-storesink  --translation-backendopt-remove_asserts --translation-backendopt-really_remove_asserts --if-block-merge --translation-withsmallfuncsets=3 --translation-jit_profiler=off --translation-jit_opencoder_model=big --translation-backendopt-print_statistics --opt=jit targetpypystandalone.py  --allworkingmodules --objspace-std-intshortcut --objspace-std-newshortcut --objspace-std-optimized_list_getitem --objspace-std-withprebuiltint --objspace-std-withspecialisedtuple --objspace-std-withtproxy) &
-# (PYPY_LOCALBASE=$BUILDS_PATH/$sn pypy ../../rpython/bin/rpython) &
+cd pypy/goal;export VERBOSE=1;
+(
+LDFLAGS="-DTCMALLOC -ltcmalloc -lunwind -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free" \
+CFLAGS="$ADD_O_FS $LDFLAGS" \
+INCLUDEDIRS="-I/usr/local/include" \
+VERBOSE=1 \
+PYPY_LOCALBASE=$BUILDS_PATH/$sn \
+python ../../rpython/bin/rpython \
+			--no-shared --thread --make-jobs=$NUM_PROCS \
+			--verbose --no-profopt --gc=incminimark --gcremovetypeptr --continuation \
+			--inline-threshold=33.4 --translation-backendopt-inline --listcompr \
+			--translation-backendopt-mallocs --translation-backendopt-constfold --translation-backendopt-stack_optimization \
+			--translation-backendopt-storesink --translation-backendopt-remove_asserts --translation-backendopt-really_remove_asserts \
+			--if-block-merge --translation-withsmallfuncsets=10 --translation-jit_opencoder_model=big --translation-jit_profiler=off \
+			--translation-rweakref \
+			--translation-backendopt-print_statistics \
+			--opt=jit targetpypystandalone.py --allworkingmodules \
+			--objspace-std-intshortcut --objspace-std-newshortcut --objspace-std-optimized_list_getitem \
+			--objspace-std-methodcachesizeexp=15 --objspace-std-withliststrategies\
+			--objspace-std-withspecialisedtuple --objspace-std-withtproxy) &
+# --objspace-std-withprebuiltint  --lto
 while [ ! -f pypy3-c ]; do sleep 60; done;
 
+
 if [ -f 'pypy3-c' ]; then
-	python ../tool/build_cffi_imports.py ;
+	./pypy3-c ../tool/build_cffi_imports.py ;
 	python ../tool/release/package.py --without-tk --archive-name $sn --targetdir $DOWNLOAD_PATH/$sn.tar.bz2;
 
 	cd $BUILDS_PATH/$sn;rm -rf built_pkg; mkdir built_pkg; cd built_pkg; tar -xf $DOWNLOAD_PATH/$sn.tar.bz2;
@@ -34,6 +53,7 @@ if [ -f 'pypy3-c' ]; then
 	with_gmp=no pypy3_pip install --upgrade  pycrypto 
 	pypy3_pip install --upgrade cryptography
 	pypy3_pip install --upgrade pyopenssl #LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" 
+	
 	pypy3_pip install --upgrade pycryptodomex
 
 	pypy3_pip install --upgrade h2 #https://github.com/python-hyper/hyper-h2/archive/master.zip
@@ -41,7 +61,8 @@ if [ -f 'pypy3-c' ]; then
 	pypy3_pip install --upgrade linuxfd https://github.com/kashirin-alex/eventlet/archive/master.zip 
 
 	pypy3_pip install --upgrade msgpack-python
-	pypy3_pip install --upgrade webp Pillow Wand
+	pypy3_pip install --upgrade webp 
+	pypy3_pip install --upgrade Pillow Wand
 	pypy3_pip install --upgrade weasyprint                 
 	pypy3_pip install --upgrade brotli pylzma rarfile zopfli  #zipfile pysnappy
 	pypy3_pip install --upgrade ply slimit
@@ -51,6 +72,7 @@ if [ -f 'pypy3-c' ]; then
 	pypy3_pip install --upgrade fontTools
 
 	pypy3_pip install --upgrade https://github.com/kashirin-alex/libpyhdfs/archive/master.zip
+	pypy_pip install --upgrade https://github.com/kashirin-alex/PyHelpers/archive/master.zip
 
 fi
 
