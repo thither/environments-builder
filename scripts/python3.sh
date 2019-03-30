@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
-tn='Python-3.8.0a2'; url='http://www.python.org/ftp/python/3.8.0/Python-3.8.0a2.tar.xz';
+tn='Python-3.8.0a3'; url='http://www.python.org/ftp/python/3.8.0/Python-3.8.0a3.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 
 # if [ ! -f $CUST_INST_PREFIX/bin/python3 ]; then
 	#rm_os_pkg $sn;
 # fi
-config_dest;`src_path`/configure CFLAGS="-P $ADD_O_FS" CPPFLAGS="-P $ADD_O_FS" --with-system-expat --with-system-ffi --with-ensurepip=install --with-computed-gotos --enable-shared --enable-optimizations --enable-ipv6 --with-lto --with-pymalloc --prefix=$CUST_INST_PREFIX; 
+config_dest;`src_path`/configure CFLAGS="-P $ADD_O_FS" CPPFLAGS="-P $ADD_O_FS" \
+				--with-system-expat --with-system-ffi --with-ensurepip=install --with-computed-gotos 
+				--enable-shared --enable-optimizations --enable-ipv6 --with-lto --with-pymalloc --prefix=$CUST_INST_PREFIX; 
 do_make build_all;do_make install;
 mv $CUST_INST_PREFIX/include/python3.8m / $CUST_INST_PREFIX/include/python3.8
 if [ -f $CUST_INST_PREFIX/bin/python3 ]; then

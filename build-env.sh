@@ -282,7 +282,7 @@ do_make;do_make lib; do_make install;do_make all;
 		shift;;
 
 'cmake')
-tn='cmake-3.13.4'; url='http://cmake.org/files/v3.13/cmake-3.13.4.tar.gz';
+tn='cmake-3.14.0'; url='http://cmake.org/files/v3.14/cmake-3.14.0.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 ./bootstrap --prefix=`_install_prefix`;
@@ -505,7 +505,7 @@ do_make;do_make install;
 		shift;;
 
 'coreutils')
-tn='coreutils-8.30'; url='http://ftp.gnu.org/gnu/coreutils/coreutils-8.30.tar.xz';
+tn='coreutils-8.31'; url='http://ftp.gnu.org/gnu/coreutils/coreutils-8.31.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;FORCE_UNSAFE_CONFIGURE=1 `src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-install-program=hostname --prefix=`_install_prefix` --build=`_build`;
@@ -586,7 +586,7 @@ do_make;do_make install-strip;do_make install;do_make all;
 		shift;;
 
 'unbound')
-tn='unbound-1.9.0'; url='http://nlnetlabs.nl/downloads/unbound/unbound-1.9.0.tar.gz';
+tn='unbound-1.9.1'; url='http://nlnetlabs.nl/downloads/unbound/unbound-1.9.1.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure --enable-tfo-client --enable-tfo-server --enable-dnscrypt --prefix=`_install_prefix` --build=`_build`;
@@ -612,7 +612,7 @@ do_make;do_make install-strip;do_make install;do_make all;
 		shift;;
 
 'gnutls')
-tn='gnutls-3.6.6'; url='http://www.gnupg.org/ftp/gcrypt/gnutls/v3.6/gnutls-3.6.6.tar.xz';
+tn='gnutls-3.6.7'; url='http://www.gnupg.org/ftp/gcrypt/gnutls/v3.6/gnutls-3.6.7.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --disable-gtk-doc --enable-openssl-compatibility --prefix=`_install_prefix` --build=`_build`;
@@ -644,18 +644,18 @@ do_make;do_make install-strip;do_make install;do_make all;
 		shift;;
 
 'glib')
-tn='glib-2.58.3'; url='http://ftp.acc.umu.se/pub/gnome/sources/glib/2.58/glib-2.58.3.tar.xz';
+tn='glib-2.57.1'; url='https://download.gnome.org/sources/glib/2.57/glib-2.57.1.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-./autogen.sh;./configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --with-libiconv=gnu --with-threads=posix --prefix=`_install_prefix` --build=`_build`;
-do_make;do_make install;
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --with-libiconv=gnu --with-threads=posix --prefix=`_install_prefix` --build=`_build`;
+do_make; do_make install;
 		shift;;
 
 'jemalloc')
-tn='jemalloc-5.1.0'; url='http://github.com/jemalloc/jemalloc/archive/5.1.0.tar.gz';
+tn='jemalloc-5.1.0'; url='http://github.com/jemalloc/jemalloc/releases/download/5.1.0/jemalloc-5.1.0.tar.bz2';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-xmalloc --prefix=`_install_prefix` --build=`_build`;
+./autogen.sh;./configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-xmalloc --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make lib;do_make install;do_make all;
 		shift;;
 
@@ -749,7 +749,7 @@ do_make;do_make install-strip;do_make install;do_make all;
 		shift;;
 
 'libeditline')
-tn='libedit-20181209-3.1'; url='http://thrysoee.dk/editline/libedit-20181209-3.1.tar.gz';
+tn='libedit-20190324-3.1'; url='http://thrysoee.dk/editline/libedit-20190324-3.1.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 sed -i 's/-lncurses/-lncursesw/g' configure;
@@ -820,7 +820,7 @@ do_make;do_make install;
 		shift;;
 
 'icu4c')
-tn='icu/source'; url='http://download.icu-project.org/files/icu4c/63.1/icu4c-63_1-src.tgz';
+tn='icu/source'; url='http://download.icu-project.org/files/icu4c/64.1/icu4c-64_1-src.tgz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 echo '' > LICENSE;
@@ -836,7 +836,7 @@ if [ $only_dw == 1 ];then return;fi
 ./b2 -a cxxflags=-fPIC cflags=-fPIC threading=multi runtime-link=shared \
 		--with-context --with-coroutine --with-atomic --with-regex --with-random \
 		--with-date_time --with-thread --with-system --with-filesystem --with-iostreams \
-		--with-thread --with-chrono --with-test  install; # --with-program_options --with-python 
+		--with-program_options --with-thread --with-chrono --with-test  install; # --with-python 
 		shift;;
 
 'fuse2')
@@ -848,7 +848,7 @@ do_make;do_make lib; do_make install-strip;do_make install;do_make all;
 		shift;;
 
 'fuse3')
-tn='fuse-3.4.1'; url='http://github.com/libfuse/libfuse/releases/download/fuse-3.4.1/fuse-3.4.1.tar.xz';
+tn='fuse-3.4.2'; url='http://github.com/libfuse/libfuse/releases/download/fuse-3.4.2/fuse-3.4.2.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-lib --enable-util --prefix=`_install_prefix` --build=`_build`;
@@ -871,7 +871,7 @@ do_make;do_make install;do_make all;
 		shift;;
 
 'libgpg-error')
-tn='libgpg-error-1.35'; url='ftp://ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.35.tar.gz';
+tn='libgpg-error-1.36'; url='ftp://ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.36.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --with-pic=PIC --enable-static=yes --enable-threads=posix --prefix=`_install_prefix` --build=`_build`;
@@ -911,7 +911,7 @@ do_make;do_make lib;do_make install-strip;do_make install;do_make all;
 		shift;;	
 
 'libuv')
-tn='libuv-1.26.0'; url='http://github.com/libuv/libuv/archive/v1.26.0.tar.gz';
+tn='libuv-1.27.0'; url='http://github.com/libuv/libuv/archive/v1.27.0.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 ./autogen.sh;
@@ -936,11 +936,11 @@ do_make;do_make install;do_make all;
 		shift;;	
 
 'imagemagick')
-tn='ImageMagick-6.9.10-29'; url='http://www.imagemagick.org/download/ImageMagick-6.9.10-29.tar.xz'; #http://github.com/dahlia/wand/blob/f97277be6d268038a869e59b0d6c3780d7be5664/wand/version.py
+tn='ImageMagick-6.9.10-35'; url='http://www.imagemagick.org/download/ImageMagick-6.9.10-35.tar.xz'; #http://github.com/dahlia/wand/blob/f97277be6d268038a869e59b0d6c3780d7be5664/wand/version.py
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS"  --enable-shared=yes --enable-static=yes --with-jpeg=yes --with-webp=yes --with-quantum-depth=16 --enable-hdri --enable-pipes --enable-hugepages --disable-docs --with-aix-soname=both --with-modules --with-jemalloc --with-umem --prefix=`_install_prefix` --build=`_build`;
-do_make;do_make install-strip;do_make install;do_make all;
+do_make;do_make install;
 		shift;;	
 
 'freetype')
@@ -1051,8 +1051,9 @@ tn='thrift-0.12.0'; url='http://archive.apache.org/dist/thrift/0.12.0/thrift-0.1
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 ./bootstrap.sh;
-config_dest;cmake `src_path` -D -DCMAKE_C_FLAGS="-flto -fuse-linker-plugin -ffat-lto-objects -fPIC" -DCMAKE_CPP_FLAGS="-flto -fuse-linker-plugin -ffat-lto-objects -fPIC " -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC " -DBUILD_TESTING=ON -DBUILD_CPP=ON -DBUILD_JAVA=OFF -DUSE_STD_THREAD=1 -DWITH_STDTHREADS=ON -DTHRIFT_COMPILER_HS=ON -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
-do_make;do_make install;do_make all;  #FORCE_BOOST_SMART_PTR=ON
+sed -i 's/4.4.1/5.1.1/g' lib/java/gradle/wrapper/gradle-wrapper.properties;
+config_dest;cmake `src_path` -D -DCMAKE_C_FLAGS="-flto -fuse-linker-plugin -ffat-lto-objects -fPIC" -DCMAKE_CPP_FLAGS="-flto -fuse-linker-plugin -ffat-lto-objects -fPIC " -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC " -DBUILD_TESTING=ON -DBUILD_CPP=ON -DUSE_STD_THREAD=1 -DWITH_STDTHREADS=ON -DTHRIFT_COMPILER_HS=ON -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+do_make;do_make install;  #FORCE_BOOST_SMART_PTR=ON
 #cd `src_path`/lib/py/;python setup.py install;pypy setup.py install;
 		shift;;	
 		
@@ -1073,7 +1074,7 @@ do_make install;
 		shift;;
 
 'curl')
-tn='curl-curl-7_64_0'; url='http://github.com/curl/curl/archive/curl-7_64_0.tar.gz';
+tn='curl-curl-7_64_1'; url='http://github.com/curl/curl/archive/curl-7_64_1.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;cmake `src_path` -DCMAKE_C_FLAGS="$ADD_O_FS" -DCMAKE_CXX_FLAGS="$ADD_O_FS" -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
@@ -1099,7 +1100,7 @@ do_make;do_make install;
 		shift;;	
 
 'protobuf')
-tn='protobuf-3.7.0'; url='http://github.com/protocolbuffers/protobuf/archive/v3.7.0.tar.gz';
+tn='protobuf-3.7.1'; url='http://github.com/protocolbuffers/protobuf/archive/v3.7.1.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 cp -r ../$sn ../$sn-tmp; mv ../$sn-tmp gtest;
@@ -1144,7 +1145,7 @@ rm -rf $CUST_JAVA_INST_PREFIX/$sn/conf;ln -s /etc/opt/zookeeper $CUST_JAVA_INST_
 		shift;;	
 
 'nodejs')
-tn='node-v11.10.1'; url='http://nodejs.org/dist/latest-v11.x/node-v11.10.1.tar.xz';
+tn='node-v11.13.0'; url='http://nodejs.org/dist/latest-v11.x/node-v11.13.0.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 ./configure --no-cross-compiling --prefix=`_install_prefix`; #--with-intl=none 
@@ -1160,7 +1161,7 @@ make Linux-gcc-x86_64 CXX=gcc;mv libhoard.so $CUST_INST_PREFIX/lib/;
 		shift;;	
 
 'libzip')
-tn='libzip-1.5.1'; url='http://libzip.org/download/libzip-1.5.1.tar.xz';
+tn='libzip-1.5.2'; url='http://libzip.org/download/libzip-1.5.2.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;cmake `src_path` -DCMAKE_C_FLAGS="$ADD_O_FS" -DCMAKE_CXX_FLAGS="$ADD_O_FS" -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
@@ -1187,7 +1188,7 @@ do_make;do_make install;
 tn='pybind11-2.2.4'; url='http://github.com/pybind/pybind11/archive/v2.2.4.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;cmake `src_path` -DCMAKE_CXX_FLAGS="$ADD_O_FS"  -DPYBIND11_TEST=OFF  -DCMAKE_INSTALL_INCLUDEDIR=`_install_prefix`/include;
+config_dest;cmake `src_path` -DPYBIND11_PYTHON_VERSION=2.7 -DCMAKE_CXX_FLAGS="$ADD_O_FS"  -DPYBIND11_TEST=OFF  -DCMAKE_INSTALL_INCLUDEDIR=`_install_prefix`/include;
 do_make install;
 		shift;;
 
@@ -1197,11 +1198,11 @@ rm -rf $DOWNLOAD_PATH/$sn/$fn
 set_source 'zip';
 if [ $only_dw == 1 ];then return;fi
 if [ $build_target == 'node' ];then
-	ht_opts="-Dfsbrokers=hdfs,mapr -Dlanguages=py2,pypy2,py3";
+	ht_opts="-Dlanguages=py2,pypy2,py3,pypy3";
 fi
-config_dest;cmake `src_path` -DHT_O_LEVEL=5 $ht_opts -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release;
-do_make install;##  -DPACKAGE_OS_SPECIFIC=1  -DVERSION_MISC_SUFFIX=$( date  +"%Y-%m-%d_%H-%M") # php,java,rb,tl,js,py3,pypy3,
-make alltests; #if [ $test_make == 1 ];then make alltests; fi;
+config_dest;cmake `src_path` $ht_opts -Dfsbrokers=hdfs -DHT_O_LEVEL=6 -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release -DINSTALL_EXCLUDE_DEPENDENT_LIBS=ON;
+do_make;do_make install;##  -DUSE_JEMALLOC=ON  -DPACKAGE_OS_SPECIFIC=1  -DVERSION_MISC_SUFFIX=$( date  +"%Y-%m-%d_%H-%M") # php,java,rb,tl,js,py3,pypy3,
+env CTEST_OUTPUT_ON_FAILURE=1 make alltests; #if [ $test_make == 1 ];then make alltests; fi;
 		shift;;
 
 'llvm')
@@ -1245,7 +1246,7 @@ do_make;do_make install;
 		shift;;
 
 'libsigcpp')
-tn='libsigc++-2.10.1'; url='http://download.gnome.org/sources/libsigc++/2.10/libsigc++-2.10.1.tar.xz';
+tn='libsigc++-2.99.12'; url='http://download.gnome.org/sources/libsigc++/2.99/libsigc++-2.99.12.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --prefix=`_install_prefix` --build=`_build`;
@@ -1261,7 +1262,7 @@ do_make;do_make install;
 		shift;;
 
 'cairo')
-tn='cairo-1.14.12'; url='http://www.cairographics.org/releases/cairo-1.14.12.tar.xz';
+tn='cairo-1.16.0'; url='http://www.cairographics.org/releases/cairo-1.16.0.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-pdf=yes --enable-svg=yes --enable-tee=yes --enable-fc=yes --enable-ft=yes --enable-xml=yes --enable-pthread=yes --prefix=`_install_prefix` --build=`_build`; 
@@ -1277,7 +1278,7 @@ do_make;do_make install;
 		shift;;
 
 'gobject-ispec')
-tn='gobject-introspection-1.59.4'; url='http://ftp.acc.umu.se/pub/gnome/sources/gobject-introspection/1.59/gobject-introspection-1.59.4.tar.xz';
+tn='gobject-introspection-1.60.0'; url='http://ftp.acc.umu.se/pub/gnome/sources/gobject-introspection/1.60/gobject-introspection-1.60.0.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --prefix=`_install_prefix` --build=`_build`; 
@@ -1309,21 +1310,13 @@ do_make;do_make install;
 		shift;;	
 
 'ruby')
-tn='ruby-2.5.3'; url='http://cache.ruby-lang.org/pub/ruby/2.5/ruby-2.5.3.tar.xz';
+tn='ruby-2.6.2'; url='https://cache.ruby-lang.org/pub/ruby/2.6/ruby-2.6.2.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make install;	
 gem install sinatra rack thin json titleize syck;
-		shift;;	
-
-'ganglia')
-tn='ganglia-3.7.2'; url='http://sourceforge.net/projects/ganglia/files/ganglia%20monitoring%20core/3.7.2/ganglia-3.7.2.tar.gz/download';
-set_source 'tar';
-if [ $only_dw == 1 ];then return;fi
-./configure --with-gmetad --enable-status --enable-shared=yes --enable-static=yes --enable-python --disable-perl --prefix=`_install_prefix` --build=`_build`;
-do_make;do_make install;
-		shift;;	
+		shift;;
 
 'pkgconfig')
 tn='pkg-config-0.29.2'; url='http://pkg-config.freedesktop.org/releases/pkg-config-0.29.2.tar.gz';
@@ -1352,7 +1345,7 @@ do_make;do_make install;
 		shift;;
 		
 'php')
-tn='php-7.3.2'; url='http://mirror.cogentco.com/pub/php/php-7.3.2.tar.xz';
+tn='php-7.3.3'; url='http://mirror.cogentco.com/pub/php/php-7.3.3.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure --enable-shared=yes --enable-static=yes --enable-json --prefix=`_install_prefix` --build=`_build`; 
@@ -1366,7 +1359,15 @@ if [ $only_dw == 1 ];then return;fi
 echo "\$conf['rrdtool'] = \"rrdtool\";" >> conf_default.php;
 if [ -d /usr/share/ganglia-webfrontend ]; then rm -rf /usr/share/ganglia-webfrontend; fi;
 do_make install; #/usr/share/ganglia-webfrontend
-		shift;;
+		shift;;	
+
+'ganglia')
+tn='ganglia-3.7.2'; url='http://sourceforge.net/projects/ganglia/files/ganglia%20monitoring%20core/3.7.2/ganglia-3.7.2.tar.gz/download';
+set_source 'tar';
+if [ $only_dw == 1 ];then return;fi
+./configure --with-gmetad --enable-status --enable-shared=yes --enable-static=yes --enable-python --disable-perl --prefix=`_install_prefix` --build=`_build`;
+do_make;do_make install;
+		shift;;	
 
 'libmnl')
 tn='libmnl-1.0.4'; url='http://www.netfilter.org/projects/libmnl/files/libmnl-1.0.4.tar.bz2';
@@ -1456,7 +1457,7 @@ fi
 		shift;;	
 
 'bash')
-tn='bash-4.4.18'; url='http://ftp.gnu.org/gnu/bash/bash-4.4.18.tar.gz';
+tn='bash-5.0'; url='http://ftp.gnu.org/gnu/bash/bash-5.0.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 sed -i 's/ncurses/ncursesw/g' configure;
@@ -1482,7 +1483,7 @@ do_make;do_make install;
 		shift;;	
 
 'nspr')
-tn='nspr-4.20'; url='http://archive.mozilla.org/pub/nspr/releases/v4.20/src/nspr-4.20.tar.gz';
+tn='nspr-4.21'; url='http://archive.mozilla.org/pub/nspr/releases/v4.21/src/nspr-4.21.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/nspr/configure CFLAGS="-I/usr/include/x86_64-linux-gnu $ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-strip  --enable-ipv6 --without-mozilla  --with-pthreads --enable-64bit --prefix=`_install_prefix` --build=`_build`;
@@ -1490,7 +1491,7 @@ do_make;do_make install;
 		shift;;	
 
 'nss')
-tn='nss-3.42.1'; url='http://archive.mozilla.org/pub/security/nss/releases/NSS_3_42_1_RTM/src/nss-3.42.1.tar.gz';
+tn='nss-3.43'; url='http://archive.mozilla.org/pub/security/nss/releases/NSS_3_43_RTM/src/nss-3.43.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 cd nss; #./build.sh;
@@ -1570,11 +1571,18 @@ make prefix=`_install_prefix` install;
 		shift;;		
 
 'ceph')
-tn='ceph-14.1.0'; url='http://download.ceph.com/tarballs/ceph_14.1.0.orig.tar.gz';
+tn='ceph-14.2.0'; url='http://download.ceph.com/tarballs/ceph_14.2.0.orig.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi #  -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC -DPIC" -DCMAKE_CXX_FLAGS="-std=c++17 $ADD_O_FS -fPIC -DPIC"
-config_dest;cmake `src_path` -DLIBOATH_INCLUDE_DIR=/usr/local/include/ -DENABLE_SHARED=ON -DWITH_TESTS=OFF -DWITH_BLUEFS=OFF-DWITH_RADOSGW=ON -DWITH_FUSE=OFF -DWITH_MANPAGE=OFF -DWITH_OPENLDAP=OFF -DWITH_XFS=OFF -DWITH_BLUESTORE=OFF -DWITH_SPDK=OFF -DWITH_LTTNG=OFF -DWITH_BABELTRACE=OFF -DALLOCATOR=tcmalloc_minimal -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
-make VERBOSE=1;do_make install;
+config_dest;cmake `src_path` \
+-DWITH_LIBCEPHFS=ON -DENABLE_SHARED=ON \
+-DWITH_RADOSGW=ON -DWITH_RADOSGW_AMQP_ENDPOINT=OFF\
+-DWITH_RDMA=OFF \
+-DWITH_TESTS=OFF -DWITH_MANPAGE=OFF \
+-DWITH_BLUEFS=OFF -DWITH_FUSE=OFF -DWITH_OPENLDAP=OFF \
+-DWITH_XFS=OFF -DWITH_BLUESTORE=OFF -DWITH_SPDK=OFF -DWITH_LTTNG=OFF -DWITH_BABELTRACE=OFF \
+-DALLOCATOR=tcmalloc_minimal -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+do_make cephfs;do_make cephfs install;
 		shift;;
 
 'spdylay')
@@ -1590,7 +1598,7 @@ python setup.py install;rm -r build;python3 setup.py install;
 		shift;;	
 	
 'go')
-tn='go'; url='http://dl.google.com/go/go1.12.src.tar.gz';
+tn='go'; url='http://dl.google.com/go/go1.12.1.src.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 cd src;./all.bash -v
@@ -1605,7 +1613,7 @@ do_make;do_make install;
 		shift;;	
 		
 'google-glog')
-tn='glog-0.3.5'; url='http://github.com/google/glog/archive/v0.3.5.tar.gz';
+tn='glog-0.4.0'; url='http://github.com/google/glog/archive/v0.4.0.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 ./configure CFLAGS=" $ADD_O_FS" CPPFLAGS="$ADD_O_FS" --prefix=`_install_prefix` --build=`_build`;
@@ -1613,7 +1621,7 @@ do_make;do_make install;
 		shift;;	
 		
 'double-conversion')
-tn='double-conversion-2.0.4'; url='http://github.com/google/double-conversion/archive/2.0.4.tar.gz';
+tn='double-conversion-3.1.4'; url='https://github.com/google/double-conversion/archive/v3.1.4.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;cmake `src_path`  -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC -DPIC" -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC -DPIC" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
@@ -1629,7 +1637,7 @@ do_make;do_make install;
 		shift;;	
 			
 'libfolly')
-tn='folly-2019.02.25.00'; url='http://github.com/facebook/folly/archive/v2019.02.25.00.tar.gz';
+tn='folly-2019.03.25.00'; url='http://github.com/facebook/folly/archive/v2019.03.25.00.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;cmake `src_path`  -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC -DPIC" -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC -DPIC" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
@@ -1637,7 +1645,7 @@ do_make;do_make install;#  -DBUILD_SHARED_LIBS=ON
 		shift;;	
 		
 'fizz')
-tn='fizz-2019.02.25.00'; url='http://github.com/facebookincubator/fizz/archive/v2019.02.25.00.tar.gz';
+tn='fizz-2019.03.25.00'; url='http://github.com/facebookincubator/fizz/archive/v2019.03.25.00.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;cmake `src_path`/fizz  -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC -DPIC" -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC -DPIC" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
@@ -1645,7 +1653,7 @@ do_make;do_make install;#  -DBUILD_SHARED_LIBS=ON
 		shift;;	
 		
 'wangle')
-tn='wangle-2019.02.25.00'; url='http://github.com/facebook/wangle/archive/v2019.02.25.00.tar.gz';
+tn='wangle-2019.03.25.00'; url='http://github.com/facebook/wangle/archive/v2019.03.25.00.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;cmake `src_path`/wangle  -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC -DPIC" -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC -DPIC" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;

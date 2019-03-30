@@ -5,7 +5,7 @@ if [ $only_dw == 1 ];then return;fi
 
 intermediate='';
 target=--target=`_build`;
-add_languages=",go";
+add_languages=""; # ,go
 if [ $stage -eq 0 ]; then 
 	target="";
 	add_languages="";

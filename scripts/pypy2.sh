@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-tn='pypy2.7-v7.0.0-src'; url='https://bitbucket.org/pypy/pypy/downloads/pypy2.7-v7.0.0-src.tar.bz2';
+tn='pypy2.7-v7.1.0-src'; url='http://bitbucket.org/pypy/pypy/downloads/pypy2.7-v7.1.0-src.tar.bz2';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 
@@ -7,7 +7,13 @@ for n in ncurses panel term; do sed -i 's/'$n'/'$n'w/g' lib_pypy/_curses_build.p
 sed -i 's/ncurses/ncursesw/g' pypy/module/_minimal_curses/fficurses.py;
 
 cd pypy/goal;export VERBOSE=1;
-(VERBOSE=1 CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" PYPY_LOCALBASE=$BUILDS_PATH/$sn python ../../rpython/bin/rpython \
+(
+LDFLAGS="-DTCMALLOC_MINIMAL -ltcmalloc_minimal -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free" \
+CFLAGS="$ADD_O_FS $LDFLAGS" \
+INCLUDEDIRS="-I/usr/local/include" \
+VERBOSE=1 \
+PYPY_LOCALBASE=$BUILDS_PATH/$sn \
+python ../../rpython/bin/rpython \
 			--no-shared --thread --make-jobs=$NUM_PROCS \
 			--verbose --no-profopt --gc=incminimark --gcremovetypeptr --continuation \
 			--inline-threshold=33.4 --translation-backendopt-inline --listcompr \
@@ -67,5 +73,6 @@ if [ -f 'pypy-c' ]; then
 
 	pypy_pip install --upgrade https://github.com/kashirin-alex/libpyhdfs/archive/master.zip
 	pypy_pip install --upgrade https://github.com/kashirin-alex/PyHelpers/archive/master.zip
-
+	
+	STDCXX=17 pypy_pip install --upgrade --verbose cppyy
 fi
