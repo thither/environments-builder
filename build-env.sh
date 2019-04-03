@@ -936,7 +936,7 @@ do_make;do_make install;do_make all;
 		shift;;	
 
 'imagemagick')
-tn='ImageMagick-6.9.10-35'; url='http://www.imagemagick.org/download/ImageMagick-6.9.10-35.tar.xz'; #http://github.com/dahlia/wand/blob/f97277be6d268038a869e59b0d6c3780d7be5664/wand/version.py
+tn='ImageMagick-6.9.10-36'; url='http://www.imagemagick.org/download/ImageMagick-6.9.10-36.tar.xz'; #http://github.com/dahlia/wand/blob/f97277be6d268038a869e59b0d6c3780d7be5664/wand/version.py
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS"  --enable-shared=yes --enable-static=yes --with-jpeg=yes --with-webp=yes --with-quantum-depth=16 --enable-hdri --enable-pipes --enable-hugepages --disable-docs --with-aix-soname=both --with-modules --with-jemalloc --with-umem --prefix=`_install_prefix` --build=`_build`;
@@ -1020,6 +1020,7 @@ if [ -f $CUST_JAVA_INST_PREFIX/$sn/bin/javac ] &&  [ -f $CUST_JAVA_INST_PREFIX/$
 	echo "export JAVA_HOME=\"$CUST_JAVA_INST_PREFIX/$sn\"" >> $ENV_SETTINGS_PATH/$sn.sh
 	echo "export PATH=\$PATH:\"$CUST_JAVA_INST_PREFIX/$sn/bin\"" >> $ENV_SETTINGS_PATH/$sn.sh
 	echo -e $CUST_JAVA_INST_PREFIX/$sn/lib/server/ > $LD_CONF_PATH/$sn.conf;
+	echo -e $CUST_JAVA_INST_PREFIX/$sn/lib/ >> $LD_CONF_PATH/$sn.conf;
 fi
 		shift;;	
 
@@ -1194,14 +1195,16 @@ do_make install;
 
 'hypertable')
 tn='hypertable-master'; url='http://github.com/kashirin-alex/hypertable/archive/master.zip';
-rm -rf $DOWNLOAD_PATH/$sn/$fn
+rm -rf $DOWNLOAD_PATH/$sn
 set_source 'zip';
 if [ $only_dw == 1 ];then return;fi
+ht_opts=" ";
 if [ $build_target == 'node' ];then
-	ht_opts="-Dlanguages=py2,pypy2,py3,pypy3";
+	ht_opts="-Dlanguages=py2,pypy2,py3,pypy3 -Dfsbrokers=hdfs ";
 fi
-config_dest;cmake `src_path` $ht_opts -Dfsbrokers=hdfs -DHT_O_LEVEL=6 -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release -DINSTALL_EXCLUDE_DEPENDENT_LIBS=ON;
+config_dest;cmake `src_path` $ht_opts -DHT_O_LEVEL=6 -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release -DINSTALL_EXCLUDE_DEPENDENT_LIBS=ON;
 do_make;do_make install;##  -DUSE_JEMALLOC=ON  -DPACKAGE_OS_SPECIFIC=1  -DVERSION_MISC_SUFFIX=$( date  +"%Y-%m-%d_%H-%M") # php,java,rb,tl,js,py3,pypy3,
+cp `_install_prefix`/lib/libsigar-amd64-linux.so /opt/hypertable/0.9.8.16/lib/
 env CTEST_OUTPUT_ON_FAILURE=1 make alltests; #if [ $test_make == 1 ];then make alltests; fi;
 		shift;;
 
@@ -1574,15 +1577,17 @@ make prefix=`_install_prefix` install;
 tn='ceph-14.2.0'; url='http://download.ceph.com/tarballs/ceph_14.2.0.orig.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi #  -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC -DPIC" -DCMAKE_CXX_FLAGS="-std=c++17 $ADD_O_FS -fPIC -DPIC"
+sed -i 's/ncurses/ncursesw/g' src/tools/rbd/CMakeLists.txt;
 config_dest;cmake `src_path` \
 -DWITH_LIBCEPHFS=ON -DENABLE_SHARED=ON \
--DWITH_RADOSGW=ON -DWITH_RADOSGW_AMQP_ENDPOINT=OFF\
--DWITH_RDMA=OFF \
+-DWITH_RADOSGW=OFF -DWITH_KVS=OFF -DWITH_RADOSGW_AMQP_ENDPOINT=OFF \
+-DWITH_RDMA=OFF -DWITH_GRAFANA=OFF \
+-DWITH_MGR=OFF -DWITH_MGR_DASHBOARD_FRONTEND=OFF -DWITH_GRAFANA=OFF \
 -DWITH_TESTS=OFF -DWITH_MANPAGE=OFF \
 -DWITH_BLUEFS=OFF -DWITH_FUSE=OFF -DWITH_OPENLDAP=OFF \
--DWITH_XFS=OFF -DWITH_BLUESTORE=OFF -DWITH_SPDK=OFF -DWITH_LTTNG=OFF -DWITH_BABELTRACE=OFF \
+-DWITH_XFS=OFF -DWITH_BLUESTORE=ON -DWITH_SPDK=OFF -DWITH_LTTNG=OFF -DWITH_BABELTRACE=OFF \
 -DALLOCATOR=tcmalloc_minimal -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
-do_make cephfs;do_make cephfs install;
+make VERBOSE=1 cephfs;do_make cephfs install;
 		shift;;
 
 'spdylay')
@@ -1616,7 +1621,7 @@ do_make;do_make install;
 tn='glog-0.4.0'; url='http://github.com/google/glog/archive/v0.4.0.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-./configure CFLAGS=" $ADD_O_FS" CPPFLAGS="$ADD_O_FS" --prefix=`_install_prefix` --build=`_build`;
+config_dest;cmake `src_path`  -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC -DPIC" -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC -DPIC" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
 do_make;do_make install;
 		shift;;	
 		
@@ -1716,8 +1721,8 @@ do_make; do_make install BINDIR=`_install_prefix`/bin  MANDIR=`_install_prefix`/
 tn='doxygen-1.8.15'; url='http://doxygen.nl/files/doxygen-1.8.15.src.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;cmake `src_path` -DCMAKE_CXX_FLAGS="-liconv" -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
-do_make; do_make install;
+config_dest;cmake `src_path` -G "Unix Makefiles" -Denglish_only=ON  -DCMAKE_CXX_FLAGS="-liconv" -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+make; make install;
 		shift;;	
 
 'libpam')
