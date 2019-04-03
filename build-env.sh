@@ -404,8 +404,9 @@ do_make;do_make install-strip;do_make install;do_make all;
 tn='librsvg-2.45.5'; url='http://github.com/GNOME/librsvg/archive/2.45.5.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;`src_path`/autogen.sh CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --prefix=`_install_prefix` --build=`_build`;
-do_make;do_make install-strip;do_make install;do_make all; 
+autoreconf -vif
+./configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --prefix=`_install_prefix` --build=`_build`;
+do_make;do_make install;
 		shift;;
 
 'libjpeg')
@@ -1785,12 +1786,12 @@ compile_and_install(){
 		do_install libconfuse apr apr-util libsigcpp log4cpp cronolog
 		do_install re2 sparsehash 
 		do_install libjansson libxml2 libxslt libuv libcares
-		do_install libpng libjpeg libsvg libwebp # librsvg
+		do_install libpng libjpeg libsvg libwebp 
 		do_install openjdk apache-ant apache-maven sigar
 		do_install gmock protobuf apache-zookeeper apache-hadoop libgsasl # libhdfs3
 		do_install fonts itstool freetype harfbuzz fontconfig 
 		do_install pixman cairo cairomm gobject-ispec fribidi pango 
-		do_install imagemagick
+		do_install imagemagick # librsvg
 		do_install elfutils libpam
 		
 		if [ $build_target == 'all' ];then
@@ -2120,11 +2121,12 @@ TMP_NAME=nghttp2
 echo $TMP_NAME
 mkdir ~/tmpBuilds
 cd ~/tmpBuilds; rm -r $TMP_NAME;
-wget 'http://github.com/nghttp2/nghttp2/releases/download/v1.36.0/nghttp2-1.36.0.tar.xz'
-tar xf nghttp2-1.36.0.tar.xz
-mv nghttp2-1.36.0 $TMP_NAME;cd $TMP_NAME
-cmake ./ -DLIBEVENT_INCLUDE_DIR=/usr/local/include -DLIBEV_LIBRARY=/usr/local/libev/lib/libev.so -DLIBEV_INCLUDE_DIR=/usr/local/libev/include
-#./configure --without-spdylay --without-systemd --enable-app --prefix=/usr/local; 
+wget 'http://github.com/nghttp2/nghttp2/releases/download/v1.37.0/nghttp2-1.37.0.tar.xz'
+tar xf nghttp2-1.37.0.tar.xz
+mv nghttp2-1.37.0 $TMP_NAME;
+cd $TMP_NAME
+#cmake ./ -DLIBEVENT_INCLUDE_DIR=/usr/local/include -DLIBEV_LIBRARY=/usr/local/libev/lib/libev.so -DLIBEV_INCLUDE_DIR=/usr/local/libev/include
+./configure --without-spdylay --without-systemd --disable-app --prefix=/usr/local; 
 make; 
 make install;
 
