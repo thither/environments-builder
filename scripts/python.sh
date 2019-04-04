@@ -19,6 +19,12 @@ config_dest;`src_path`/configure CFLAGS="-P $ADD_O_FS" CPPFLAGS="-P $ADD_O_FS" \
 do_make build_all;do_make install;
 source /etc/profile;source ~/.bashrc;ldconfig;
 
+export VERBOSE=1;
+export LDFLAGS="-DTCMALLOC_MINIMAL -ltcmalloc_minimal -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free"
+export CFLAGS="$ADD_O_FS $LDFLAGS -DNDEBUG"
+export CPPFLAGS="$ADD_O_FS $LDFLAGS"
+export INCLUDEDIRS="-I$CUST_INST_PREFIX/include"
+
 if [ -f $CUST_INST_PREFIX/bin/pip ] && [ $stage -ne 0 ]; then
 	ln -s $CUST_INST_PREFIX/bin/python /usr/bin/python;
 	if [ $stage -eq 3 ]; then
@@ -27,39 +33,45 @@ if [ -f $CUST_INST_PREFIX/bin/pip ] && [ $stage -ne 0 ]; then
 	fi
 	rm -rf ~/.cache/pip 
 
-	pip install --upgrade setuptools
-	pip install --upgrade pip
-	pip install --upgrade setuptools
+	pip install --upgrade --verbose setuptools
+	pip install --upgrade --verbose pip
+	pip install --upgrade --verbose setuptools
 
-	pip install --upgrade  cffi 
-	pip install --upgrade  greenlet
-	pip install --upgrade  psutil deepdiff
-	pip install --upgrade  xlrd lxml	
-	pip install --upgrade  pycrypto 
-	pip install --upgrade  cryptography
-	pip install --upgrade  pyopenssl #LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" 
-	pip install --upgrade  pycryptodomex
-	pip install --upgrade  pycparser
+	pip install --upgrade --verbose  cffi 
+	pip install --upgrade --verbose  greenlet
+	pip install --upgrade --verbose  psutil deepdiff
+	pip install --upgrade --verbose  xlrd lxml	
+	pip install --upgrade --verbose  pycrypto 
+	pip install --upgrade --verbose  cryptography
+	pip install --upgrade --verbose  pyopenssl #LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" 
+	pip install --upgrade --verbose  pycryptodomex
+	pip install --upgrade --verbose  pycparser
 	
-	pip install --upgrade  h2 #https://github.com/python-hyper/hyper-h2/archive/master.zip
-	pip install --upgrade  urllib3 dnspython
-   	pip install --upgrade linuxfd https://github.com/kashirin-alex/eventlet/archive/master.zip 
+	pip install --upgrade --verbose  h2 #https://github.com/python-hyper/hyper-h2/archive/master.zip
+	pip install --upgrade --verbose  urllib3 dnspython
+   	pip install --upgrade --verbose linuxfd http://github.com/kashirin-alex/eventlet/archive/master.zip 
 
-	pip install --upgrade  msgpack-python
-	pip install --upgrade  webp Pillow Wand
-	pip install --upgrade  weasyprint==0.42.3                 
-	pip install --upgrade  brotli pylzma rarfile  #zipfile pysnappy
-	pip install --upgrade ply slimit
+	pip install --upgrade --verbose  msgpack-python
+	pip install --upgrade --verbose  webp Pillow Wand
+	pip install --upgrade --verbose  weasyprint==0.42.3                 
+	pip install --upgrade --verbose  brotli pylzma rarfile  #zipfile pysnappy
+	pip install --upgrade --verbose ply slimit
 
-	pip install --upgrade  guess_language
-	pip install --upgrade  paypalrestsdk #pygeocoder python-google-places
-	pip install --upgrade  josepy acme
-	pip install --upgrade fontTools
+	pip install --upgrade --verbose  guess_language
+	pip install --upgrade --verbose  paypalrestsdk #pygeocoder python-google-places
+	pip install --upgrade --verbose  josepy acme
+	pip install --upgrade --verbose fontTools
 
-	pip install --upgrade https://github.com/kashirin-alex/libpyhdfs/archive/master.zip
+	pip install --upgrade --verbose http://github.com/kashirin-alex/libpyhdfs/archive/master.zip
+	pip install --upgrade --verbose http://github.com/kashirin-alex/PyHelpers/archive/master.zip
 
 	
-	#pip install --upgrade ninja;
-	#pip install --upgrade http://chromium.googlesource.com/external/gyp/+archive/master.tar.gz;
-	pip install --upgrade Cython
+	#pip install --upgrade --verbose ninja;
+	#pip install --upgrade --verbose http://chromium.googlesource.com/external/gyp/+archive/master.tar.gz;
+	pip install --upgrade --verbose Cython
 fi
+
+export LDFLAGS=""
+export CFLAGS=""
+export CPPFLAGS=""
+export INCLUDEDIRS=""

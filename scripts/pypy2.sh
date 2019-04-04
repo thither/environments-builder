@@ -9,7 +9,7 @@ sed -i 's/ncurses/ncursesw/g' pypy/module/_minimal_curses/fficurses.py;
 cd pypy/goal;
 export VERBOSE=1;
 export LDFLAGS="-DTCMALLOC_MINIMAL -ltcmalloc_minimal -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free"
-export CFLAGS="$ADD_O_FS $LDFLAGS"
+export CFLAGS="$ADD_O_FS $LDFLAGS -DNDEBUG"
 export CPPFLAGS="$ADD_O_FS $LDFLAGS"
 export INCLUDEDIRS="-I$CUST_INST_PREFIX/include"
 (
@@ -44,39 +44,39 @@ if [ -f 'pypy-c' ]; then
 	source /etc/profile;source ~/.bashrc;ldconfig;
 
 	rm -rf ~/.cache/pip 
-	pypy_pip install --upgrade setuptools
-	pypy_pip install --upgrade pip
-	pypy_pip install --upgrade setuptools
+	pypy_pip install --upgrade --verbose setuptools
+	pypy_pip install --upgrade --verbose pip
+	pypy_pip install --upgrade --verbose setuptools
 
-	pypy_pip install --upgrade cffi 
-	pypy_pip install --upgrade greenlet
-	pypy_pip install --upgrade psutil deepdiff
-	pypy_pip install --upgrade xlrd lxml	
-	with_gmp=no pypy_pip install --upgrade  pycrypto 
-	pypy_pip install --upgrade cryptography
-	pypy_pip install --upgrade pyopenssl #LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" 
+	pypy_pip install --upgrade --verbose cffi 
+	pypy_pip install --upgrade --verbose greenlet
+	pypy_pip install --upgrade --verbose psutil deepdiff
+	pypy_pip install --upgrade --verbose xlrd lxml	
+	with_gmp=no pypy_pip install --upgrade --verbose  pycrypto 
+	pypy_pip install --upgrade --verbose cryptography
+	pypy_pip install --upgrade --verbose pyopenssl #LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" 
 
-	pypy_pip install --upgrade pycryptodomex
+	pypy_pip install --upgrade --verbose pycryptodomex
 	
-	pypy_pip install --upgrade h2 #https://github.com/python-hyper/hyper-h2/archive/master.zip
-	pypy_pip install --upgrade urllib3 dnspython
-	pypy_pip install --upgrade linuxfd https://github.com/kashirin-alex/eventlet/archive/master.zip 
+	pypy_pip install --upgrade --verbose h2 #https://github.com/python-hyper/hyper-h2/archive/master.zip
+	pypy_pip install --upgrade --verbose urllib3 dnspython
+	pypy_pip install --upgrade --verbose linuxfd http://github.com/kashirin-alex/eventlet/archive/master.zip 
 
-	pypy_pip install --upgrade msgpack-python
-	pypy_pip install --upgrade webp 
-	pypy_pip install --upgrade Pillow Wand
-	pypy_pip install --upgrade weasyprint==0.42.3
-	pypy_pip install --upgrade brotli pylzma rarfile zopfli  #zipfile pysnappy
-	pypy_pip install --upgrade ply slimit
-	pypy_pip install --upgrade guess_language
-	pypy_pip install --upgrade paypalrestsdk #pygeocoder python-google-places
-	pypy_pip install --upgrade josepy acme
-	pypy_pip install --upgrade fontTools
+	pypy_pip install --upgrade --verbose msgpack-python
+	pypy_pip install --upgrade --verbose webp 
+	pypy_pip install --upgrade --verbose Pillow Wand
+	pypy_pip install --upgrade --verbose weasyprint==0.42.3
+	pypy_pip install --upgrade --verbose brotli pylzma rarfile zopfli  #zipfile pysnappy
+	pypy_pip install --upgrade --verbose ply slimit
+	pypy_pip install --upgrade --verbose guess_language
+	pypy_pip install --upgrade --verbose paypalrestsdk #pygeocoder python-google-places
+	pypy_pip install --upgrade --verbose josepy acme
+	pypy_pip install --upgrade --verbose fontTools
 
-	pypy_pip install --upgrade https://github.com/kashirin-alex/libpyhdfs/archive/master.zip
-	pypy_pip install --upgrade https://github.com/kashirin-alex/PyHelpers/archive/master.zip
+	pypy_pip install --upgrade --verbose http://github.com/kashirin-alex/libpyhdfs/archive/master.zip
+	pypy_pip install --upgrade --verbose http://github.com/kashirin-alex/PyHelpers/archive/master.zip
 	
-	STDCXX=17 pypy_pip install --upgrade --verbose cppyy
+	STDCXX=17 pypy_pip install --upgrade --verbose --verbose cppyy
 fi
 
 

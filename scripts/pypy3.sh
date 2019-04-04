@@ -6,12 +6,14 @@ if [ $only_dw == 1 ];then return;fi
 for n in ncurses panel term; do sed -i 's/'$n'/'$n'w/g' lib_pypy/_curses_build.py; sed -i 's/#include <'$n'w.h>/#include <'$n'.h>/g' lib_pypy/_curses_build.py; done;
 sed -i 's/ncurses/ncursesw/g' pypy/module/_minimal_curses/fficurses.py;
 
-cd pypy/goal;export VERBOSE=1;
+
+cd pypy/goal;
+export VERBOSE=1;
+export LDFLAGS="-DTCMALLOC_MINIMAL -ltcmalloc_minimal -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free"
+export CFLAGS="$ADD_O_FS $LDFLAGS -DNDEBUG"
+export CPPFLAGS="$ADD_O_FS $LDFLAGS"
+export INCLUDEDIRS="-I$CUST_INST_PREFIX/include"
 (
-LDFLAGS="-DTCMALLOC_MINIMAL -ltcmalloc_minimal -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free" \
-CFLAGS="$ADD_O_FS $LDFLAGS" \
-INCLUDEDIRS="-I/usr/local/include" \
-VERBOSE=1 \
 PYPY_LOCALBASE=$SOURCES_PATH/$sn \
 python ../../rpython/bin/rpython \
 			--no-shared --thread --make-jobs=$NUM_PROCS \
@@ -42,37 +44,42 @@ if [ -f 'pypy3-c' ]; then
 	source /etc/profile;source ~/.bashrc;ldconfig;
 
 	rm -rf ~/.cache/pip 
-	pypy3_pip install --upgrade setuptools
-	pypy3_pip install --upgrade pip
-	pypy3_pip install --upgrade setuptools
+	pypy3_pip install --upgrade --verbose setuptools
+	pypy3_pip install --upgrade --verbose pip
+	pypy3_pip install --upgrade --verbose setuptools
 
-	pypy3_pip install --upgrade cffi 
-	pypy3_pip install --upgrade greenlet
-	pypy3_pip install --upgrade psutil deepdiff
-	pypy3_pip install --upgrade xlrd lxml	
-	with_gmp=no pypy3_pip install --upgrade  pycrypto 
-	pypy3_pip install --upgrade cryptography
-	pypy3_pip install --upgrade pyopenssl #LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" 
+	pypy3_pip install --upgrade --verbose cffi 
+	pypy3_pip install --upgrade --verbose greenlet
+	pypy3_pip install --upgrade --verbose psutil deepdiff
+	pypy3_pip install --upgrade --verbose xlrd lxml	
+	with_gmp=no pypy3_pip install --upgrade --verbose  pycrypto 
+	pypy3_pip install --upgrade --verbose cryptography
+	pypy3_pip install --upgrade --verbose pyopenssl #LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" 
 	
-	pypy3_pip install --upgrade pycryptodomex
+	pypy3_pip install --upgrade --verbose pycryptodomex
 
-	pypy3_pip install --upgrade h2 #https://github.com/python-hyper/hyper-h2/archive/master.zip
-	pypy3_pip install --upgrade urllib3 dnspython
-	pypy3_pip install --upgrade linuxfd https://github.com/kashirin-alex/eventlet/archive/master.zip 
+	pypy3_pip install --upgrade --verbose h2 #https://github.com/python-hyper/hyper-h2/archive/master.zip
+	pypy3_pip install --upgrade --verbose urllib3 dnspython
+	pypy3_pip install --upgrade --verbose linuxfd http://github.com/kashirin-alex/eventlet/archive/master.zip 
 
-	pypy3_pip install --upgrade msgpack-python
-	pypy3_pip install --upgrade webp 
-	pypy3_pip install --upgrade Pillow Wand
-	pypy3_pip install --upgrade weasyprint                 
-	pypy3_pip install --upgrade brotli pylzma rarfile zopfli  #zipfile pysnappy
-	pypy3_pip install --upgrade ply slimit
-	pypy3_pip install --upgrade guess_language
-	pypy3_pip install --upgrade paypalrestsdk #pygeocoder python-google-places
-	pypy3_pip install --upgrade josepy acme
-	pypy3_pip install --upgrade fontTools
+	pypy3_pip install --upgrade --verbose msgpack-python
+	pypy3_pip install --upgrade --verbose webp 
+	pypy3_pip install --upgrade --verbose Pillow Wand
+	pypy3_pip install --upgrade --verbose weasyprint                 
+	pypy3_pip install --upgrade --verbose brotli pylzma rarfile zopfli  #zipfile pysnappy
+	pypy3_pip install --upgrade --verbose ply slimit
+	pypy3_pip install --upgrade --verbose guess_language
+	pypy3_pip install --upgrade --verbose paypalrestsdk #pygeocoder python-google-places
+	pypy3_pip install --upgrade --verbose josepy acme
+	pypy3_pip install --upgrade --verbose fontTools
 
-	pypy3_pip install --upgrade https://github.com/kashirin-alex/libpyhdfs/archive/master.zip
-	pypy_pip install --upgrade https://github.com/kashirin-alex/PyHelpers/archive/master.zip
+	pypy3_pip install --upgrade --verbose http://github.com/kashirin-alex/libpyhdfs/archive/master.zip
+	pypy3_pip install --upgrade --verbose http://github.com/kashirin-alex/PyHelpers/archive/master.zip
 
 fi
 
+
+export LDFLAGS=""
+export CFLAGS=""
+export CPPFLAGS=""
+export INCLUDEDIRS=""

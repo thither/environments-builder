@@ -23,39 +23,51 @@ source /etc/profile;source ~/.bashrc;ldconfig;
 ./bootstrap.sh --with-python=`_install_prefix`/bin/python3.8 --prefix=`_install_prefix`;
 ./b2 --with-python  threading=multi link=shared runtime-link=shared install;)
 
+export VERBOSE=1;
+export LDFLAGS="-DTCMALLOC_MINIMAL -ltcmalloc_minimal -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free"
+export CFLAGS="$ADD_O_FS $LDFLAGS -DNDEBUG"
+export CPPFLAGS="$ADD_O_FS $LDFLAGS"
+export INCLUDEDIRS="-I$CUST_INST_PREFIX/include"
+
 if [ -f /usr/bin/py3_pip ] && [ $stage -ne 0 ]; then
 	
 	rm -rf ~/.cache/pip 
 
-	py3_pip install --upgrade setuptools
-	py3_pip install --upgrade pip
-	py3_pip install --upgrade setuptools
+	py3_pip install --upgrade --verbose setuptools
+	py3_pip install --upgrade --verbose pip
+	py3_pip install --upgrade --verbose setuptools
 
-	py3_pip install --upgrade cffi 
-	py3_pip install --upgrade greenlet
-	py3_pip install --upgrade psutil deepdiff
-	py3_pip install --upgrade xlrd lxml	
-	py3_pip install --upgrade pycrypto 
-	py3_pip install --upgrade cryptography
-	py3_pip install --upgrade pyopenssl #LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" 
-	py3_pip install --upgrade pycryptodomex
+	py3_pip install --upgrade --verbose cffi 
+	py3_pip install --upgrade --verbose greenlet
+	py3_pip install --upgrade --verbose psutil deepdiff
+	py3_pip install --upgrade --verbose xlrd lxml	
+	py3_pip install --upgrade --verbose pycrypto 
+	py3_pip install --upgrade --verbose cryptography
+	py3_pip install --upgrade --verbose pyopenssl #LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" 
+	py3_pip install --upgrade --verbose pycryptodomex
 	
-	py3_pip install --upgrade pycparser
+	py3_pip install --upgrade --verbose pycparser
 	
-	py3_pip install --upgrade h2 #https://github.com/python-hyper/hyper-h2/archive/master.zip
-	py3_pip install --upgrade urllib3 dnspython
-	py3_pip install --upgrade linuxfd https://github.com/kashirin-alex/eventlet/archive/master.zip 
+	py3_pip install --upgrade --verbose h2 #https://github.com/python-hyper/hyper-h2/archive/master.zip
+	py3_pip install --upgrade --verbose urllib3 dnspython
+	py3_pip install --upgrade --verbose linuxfd http://github.com/kashirin-alex/eventlet/archive/master.zip 
    
-	py3_pip install --upgrade msgpack-python
-	py3_pip install --upgrade  webp Pillow Wand
-	py3_pip install --upgrade  weasyprint                 
-	py3_pip install --upgrade  brotli pylzma rarfile  #zipfile pysnappy
-	py3_pip install --upgrade ply slimit
-	py3_pip install --upgrade guess_language
-	py3_pip install --upgrade paypalrestsdk #pygeocoder python-google-places
-	py3_pip install --upgrade josepy acme
-	py3_pip install --upgrade fontTools
+	py3_pip install --upgrade --verbose msgpack-python
+	py3_pip install --upgrade --verbose  webp Pillow Wand
+	py3_pip install --upgrade --verbose  weasyprint                 
+	py3_pip install --upgrade --verbose  brotli pylzma rarfile  #zipfile pysnappy
+	py3_pip install --upgrade --verbose ply slimit
+	py3_pip install --upgrade --verbose guess_language
+	py3_pip install --upgrade --verbose paypalrestsdk #pygeocoder python-google-places
+	py3_pip install --upgrade --verbose josepy acme
+	py3_pip install --upgrade --verbose fontTools
 
-	py3_pip install --upgrade https://github.com/kashirin-alex/libpyhdfs/archive/master.zip
+	py3_pip install --upgrade --verbose http://github.com/kashirin-alex/libpyhdfs/archive/master.zip
+	py3_pip install --upgrade --verbose http://github.com/kashirin-alex/PyHelpers/archive/master.zip
 
 fi
+
+export LDFLAGS=""
+export CFLAGS=""
+export CPPFLAGS=""
+export INCLUDEDIRS=""
