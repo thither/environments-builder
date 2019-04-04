@@ -18,8 +18,8 @@ ENV_SETTINGS_PATH=$CUST_INST_PREFIX/etc/profile.d/
 LD_CONF_PATH=$CUST_INST_PREFIX/etc/ld.so.conf.d
 
 ADD_LTO_FS="-flto -fuse-linker-plugin -ffat-lto-objects"
-ADD_O_FS_from_stage_1="-O3 $ADD_LTO_FS"
-ADD_O_FS_from_stage_2="$ADD_O_FS_from_stage_1 -floop-interchange"
+ADD_O_FS_from_stage_1="-O3 $ADD_LTO_FS -floop-interchange"
+ADD_O_FS_from_stage_2="$ADD_O_FS_from_stage_1"
 ##################################################################
 ADD_O_FS=''
 
@@ -232,7 +232,10 @@ do_build() {
 	else
 		_do_build #${@:1}
 	fi
-	finalize_build
+	
+	if [ $only_dw == 0 ]; then 
+		finalize_build;
+	fi
 	echo 'done_build:' $sn 'stage:' $stage
 	echo '-------------------------------'
 }
@@ -870,7 +873,7 @@ cp sigar-bin/include/*.h `_install_prefix`/include; cp sigar-bin/lib/libsigar-am
 tn='db-6.2.32'; url='http://download.oracle.com/berkeley-db/db-6.2.32.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-dist/configure  CXXFLAGS="-std=c++17 -O3 -flto -fuse-linker-plugin -ffat-lto-objects -m64 -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURC" CFLAGS="-O3 -flto -fuse-linker-plugin -ffat-lto-objects -m64 -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE"  --enable-shared=yes --enable-static=yes --enable-cxx --enable-tcl --enable-dbm --enable-posixmutexes --enable-o_direct --enable-stl --enable-atomicfileread --prefix=`_install_prefix`  --build=`_build`; # --enable-java --enable-smallbuild
+dist/configure  CXXFLAGS="-std=c++17 $ADD_O_FS -m64 -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE" CFLAGS="$ADD_O_FS -m64 -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE"  --enable-shared=yes --enable-static=yes --enable-cxx --enable-tcl --enable-dbm --enable-posixmutexes --enable-o_direct --enable-stl --enable-atomicfileread --prefix=`_install_prefix`  --build=`_build`; # --enable-java --enable-smallbuild
 do_make;do_make install;do_make all; 
 		shift;;
 
@@ -940,7 +943,7 @@ do_make;do_make install;do_make all;
 		shift;;	
 
 'imagemagick')
-tn='ImageMagick-6.9.10-36'; url='http://www.imagemagick.org/download/ImageMagick-6.9.10-36.tar.xz'; #http://github.com/dahlia/wand/blob/f97277be6d268038a869e59b0d6c3780d7be5664/wand/version.py
+tn='ImageMagick-6.9.10-37'; url='http://www.imagemagick.org/download/ImageMagick-6.9.10-37.tar.xz'; #http://github.com/dahlia/wand/blob/f97277be6d268038a869e59b0d6c3780d7be5664/wand/version.py
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS"  --enable-shared=yes --enable-static=yes --with-jpeg=yes --with-webp=yes --with-quantum-depth=16 --enable-hdri --enable-pipes --enable-hugepages --disable-docs --with-aix-soname=both --with-modules --with-jemalloc --with-umem --prefix=`_install_prefix` --build=`_build`;
@@ -1057,7 +1060,7 @@ set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 ./bootstrap.sh;
 sed -i 's/4.4.1/5.1.1/g' lib/java/gradle/wrapper/gradle-wrapper.properties;
-config_dest;cmake `src_path` -D -DCMAKE_C_FLAGS="-flto -fuse-linker-plugin -ffat-lto-objects -fPIC" -DCMAKE_CPP_FLAGS="-flto -fuse-linker-plugin -ffat-lto-objects -fPIC " -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC " -DBUILD_TESTING=ON -DBUILD_CPP=ON -DUSE_STD_THREAD=1 -DWITH_STDTHREADS=ON -DTHRIFT_COMPILER_HS=ON -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+config_dest;cmake `src_path` -D -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_CPP_FLAGS="$ADD_O_FS -fPIC " -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC " -DBUILD_TESTING=ON -DBUILD_CPP=ON -DUSE_STD_THREAD=1 -DWITH_STDTHREADS=ON -DTHRIFT_COMPILER_HS=ON -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
 do_make;do_make install;  #FORCE_BOOST_SMART_PTR=ON
 #cd `src_path`/lib/py/;python setup.py install;pypy setup.py install;
 		shift;;	
@@ -1542,7 +1545,7 @@ tn='libibverbs-1.1.4'; url='http://www.openfabrics.org/downloads/libibverbs/libi
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 # ./autogen.sh
-config_dest;`src_path`/configure CFLAGS="-O3 -fPIC" CPPFLAGS="-O3 -fPIC" --with-pic --enable-shared --enable-static --prefix=`_install_prefix` --build=`_build`;
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS -fPIC" CPPFLAGS="$ADD_O_FS -fPIC" --with-pic --enable-shared --enable-static --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make install;
 		shift;;
 
@@ -1558,7 +1561,7 @@ do_make;do_make install;
 tn='oath-toolkit-2.6.2'; url='http://download.savannah.gnu.org/releases/oath-toolkit/oath-toolkit-2.6.2.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-`src_path`/configure CFLAGS="-O3 -fPIC" CPPFLAGS="-O3 -fPIC" --with-pic --enable-shared --enable-static --prefix=`_install_prefix` --build=`_build`;
+`src_path`/configure CFLAGS="$ADD_O_FS -fPIC" CPPFLAGS="$ADD_O_FS -fPIC" --with-pic --enable-shared --enable-static --prefix=`_install_prefix` --build=`_build`;
 make;make install-strip;
 		shift;;
 		
@@ -1657,7 +1660,7 @@ do_make;do_make install;
 tn='elfutils-0.176'; url='http://sourceware.org/elfutils/ftp/0.176/elfutils-0.176.tar.bz2';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-./configure  --with-pic --enable-shared --enable-static --with-zlib --with-lzma --with-bzlib CFLAGS="-O3 -fPIC" CPPFLAGS="-O3 -fPIC" --prefix=`_install_prefix` --build=`_build`;
+./configure  --with-pic --enable-shared --enable-static --with-zlib --with-lzma --with-bzlib CFLAGS="$ADD_O_FS -fPIC" CPPFLAGS="$ADD_O_FS -fPIC" --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make install;
 		shift;;	
 			
@@ -2097,7 +2100,7 @@ wget 'http://github.com/facebook/proxygen/archive/v2019.02.11.00.tar.gz'
 tar xf v2019.02.11.00.tar.gz
 mv proxygen-2019.02.11.00 $TMP_NAME; cd $TMP_NAME/proxygen;
 autoreconf -vif
-./configure CXXFLAGS="-std=c++17 -O3 -flto -fuse-linker-plugin -ffat-lto-objects -m64 -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURC" CFLAGS="-O3 -flto -fuse-linker-plugin -ffat-lto-objects -m64 -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE"  --enable-shared=yes --enable-static=yes --prefix=/usr/local; 
+./configure CXXFLAGS="-std=c++17 $ADD_O_FS -m64 -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURC" CFLAGS="$ADD_O_FS -m64 -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE"  --enable-shared=yes --enable-static=yes --prefix=/usr/local; 
 # make; make install;
 
 
