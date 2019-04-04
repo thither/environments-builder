@@ -7,12 +7,12 @@
 CUST_INST_PREFIX=/usr/local
 CUST_JAVA_INST_PREFIX=/usr/java
 
-SCRIPTS_PATH=~/builder/scripts
-BUILDS_ROOT=~/builds
+SCRIPTS_PATH=/root/builder/scripts
+BUILDS_ROOT=/root/builds
 DOWNLOAD_PATH=$BUILDS_ROOT/downloads
-BUILDS_PATH=$BUILDS_ROOT/sources
 BUILDS_LOG_PATH=$BUILDS_ROOT/logs/$( date  +"%Y-%m-%d_%H-%M-%S")
-BUILTS_PATH=$BUILDS_ROOT/builts
+SOURCES_PATH=/root/s
+BUILTS_PATH=/root/b
 
 ENV_SETTINGS_PATH=$CUST_INST_PREFIX/etc/profile.d/
 LD_CONF_PATH=$CUST_INST_PREFIX/etc/ld.so.conf.d
@@ -123,8 +123,8 @@ mkdir -p $CUST_INST_PREFIX
 mkdir -p $CUST_JAVA_INST_PREFIX
 mkdir -p $BUILDS_ROOT
 mkdir -p $DOWNLOAD_PATH
-mkdir -p $BUILDS_PATH
-mkdir -p $BUILDS_LOG_PATH
+mkdir -p $SOURCES_PATH
+if [ $verbose == 0 ]; then mkdir -p $BUILDS_LOG_PATH;fi;
 mkdir -p $BUILTS_PATH
 	
 NUM_PROCS=$((`grep -c processor < /proc/cpuinfo || echo 1`*2))
@@ -155,7 +155,7 @@ extract() {
 		echo 'removing old:' `src_path`;
 		rm -rf `src_path`;
 	fi
-	cd $BUILDS_PATH; 
+	cd $SOURCES_PATH; 
 	
 	if [ $archive_type == 'tar' ]; then
 		tar xf $DOWNLOAD_PATH/$sn/$sn.ext;
@@ -192,7 +192,7 @@ config_dest() {
 	cd $BUILTS_PATH/$sn;
 }
 src_path() {
-	echo $BUILDS_PATH/$sn;
+	echo $SOURCES_PATH/$sn;
 }
 do_make() {
 	echo 'make args:' -j$NUM_PROCS  ${@:1} VERBOSE=1;
@@ -493,12 +493,15 @@ do_make;do_make install-strip;do_make install;do_make all;
 		shift;;
 
 'flex')
-rm -rf $DOWNLOAD_PATH/$sn;
-if [ $stage -eq 0 ]; then	
-	tn='flex-2.6.3'; url='http://github.com/westes/flex/releases/download/v2.6.3/flex-2.6.3.tar.gz';
-else
-	tn='flex-2.6.4'; url='http://github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz';
-fi
+tn='flex-2.6.4'; url='http://github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz';
+set_source 'tar';
+if [ $only_dw == 1 ];then return;fi
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS -fPIC" CPPFLAGS="$ADD_O_FS -fPIC" --with-pic --enable-shared --enable-static --prefix=`_install_prefix` --build=`_build`;
+do_make;do_make install;
+		shift;;
+
+'flex_fallback')
+tn='flex-2.6.3'; url='http://github.com/westes/flex/releases/download/v2.6.3/flex-2.6.3.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS -fPIC" CPPFLAGS="$ADD_O_FS -fPIC" --with-pic --enable-shared --enable-static --prefix=`_install_prefix` --build=`_build`;
@@ -726,7 +729,7 @@ do_make;do_make install;do_make all;
 		shift;;
 
 'libunwind')
-tn='libunwind-1.3.1'; url='http://download.savannah.nongnu.org/releases/libunwind/libunwind-1.3.1.tar.gz';
+tn='libunwind-1.3.1'; url='http://download-mirror.savannah.gnu.org/releases/libunwind/libunwind-1.3.1.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS " CPPFLAGS="$ADD_O_FS" --with-pic --disable-debug-frame --disable-cxx-exceptions --disable-debug --disable-documentation --disable-minidebuginfo --disable-msabi-support --enable-coredump  --enable-ptrace --enable-setjmp --enable-block-signals --enable-conservative-checks --prefix=`_install_prefix` --build=`_build`;
@@ -856,7 +859,7 @@ config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enabl
 do_make;do_make lib; do_make install-strip;do_make install;
 		shift;;
 
-'sigar')
+'libsigar')
 tn='hyperic-sigar-1.6.4'; url='http://sourceforge.mirrorservice.org/s/si/sigar/sigar/1.6/hyperic-sigar-1.6.4.zip';
 set_source 'zip';
 if [ $only_dw == 1 ];then return;fi
@@ -1060,7 +1063,7 @@ do_make;do_make install;  #FORCE_BOOST_SMART_PTR=ON
 		shift;;	
 		
 'attr')
-tn='attr-2.4.47'; url='http://download.savannah.nongnu.org/releases/attr/attr-2.4.47.src.tar.gz';
+tn='attr-2.4.47'; url='http://download.savannah.gnu.org/releases/attr/attr-2.4.47.src.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 `src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-gettext=yes --enable-shared=yes --enable-static=yes --prefix=`_install_prefix` --build=`_build`; 
@@ -1135,7 +1138,7 @@ echo -e $CUST_JAVA_INST_PREFIX/$sn/lib/native/ > $LD_CONF_PATH/$sn.conf;
 		shift;;	
 
 'apache-zookeeper')
-tn='zookeeper-3.4.13'; url='http://apache.mirrors.ovh.net/ftp.apache.org/dist/zookeeper/zookeeper-3.4.13/zookeeper-3.4.13.tar.gz';
+tn='zookeeper-3.4.14'; url='http://apache.mirrors.ovh.net/ftp.apache.org/dist/zookeeper/zookeeper-3.4.14/zookeeper-3.4.14.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 if [ -d $CUST_JAVA_INST_PREFIX/$sn ]; then rm -rf $CUST_JAVA_INST_PREFIX/$sn;fi;
@@ -1203,9 +1206,9 @@ ht_opts=" ";
 if [ $build_target == 'node' ];then
 	ht_opts="-Dlanguages=py2,pypy2,py3,pypy3 -Dfsbrokers=hdfs ";
 fi
-config_dest;cmake `src_path` $ht_opts -DHT_O_LEVEL=6 -DTHRIFT_SOURCE_DIR=$BUILDS_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release -DINSTALL_EXCLUDE_DEPENDENT_LIBS=ON;
+config_dest;cmake `src_path` $ht_opts -DHT_O_LEVEL=6 -DTHRIFT_SOURCE_DIR=$SOURCES_PATH/thrift -DCMAKE_INSTALL_PREFIX=/opt/hypertable -DCMAKE_BUILD_TYPE=Release -DINSTALL_EXCLUDE_DEPENDENT_LIBS=ON;
 do_make;do_make install;##  -DUSE_JEMALLOC=ON  -DPACKAGE_OS_SPECIFIC=1  -DVERSION_MISC_SUFFIX=$( date  +"%Y-%m-%d_%H-%M") # php,java,rb,tl,js,py3,pypy3,
-cp `_install_prefix`/lib/libsigar-amd64-linux.so /opt/hypertable/0.9.8.16/lib/
+#cp `_install_prefix`/lib/libsigar-amd64-linux.so /opt/hypertable/0.9.8.16/lib/
 env CTEST_OUTPUT_ON_FAILURE=1 make alltests; #if [ $test_make == 1 ];then make alltests; fi;
 		shift;;
 
@@ -1213,7 +1216,7 @@ env CTEST_OUTPUT_ON_FAILURE=1 make alltests; #if [ $test_make == 1 ];then make a
 tn='llvm-7.0.1.src'; url='http://releases.llvm.org/7.0.1/llvm-7.0.1.src.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;cmake `src_path` -DCMAKE_C_FLAGS="$ADD_O_FS" -DCMAKE_CXX_FLAGS="$ADD_O_FS"  -DCMAKE_BUILD_TYPE=Release -DLLVM_TARGETS_TO_BUILD=X86 -DFFI_INCLUDE_DIR=`_install_prefix`/lib/libffi-3.2.1/include -DLLVM_ENABLE_FFI=ON -DLLVM_USE_INTEL_JITEVENTS=ON -DLLVM_LINK_LLVM_DYLIB=ON -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+config_dest;cmake `src_path` -DCMAKE_BUILD_TYPE=Release -DLLVM_TARGETS_TO_BUILD=X86 -DFFI_INCLUDE_DIR=`_install_prefix`/lib/libffi-3.2.1/include -DLLVM_ENABLE_FFI=ON -DLLVM_USE_INTEL_JITEVENTS=ON -DLLVM_LINK_LLVM_DYLIB=ON -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
 do_make;do_make install;
 		shift;;
 
@@ -1221,7 +1224,7 @@ do_make;do_make install;
 tn='cfe-7.0.1.src'; url='http://releases.llvm.org/7.0.1/cfe-7.0.1.src.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;cmake `src_path` -DCMAKE_C_FLAGS="$ADD_O_FS" -DCMAKE_CXX_FLAGS="$ADD_O_FS" -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+config_dest;cmake `src_path` -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
 do_make;do_make install;	
 		shift;;
  
@@ -1536,7 +1539,7 @@ do_make;do_make install;
 		shift;;
 
 'oath-toolkit')
-tn='oath-toolkit-2.6.2'; url='http://download.savannah.nongnu.org/releases/oath-toolkit/oath-toolkit-2.6.2.tar.gz';
+tn='oath-toolkit-2.6.2'; url='http://download.savannah.gnu.org/releases/oath-toolkit/oath-toolkit-2.6.2.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 `src_path`/configure CFLAGS="-O3 -fPIC" CPPFLAGS="-O3 -fPIC" --with-pic --enable-shared --enable-static --prefix=`_install_prefix` --build=`_build`;
@@ -1604,7 +1607,7 @@ python setup.py install;rm -r build;python3 setup.py install;
 		shift;;	
 	
 'go')
-tn='go'; url='http://dl.google.com/go/go1.12.1.src.tar.gz';
+tn='go'; url='https://dl.google.com/go/go1.12.1.src.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 cd src;./all.bash -v
@@ -1755,7 +1758,7 @@ do_install() {
 
 #########
 compile_and_install(){
-	if [ $stage -eq 0 ] || [ $stage -eq 1 ]; then
+	if [ $only_dw == 1 ] || [ $stage -eq 0 ] || [ $stage -eq 1 ]; then
 		if [ $os_r == 'arch' ]; then
 			do_install glibc util-linux
 		fi
@@ -1767,7 +1770,15 @@ compile_and_install(){
 		do_install zlib bzip2 unrar gzip lzo snappy libzip unzip xz p7zip tar lz4 brotli zstd # qazip
 		do_install libatomic_ops libeditline libevent libunwind fuse2 fuse3 pth
 		do_install openssl libgpg-error libgcrypt kerberos libssh icu4c
-		do_install bison texinfo flex binutils gettext nettle libtasn1 libiconv
+		do_install bison texinfo 
+		if [ $only_dw == 1 ]; then	
+			do_install flex flex_fallback;
+		elif [ $stage -eq 0 ]; then	
+			do_install flex_fallback;
+		else
+			do_install flex;
+		fi
+		do_install binutils gettext nettle libtasn1 libiconv
 		do_install libexpat libunistring libidn2 libsodium unbound
 		do_install libffi p11-kit gnutls tcl pcre pcre2  # tk openmpi 
 		do_install gdbm expect attr patch
@@ -1777,7 +1788,7 @@ compile_and_install(){
 		do_install libaio coreutils gdb bash lsof curl wget sqlite berkeley-db python perl 
 		#do_install pstack
 	fi
-	if [ $stage -eq 2 ]; then
+	if [ $only_dw == 1 ] || [ $stage -eq 2 ]; then
 		do_install boost
 		do_install libmnl libnftnl nftables
 		if [ $build_target == 'all-tmp' ];then
@@ -1787,14 +1798,14 @@ compile_and_install(){
 		do_install re2 sparsehash 
 		do_install libjansson libxml2 libxslt libuv libcares
 		do_install libpng libjpeg libsvg libwebp 
-		do_install openjdk apache-ant apache-maven sigar
+		do_install openjdk apache-ant apache-maven libsigar
 		do_install gmock protobuf apache-zookeeper apache-hadoop libgsasl # libhdfs3
 		do_install fonts itstool freetype harfbuzz fontconfig 
 		do_install pixman cairo cairomm gobject-ispec fribidi pango 
 		do_install imagemagick # librsvg
 		do_install elfutils libpam
 		
-		if [ $build_target == 'all' ];then
+		if [ $only_dw == 1 ] || [ $build_target == 'all' ];then
 			do_install perl php nodejs pypy3 # pypy2stm 
 			#do_install ganglia-web # ganglia 
 			do_install keyutils nspr nss yasm libibverbs leveldb oath-toolkit gflags rocksdb ceph
@@ -1804,7 +1815,7 @@ compile_and_install(){
 			do_install google-glog double-conversion libfolly fizz wangle
 		fi
 	fi
-	if [ $stage -eq 3 ]; then
+	if [ $only_dw == 1 ] || [ $stage -eq 3 ]; then
 		do_install pybind11
 		do_install python pypy2 python3 spdylay
 		do_install ruby graphviz rrdtool 
@@ -2004,10 +2015,7 @@ fi
 #########
 
 if [ $only_dw == 1 ];then 
-	stage=0;compile_and_install;
-	stage=1;compile_and_install;
-	stage=2;compile_and_install;
-	stage=3;compile_and_install;
+	compile_and_install;
 else
 	_run_setup
 fi

@@ -11,16 +11,16 @@ for n in ncurses panel term; do
 done;
 sed -i 's/ncurses/ncursesw/g' pypy/module/_minimal_curses/fficurses.py;
 
-(PYPY_LOCALBASE=$BUILDS_PATH/$sn pypy rpython/bin/rpython --shared --thread --make-jobs=12 --translation-jit_profiler=off --translation-jit_opencoder_model=big --translation-backendopt-print_statistics --stm --opt=jit pypy/goal/targetpypystandalone.py) & 
+(PYPY_LOCALBASE=$SOURCES_PATH/$sn pypy rpython/bin/rpython --shared --thread --make-jobs=12 --translation-jit_profiler=off --translation-jit_opencoder_model=big --translation-backendopt-print_statistics --stm --opt=jit pypy/goal/targetpypystandalone.py) & 
 while [ ! -f pypy-c ]; do sleep 60; done;
 
 if [ -f 'pypy-c' ]; then
 	cp pypy-c pypy/goal/;cp libpypy-c.so pypy/goal/;
-	export CPATH=$PYPY_USESSION_DIR/usession-stmgc-c8-0/include/:$BUILDS_PATH/$sn/pypy/module/cpyext/include/
+	export CPATH=$PYPY_USESSION_DIR/usession-stmgc-c8-0/include/:$SOURCES_PATH/$sn/pypy/module/cpyext/include/
 	./pypy-c pypy/tool/build_cffi_imports.py --without-tk;
 	./pypy-c pypy/tool/release/package.py --without-tk --archive-name $sn --targetdir $DOWNLOAD_PATH/$sn.tar.bz2;
 	export CPATH='';
-	cd $BUILDS_PATH/$sn;rm -r built_pkg; mkdir built_pkg; cd built_pkg; tar -xf $DOWNLOAD_PATH/$sn.tar.bz2;
+	cd $SOURCES_PATH/$sn;rm -r built_pkg; mkdir built_pkg; cd built_pkg; tar -xf $DOWNLOAD_PATH/$sn.tar.bz2;
 	rm -r /opt/pypy2stm;mv pypy2stm /opt/;
 	rm /usr/bin/pypy2stm; ln -s /opt/pypy2stm/bin/pypy /usr/bin/pypy2stm
 	pypy2stm -m ensurepip; rm /usr/bin/pypy2stm_pip; ln -s /opt/pypy2stm/bin/pip /usr/bin/pypy2stm_pip

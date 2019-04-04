@@ -6,13 +6,14 @@ if [ $only_dw == 1 ];then return;fi
 for n in ncurses panel term; do sed -i 's/'$n'/'$n'w/g' lib_pypy/_curses_build.py; sed -i 's/#include <'$n'w.h>/#include <'$n'.h>/g' lib_pypy/_curses_build.py; done;
 sed -i 's/ncurses/ncursesw/g' pypy/module/_minimal_curses/fficurses.py;
 
-cd pypy/goal;export VERBOSE=1;
+cd pypy/goal;
+export VERBOSE=1;
+export LDFLAGS="-DTCMALLOC_MINIMAL -ltcmalloc_minimal -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free"
+export CFLAGS="$ADD_O_FS $LDFLAGS"
+export CPPFLAGS="$ADD_O_FS $LDFLAGS"
+export INCLUDEDIRS="-I$CUST_INST_PREFIX/include"
 (
-LDFLAGS="-DTCMALLOC_MINIMAL -ltcmalloc_minimal -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free" \
-CFLAGS="$ADD_O_FS $LDFLAGS" \
-INCLUDEDIRS="-I/usr/local/include" \
-VERBOSE=1 \
-PYPY_LOCALBASE=$BUILDS_PATH/$sn \
+PYPY_LOCALBASE=$SOURCES_PATH/$sn \
 python ../../rpython/bin/rpython \
 			--no-shared --thread --make-jobs=$NUM_PROCS \
 			--verbose --no-profopt --gc=incminimark --gcremovetypeptr --continuation \
@@ -31,10 +32,11 @@ while [ ! -f pypy-c ]; do sleep 60; done;
 # --clever-malloc-removal --clever-malloc-removal-threshold=33.4 --translation-split_gc_address_space    #http://doc.pypy.org/en/latest/config/commandline.html#general-translation-options
 
 if [ -f 'pypy-c' ]; then	
+	
 	./pypy-c ../tool/build_cffi_imports.py --without-tk;
 	./pypy-c ../tool/release/package.py --without-tk --archive-name $sn --targetdir $DOWNLOAD_PATH/$sn.tar.bz2;
 
-	cd $BUILDS_PATH/$sn;rm -rf built_pkg; mkdir built_pkg; cd built_pkg; tar -xf $DOWNLOAD_PATH/$sn.tar.bz2;
+	cd $SOURCES_PATH/$sn;rm -rf built_pkg; mkdir built_pkg; cd built_pkg; tar -xf $DOWNLOAD_PATH/$sn.tar.bz2;
 	rm -rf /opt/pypy2;mv pypy2 /opt/;
 	rm -f /usr/bin/pypy; ln -s /opt/pypy2/bin/pypy /usr/bin/pypy
 	pypy -m ensurepip; rm -f /usr/bin/pypy_pip; ln -s /opt/pypy2/bin/pip /usr/bin/pypy_pip

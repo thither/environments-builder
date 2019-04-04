@@ -19,7 +19,7 @@ if [ -f $CUST_INST_PREFIX/bin/python3 ]; then
 fi
 source /etc/profile;source ~/.bashrc;ldconfig;
 
-(cd $BUILDS_PATH/boost;
+(cd $SOURCES_PATH/boost;
 ./bootstrap.sh --with-python=`_install_prefix`/bin/python3.8 --prefix=`_install_prefix`;
 ./b2 --with-python  threading=multi link=shared runtime-link=shared install;)
 

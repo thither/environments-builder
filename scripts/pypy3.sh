@@ -8,11 +8,11 @@ sed -i 's/ncurses/ncursesw/g' pypy/module/_minimal_curses/fficurses.py;
 
 cd pypy/goal;export VERBOSE=1;
 (
-LDFLAGS="-DTCMALLOC -ltcmalloc -lunwind -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free" \
+LDFLAGS="-DTCMALLOC_MINIMAL -ltcmalloc_minimal -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free" \
 CFLAGS="$ADD_O_FS $LDFLAGS" \
 INCLUDEDIRS="-I/usr/local/include" \
 VERBOSE=1 \
-PYPY_LOCALBASE=$BUILDS_PATH/$sn \
+PYPY_LOCALBASE=$SOURCES_PATH/$sn \
 python ../../rpython/bin/rpython \
 			--no-shared --thread --make-jobs=$NUM_PROCS \
 			--verbose --no-profopt --gc=incminimark --gcremovetypeptr --continuation \
@@ -34,7 +34,7 @@ if [ -f 'pypy3-c' ]; then
 	./pypy3-c ../tool/build_cffi_imports.py ;
 	python ../tool/release/package.py --without-tk --archive-name $sn --targetdir $DOWNLOAD_PATH/$sn.tar.bz2;
 
-	cd $BUILDS_PATH/$sn;rm -rf built_pkg; mkdir built_pkg; cd built_pkg; tar -xf $DOWNLOAD_PATH/$sn.tar.bz2;
+	cd $SOURCES_PATH/$sn;rm -rf built_pkg; mkdir built_pkg; cd built_pkg; tar -xf $DOWNLOAD_PATH/$sn.tar.bz2;
 	rm -rf /opt/pypy3;mv pypy3 /opt/;
 	rm -f /usr/bin/pypy3; ln -s /opt/pypy3/bin/pypy3 /usr/bin/pypy3
 	pypy3 -m ensurepip; rm -f /usr/bin/pypy3_pip; ln -s /opt/pypy3/bin/pip3 /usr/bin/pypy3_pip
