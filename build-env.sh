@@ -18,7 +18,7 @@ ENV_SETTINGS_PATH=$CUST_INST_PREFIX/etc/profile.d/
 LD_CONF_PATH=$CUST_INST_PREFIX/etc/ld.so.conf.d
 
 ADD_LTO_FS="-flto -fuse-linker-plugin -ffat-lto-objects"
-ADD_O_FS_from_stage_1="-O3 $ADD_LTO_FS -floop-interchange"
+ADD_O_FS_from_stage_1="-O3 $ADD_LTO_FS"
 ADD_O_FS_from_stage_2="$ADD_O_FS_from_stage_1"
 ##################################################################
 ADD_O_FS=''
