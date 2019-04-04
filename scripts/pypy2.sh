@@ -78,3 +78,9 @@ if [ -f 'pypy-c' ]; then
 	
 	STDCXX=17 pypy_pip install --upgrade --verbose cppyy
 fi
+
+
+export LDFLAGS=""
+export CFLAGS=""
+export CPPFLAGS=""
+export INCLUDEDIRS=""

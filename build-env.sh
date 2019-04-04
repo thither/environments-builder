@@ -19,7 +19,7 @@ LD_CONF_PATH=$CUST_INST_PREFIX/etc/ld.so.conf.d
 
 ADD_LTO_FS="-flto -fuse-linker-plugin -ffat-lto-objects"
 ADD_O_FS_from_stage_1="-O3 $ADD_LTO_FS"
-ADD_O_FS_from_stage_2=$ADD_O_FS_from_stage_1
+ADD_O_FS_from_stage_2="$ADD_O_FS_from_stage_1 -floop-interchange"
 ##################################################################
 ADD_O_FS=''
 
@@ -1227,6 +1227,22 @@ if [ $only_dw == 1 ];then return;fi
 config_dest;cmake `src_path` -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
 do_make;do_make install;	
 		shift;;
+		
+'lld')
+tn='lld-7.0.1.src'; url='http://releases.llvm.org/7.0.1/lld-7.0.1.src.tar.xz';
+set_source 'tar';
+if [ $only_dw == 1 ];then return;fi
+config_dest;cmake `src_path` -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+do_make;do_make install;	
+		shift;;
+		
+'cling')
+tn='cling-0.5'; url='http://github.com/root-project/cling/archive/v0.5.tar.gz';
+set_source 'tar';
+if [ $only_dw == 1 ];then return;fi
+config_dest;cmake `src_path` -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
+do_make;do_make install;	
+		shift;;
  
 'libconfuse')
 tn='confuse-3.2.2'; url='http://github.com/martinh/libconfuse/releases/download/v3.2.2/confuse-3.2.2.tar.xz';
@@ -1792,7 +1808,7 @@ compile_and_install(){
 		do_install boost
 		do_install libmnl libnftnl nftables
 		if [ $build_target == 'all-tmp' ];then
-			do_install llvm clang 
+			do_install llvm clang lld 
 		fi
 		do_install libconfuse apr apr-util libsigcpp log4cpp cronolog
 		do_install re2 sparsehash 
