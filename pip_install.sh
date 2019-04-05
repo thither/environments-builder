@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # USING:
-# pip_install.sh py_exec list of packages 
+# ./pip_install.sh py_exec list of packages 
 
 interpreter=$1;
 pkgs=${@:2};
