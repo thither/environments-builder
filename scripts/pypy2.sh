@@ -44,39 +44,39 @@ if [ -f 'pypy-c' ]; then
 	source /etc/profile;source ~/.bashrc;ldconfig;
 
 	rm -rf ~/.cache/pip 
-	./pip_install.sh pypy setuptools
-	./pip_install.sh pypy pip
-	./pip_install.sh pypy setuptools
+	./../pip_install.sh pypy setuptools
+	./../pip_install.sh pypy pip
+	./../pip_install.sh pypy setuptools
 
-	./pip_install.sh pypy cffi 
-	./pip_install.sh pypy greenlet
-	./pip_install.sh pypy psutil deepdiff
-	./pip_install.sh pypy xlrd lxml	
-	with_gmp=no ./pip_install.sh pypy pycrypto 
-	./pip_install.sh pypy cryptography
-	./pip_install.sh pypy pyopenssl #LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" 
+	./../pip_install.sh pypy cffi 
+	./../pip_install.sh pypy greenlet
+	./../pip_install.sh pypy psutil deepdiff
+	./../pip_install.sh pypy xlrd lxml	
+	with_gmp=no ./../pip_install.sh pypy pycrypto 
+	./../pip_install.sh pypy cryptography
+	./../pip_install.sh pypy pyopenssl #LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" 
 
-	./pip_install.sh pypy pycryptodomex
+	./../pip_install.sh pypy pycryptodomex
 	
-	./pip_install.sh pypy h2 #https://github.com/python-hyper/hyper-h2/archive/master.zip
-	./pip_install.sh pypy urllib3 dnspython
-	./pip_install.sh pypy linuxfd http://github.com/kashirin-alex/eventlet/archive/master.zip 
+	./../pip_install.sh pypy h2 #https://github.com/python-hyper/hyper-h2/archive/master.zip
+	./../pip_install.sh pypy urllib3 dnspython
+	./../pip_install.sh pypy linuxfd http://github.com/kashirin-alex/eventlet/archive/master.zip 
 
-	./pip_install.sh pypy msgpack-python
-	./pip_install.sh pypy webp 
-	./pip_install.sh pypy Pillow Wand
-	./pip_install.sh pypy weasyprint==0.42.3
-	./pip_install.sh pypy brotli pylzma rarfile zopfli  #zipfile pysnappy
-	./pip_install.sh pypy ply slimit
-	./pip_install.sh pypy guess_language
-	./pip_install.sh pypy paypalrestsdk #pygeocoder python-google-places
-	./pip_install.sh pypy josepy acme
-	./pip_install.sh pypy fontTools
+	./../pip_install.sh pypy msgpack-python
+	./../pip_install.sh pypy webp 
+	./../pip_install.sh pypy Pillow Wand
+	./../pip_install.sh pypy weasyprint==0.42.3
+	./../pip_install.sh pypy brotli pylzma rarfile zopfli  #zipfile pysnappy
+	./../pip_install.sh pypy ply slimit
+	./../pip_install.sh pypy guess_language
+	./../pip_install.sh pypy paypalrestsdk #pygeocoder python-google-places
+	./../pip_install.sh pypy josepy acme
+	./../pip_install.sh pypy fontTools
 
-	./pip_install.sh pypy http://github.com/kashirin-alex/libpyhdfs/archive/master.zip
-	./pip_install.sh pypy http://github.com/kashirin-alex/PyHelpers/archive/master.zip
+	./../pip_install.sh pypy http://github.com/kashirin-alex/libpyhdfs/archive/master.zip
+	./../pip_install.sh pypy http://github.com/kashirin-alex/PyHelpers/archive/master.zip
 	
-	STDCXX=17 ./pip_install.sh pypy --verbose cppyy
+	STDCXX=17 ./../pip_install.sh pypy --verbose cppyy
 fi
 
 
