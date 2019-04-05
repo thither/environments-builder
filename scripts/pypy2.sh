@@ -44,39 +44,39 @@ if [ -f 'pypy-c' ]; then
 	source /etc/profile;source ~/.bashrc;ldconfig;
 
 	rm -rf ~/.cache/pip 
-	pypy_pip install --upgrade --verbose setuptools
-	pypy_pip install --upgrade --verbose pip
-	pypy_pip install --upgrade --verbose setuptools
+	./pip_install.sh pypy setuptools
+	./pip_install.sh pypy pip
+	./pip_install.sh pypy setuptools
 
-	pypy_pip install --upgrade --verbose cffi 
-	pypy_pip install --upgrade --verbose greenlet
-	pypy_pip install --upgrade --verbose psutil deepdiff
-	pypy_pip install --upgrade --verbose xlrd lxml	
-	with_gmp=no pypy_pip install --upgrade --verbose  pycrypto 
-	pypy_pip install --upgrade --verbose cryptography
-	pypy_pip install --upgrade --verbose pyopenssl #LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" 
+	./pip_install.sh pypy cffi 
+	./pip_install.sh pypy greenlet
+	./pip_install.sh pypy psutil deepdiff
+	./pip_install.sh pypy xlrd lxml	
+	with_gmp=no ./pip_install.sh pypy pycrypto 
+	./pip_install.sh pypy cryptography
+	./pip_install.sh pypy pyopenssl #LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" 
 
-	pypy_pip install --upgrade --verbose pycryptodomex
+	./pip_install.sh pypy pycryptodomex
 	
-	pypy_pip install --upgrade --verbose h2 #https://github.com/python-hyper/hyper-h2/archive/master.zip
-	pypy_pip install --upgrade --verbose urllib3 dnspython
-	pypy_pip install --upgrade --verbose linuxfd http://github.com/kashirin-alex/eventlet/archive/master.zip 
+	./pip_install.sh pypy h2 #https://github.com/python-hyper/hyper-h2/archive/master.zip
+	./pip_install.sh pypy urllib3 dnspython
+	./pip_install.sh pypy linuxfd http://github.com/kashirin-alex/eventlet/archive/master.zip 
 
-	pypy_pip install --upgrade --verbose msgpack-python
-	pypy_pip install --upgrade --verbose webp 
-	pypy_pip install --upgrade --verbose Pillow Wand
-	pypy_pip install --upgrade --verbose weasyprint==0.42.3
-	pypy_pip install --upgrade --verbose brotli pylzma rarfile zopfli  #zipfile pysnappy
-	pypy_pip install --upgrade --verbose ply slimit
-	pypy_pip install --upgrade --verbose guess_language
-	pypy_pip install --upgrade --verbose paypalrestsdk #pygeocoder python-google-places
-	pypy_pip install --upgrade --verbose josepy acme
-	pypy_pip install --upgrade --verbose fontTools
+	./pip_install.sh pypy msgpack-python
+	./pip_install.sh pypy webp 
+	./pip_install.sh pypy Pillow Wand
+	./pip_install.sh pypy weasyprint==0.42.3
+	./pip_install.sh pypy brotli pylzma rarfile zopfli  #zipfile pysnappy
+	./pip_install.sh pypy ply slimit
+	./pip_install.sh pypy guess_language
+	./pip_install.sh pypy paypalrestsdk #pygeocoder python-google-places
+	./pip_install.sh pypy josepy acme
+	./pip_install.sh pypy fontTools
 
-	pypy_pip install --upgrade --verbose http://github.com/kashirin-alex/libpyhdfs/archive/master.zip
-	pypy_pip install --upgrade --verbose http://github.com/kashirin-alex/PyHelpers/archive/master.zip
+	./pip_install.sh pypy http://github.com/kashirin-alex/libpyhdfs/archive/master.zip
+	./pip_install.sh pypy http://github.com/kashirin-alex/PyHelpers/archive/master.zip
 	
-	STDCXX=17 pypy_pip install --upgrade --verbose --verbose cppyy
+	STDCXX=17 ./pip_install.sh pypy --verbose cppyy
 fi
 
 

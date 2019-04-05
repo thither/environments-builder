@@ -33,37 +33,37 @@ if [ -f /usr/bin/py3_pip ] && [ $stage -ne 0 ]; then
 	
 	rm -rf ~/.cache/pip 
 
-	py3_pip install --upgrade --verbose setuptools
-	py3_pip install --upgrade --verbose pip
-	py3_pip install --upgrade --verbose setuptools
+	./pip_install.sh python3 setuptools
+	./pip_install.sh python3 pip
+	./pip_install.sh python3 setuptools
 
-	py3_pip install --upgrade --verbose cffi 
-	py3_pip install --upgrade --verbose greenlet
-	py3_pip install --upgrade --verbose psutil deepdiff
-	py3_pip install --upgrade --verbose xlrd lxml	
-	py3_pip install --upgrade --verbose pycrypto 
-	py3_pip install --upgrade --verbose cryptography
-	py3_pip install --upgrade --verbose pyopenssl #LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" 
-	py3_pip install --upgrade --verbose pycryptodomex
+	./pip_install.sh python3 cffi 
+	./pip_install.sh python3 greenlet
+	./pip_install.sh python3 psutil deepdiff
+	./pip_install.sh python3 xlrd lxml	
+	./pip_install.sh python3 pycrypto 
+	./pip_install.sh python3 cryptography
+	./pip_install.sh python3 pyopenssl #LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" 
+	./pip_install.sh python3 pycryptodomex
 	
-	py3_pip install --upgrade --verbose pycparser
+	./pip_install.sh python3 pycparser
 	
-	py3_pip install --upgrade --verbose h2 #https://github.com/python-hyper/hyper-h2/archive/master.zip
-	py3_pip install --upgrade --verbose urllib3 dnspython
-	py3_pip install --upgrade --verbose linuxfd http://github.com/kashirin-alex/eventlet/archive/master.zip 
+	./pip_install.sh python3 h2 #https://github.com/python-hyper/hyper-h2/archive/master.zip
+	./pip_install.sh python3 urllib3 dnspython
+	./pip_install.sh python3 linuxfd http://github.com/kashirin-alex/eventlet/archive/master.zip 
    
-	py3_pip install --upgrade --verbose msgpack-python
-	py3_pip install --upgrade --verbose  webp Pillow Wand
-	py3_pip install --upgrade --verbose  weasyprint                 
-	py3_pip install --upgrade --verbose  brotli pylzma rarfile  #zipfile pysnappy
-	py3_pip install --upgrade --verbose ply slimit
-	py3_pip install --upgrade --verbose guess_language
-	py3_pip install --upgrade --verbose paypalrestsdk #pygeocoder python-google-places
-	py3_pip install --upgrade --verbose josepy acme
-	py3_pip install --upgrade --verbose fontTools
+	./pip_install.sh python3 msgpack-python
+	./pip_install.sh python3  webp Pillow Wand
+	./pip_install.sh python3  weasyprint                 
+	./pip_install.sh python3  brotli pylzma rarfile  #zipfile pysnappy
+	./pip_install.sh python3 ply slimit
+	./pip_install.sh python3 guess_language
+	./pip_install.sh python3 paypalrestsdk #pygeocoder python-google-places
+	./pip_install.sh python3 josepy acme
+	./pip_install.sh python3 fontTools
 
-	py3_pip install --upgrade --verbose http://github.com/kashirin-alex/libpyhdfs/archive/master.zip
-	py3_pip install --upgrade --verbose http://github.com/kashirin-alex/PyHelpers/archive/master.zip
+	./pip_install.sh python3 http://github.com/kashirin-alex/libpyhdfs/archive/master.zip
+	./pip_install.sh python3 http://github.com/kashirin-alex/PyHelpers/archive/master.zip
 
 fi
 

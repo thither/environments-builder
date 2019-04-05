@@ -13,7 +13,7 @@ export CPPFLAGS="$CFLAGS"
 export INCLUDEDIRS="-I/usr/local/include"
 
 
-$interpreter -m pip install --upgrade $pkgs;
+$interpreter -m pip install --upgrade --verbose $pkgs;
 
 
 export LDFLAGS=""

@@ -43,37 +43,37 @@ if [ -f 'pypy3-c' ]; then
 	source /etc/profile;source ~/.bashrc;ldconfig;
 
 	rm -rf ~/.cache/pip 
-	pypy3_pip install --upgrade --verbose setuptools
-	pypy3_pip install --upgrade --verbose pip
-	pypy3_pip install --upgrade --verbose setuptools
+	./pip_install.sh pypy3 setuptools
+	./pip_install.sh pypy3 pip
+	./pip_install.sh pypy3 setuptools
 
-	pypy3_pip install --upgrade --verbose cffi 
-	pypy3_pip install --upgrade --verbose greenlet
-	pypy3_pip install --upgrade --verbose psutil deepdiff
-	pypy3_pip install --upgrade --verbose xlrd lxml	
-	with_gmp=no pypy3_pip install --upgrade --verbose  pycrypto 
-	pypy3_pip install --upgrade --verbose cryptography
-	pypy3_pip install --upgrade --verbose pyopenssl #LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" 
+	./pip_install.sh pypy3 cffi 
+	./pip_install.sh pypy3 greenlet
+	./pip_install.sh pypy3 psutil deepdiff
+	./pip_install.sh pypy3 xlrd lxml	
+	with_gmp=no ./pip_install.sh pypy3  pycrypto 
+	./pip_install.sh pypy3 cryptography
+	./pip_install.sh pypy3 pyopenssl #LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" 
 	
-	pypy3_pip install --upgrade --verbose pycryptodomex
+	./pip_install.sh pypy3 pycryptodomex
 
-	pypy3_pip install --upgrade --verbose h2 #https://github.com/python-hyper/hyper-h2/archive/master.zip
-	pypy3_pip install --upgrade --verbose urllib3 dnspython
-	pypy3_pip install --upgrade --verbose linuxfd http://github.com/kashirin-alex/eventlet/archive/master.zip 
+	./pip_install.sh pypy3 h2 #https://github.com/python-hyper/hyper-h2/archive/master.zip
+	./pip_install.sh pypy3 urllib3 dnspython
+	./pip_install.sh pypy3 linuxfd http://github.com/kashirin-alex/eventlet/archive/master.zip 
 
-	pypy3_pip install --upgrade --verbose msgpack-python
-	pypy3_pip install --upgrade --verbose webp 
-	pypy3_pip install --upgrade --verbose Pillow Wand
-	pypy3_pip install --upgrade --verbose weasyprint                 
-	pypy3_pip install --upgrade --verbose brotli pylzma rarfile zopfli  #zipfile pysnappy
-	pypy3_pip install --upgrade --verbose ply slimit
-	pypy3_pip install --upgrade --verbose guess_language
-	pypy3_pip install --upgrade --verbose paypalrestsdk #pygeocoder python-google-places
-	pypy3_pip install --upgrade --verbose josepy acme
-	pypy3_pip install --upgrade --verbose fontTools
+	./pip_install.sh pypy3 msgpack-python
+	./pip_install.sh pypy3 webp 
+	./pip_install.sh pypy3 Pillow Wand
+	./pip_install.sh pypy3 weasyprint                 
+	./pip_install.sh pypy3 brotli pylzma rarfile zopfli  #zipfile pysnappy
+	./pip_install.sh pypy3 ply slimit
+	./pip_install.sh pypy3 guess_language
+	./pip_install.sh pypy3 paypalrestsdk #pygeocoder python-google-places
+	./pip_install.sh pypy3 josepy acme
+	./pip_install.sh pypy3 fontTools
 
-	pypy3_pip install --upgrade --verbose http://github.com/kashirin-alex/libpyhdfs/archive/master.zip
-	pypy3_pip install --upgrade --verbose http://github.com/kashirin-alex/PyHelpers/archive/master.zip
+	./pip_install.sh pypy3 http://github.com/kashirin-alex/libpyhdfs/archive/master.zip
+	./pip_install.sh pypy3 http://github.com/kashirin-alex/PyHelpers/archive/master.zip
 
 fi
 
