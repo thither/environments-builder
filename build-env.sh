@@ -267,7 +267,7 @@ if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make lib;do_make install-strip;do_make install;do_make all;
 		shift;;
-		
+
 'autoconf-archive')
 tn='autoconf-archive-2019.01.06'; url='http://mirror.rackdc.com/gnu/autoconf-archive/autoconf-archive-2019.01.06.tar.xz';
 set_source 'tar';
@@ -275,7 +275,7 @@ if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make install;
 		shift;;
-		
+
 'automake')
 tn='automake-1.16.1'; url='http://ftp.gnu.org/gnu/automake/automake-1.16.1.tar.xz';
 set_source 'tar';
@@ -419,7 +419,7 @@ if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make install-strip;do_make install;do_make all;
 		shift;;	
-		
+
 'libwebp')
 tn='libwebp-1.0.2'; url='http://github.com/webmproject/libwebp/archive/v1.0.2.tar.gz';
 set_source 'tar';
@@ -1014,7 +1014,7 @@ set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 cp -r sparsepp `_install_prefix`/include/
 		shift;;
-		
+
 'openjdk')	
 tn='jdk-11.0.2'; url='http://download.java.net/java/GA/jdk11/9/GPL/openjdk-11.0.2_linux-x64_bin.tar.gz';
 set_source 'tar';
@@ -1064,7 +1064,7 @@ config_dest;cmake `src_path` -D -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_CPP_FL
 do_make;do_make install;  #FORCE_BOOST_SMART_PTR=ON
 #cd `src_path`/lib/py/;python setup.py install;pypy setup.py install;
 		shift;;	
-		
+
 'attr')
 tn='attr-2.4.47'; url='http://download.savannah.gnu.org/releases/attr/attr-2.4.47.src.tar.gz';
 set_source 'tar';
@@ -1230,7 +1230,7 @@ if [ $only_dw == 1 ];then return;fi
 config_dest;cmake `src_path` -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
 do_make;do_make install;	
 		shift;;
-		
+
 'lld')
 tn='lld-7.0.1.src'; url='http://releases.llvm.org/7.0.1/lld-7.0.1.src.tar.xz';
 set_source 'tar';
@@ -1369,7 +1369,7 @@ if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/src/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --disable-dns-for-realm --disable-athena --without-ldap --disable-asan --prefix=`_install_prefix` --build=`_build`; 
 do_make;do_make install;
 		shift;;
-		
+
 'php')
 tn='php-7.3.3'; url='http://mirror.cogentco.com/pub/php/php-7.3.3.tar.xz';
 set_source 'tar';
@@ -1564,7 +1564,7 @@ if [ $only_dw == 1 ];then return;fi
 `src_path`/configure CFLAGS="$ADD_O_FS -fPIC" CPPFLAGS="$ADD_O_FS -fPIC" --with-pic --enable-shared --enable-static --prefix=`_install_prefix` --build=`_build`;
 make;make install-strip;
 		shift;;
-		
+
 'zstd')
 tn='zstd-1.3.8'; url='http://github.com/facebook/zstd/releases/download/v1.3.8/zstd-1.3.8.tar.gz';
 set_source 'tar';
@@ -1572,7 +1572,7 @@ if [ $only_dw == 1 ];then return;fi
 config_dest;cmake `src_path`/build/cmake -DCMAKE_C_FLAGS="$ADD_O_FS" -DCMAKE_CXX_FLAGS="$ADD_O_FS" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
 do_make;do_make prefix=`_install_prefix` install;
 		shift;;	
-		
+
 'gflags')
 tn='gflags-2.2.2'; url='http://github.com/gflags/gflags/archive/v2.2.2.tar.gz';
 set_source 'tar';
@@ -1580,7 +1580,7 @@ if [ $only_dw == 1 ];then return;fi
 config_dest;cmake `src_path` -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
 do_make;do_make install;
 		shift;;	
-		
+
 'rocksdb')
 tn='rocksdb-5.18.3'; url='http://github.com/facebook/rocksdb/archive/v5.18.3.tar.gz';
 set_source 'tar';
@@ -1588,7 +1588,7 @@ if [ $only_dw == 1 ];then return;fi
 config_dest;cmake `src_path` -DWITH_TESTS=OFF -DWITH_ZSTD=ON -DWITH_ZLIB=ON -DWITH_LZ4=ON -DWITH_SNAPPY=ON -DWITH_BZ2=ON -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
 do_make; PORTABLE=1 do_make static_lib;do_make shared_lib;do_make install;
 		shift;;	
-		
+
 'libaio')
 tn='libaio-0.3.112'; url='http://ftp.de.debian.org/debian/pool/main/liba/libaio/libaio_0.3.112.orig.tar.xz';
 set_source 'tar';
@@ -1639,7 +1639,7 @@ if [ $only_dw == 1 ];then return;fi
 config_dest;cmake `src_path`  -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC -DPIC" -DCMAKE_CXX_FLAGS="-std=c++17 $ADD_O_FS -fPIC -DPIC" -DGO_EXECUTABLE=NONE -DWITH_TESTS=OFF -DENABLE_SHARED=ONE=ON -DALLOCATOR=tcmalloc_minimal -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
 do_make;do_make install;
 		shift;;	
-		
+ 
 'google-glog')
 tn='glog-0.4.0'; url='http://github.com/google/glog/archive/v0.4.0.tar.gz';
 set_source 'tar';
@@ -1663,7 +1663,7 @@ if [ $only_dw == 1 ];then return;fi
 ./configure  --with-pic --enable-shared --enable-static --with-zlib --with-lzma --with-bzlib CFLAGS="$ADD_O_FS -fPIC" CPPFLAGS="$ADD_O_FS -fPIC" --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make install;
 		shift;;	
-			
+
 'libfolly')
 tn='folly-2019.03.25.00'; url='http://github.com/facebook/folly/archive/v2019.03.25.00.tar.gz';
 set_source 'tar';
@@ -1671,7 +1671,7 @@ if [ $only_dw == 1 ];then return;fi
 config_dest;cmake `src_path`  -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC -DPIC" -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC -DPIC" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
 do_make;do_make install;#  -DBUILD_SHARED_LIBS=ON
 		shift;;	
-		
+
 'fizz')
 tn='fizz-2019.03.25.00'; url='http://github.com/facebookincubator/fizz/archive/v2019.03.25.00.tar.gz';
 set_source 'tar';
@@ -1679,7 +1679,7 @@ if [ $only_dw == 1 ];then return;fi
 config_dest;cmake `src_path`/fizz  -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC -DPIC" -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC -DPIC" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
 do_make;do_make install;#  -DBUILD_SHARED_LIBS=ON
 		shift;;	
-		
+
 'wangle')
 tn='wangle-2019.03.25.00'; url='http://github.com/facebook/wangle/archive/v2019.03.25.00.tar.gz';
 set_source 'tar';
@@ -1687,8 +1687,7 @@ if [ $only_dw == 1 ];then return;fi
 config_dest;cmake `src_path`/wangle  -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC -DPIC" -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC -DPIC" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
 do_make;do_make install;#  -DBUILD_SHARED_LIBS=ON
 		shift;;	
-	
-	
+
 'ncurses')
 tn='ncurses-6.1'; url='http://ftp.gnu.org/gnu/ncurses/ncurses-6.1.tar.gz';
 set_source 'tar';
@@ -1732,14 +1731,14 @@ make;make install;
 echo "#!/usr/bin/env bash" > $ENV_SETTINGS_PATH/$sn.sh
 echo "export CPATH=\$CPATH:\$CUST_INST_PREFIX/include/$sn" >> $ENV_SETTINGS_PATH/$sn.sh
 		shift;;	
-	
+
 'pstack')
 tn='pstack'; url='http://code.lm7.fr/robotux/pstack/archive/pstack-1.3.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 do_make; do_make install BINDIR=`_install_prefix`/bin  MANDIR=`_install_prefix`/share/man;
 		shift;;	
-		
+
 'doxygen')
 tn='doxygen-1.8.15'; url='http://doxygen.nl/files/doxygen-1.8.15.src.tar.gz';
 set_source 'tar';
@@ -1755,7 +1754,28 @@ if [ $only_dw == 1 ];then return;fi
 cp -r libpam/include/security /`_install_prefix`/include/;cp -r libpam_misc/include/security /`_install_prefix`/include/;cp -r libpamc/include/security /`_install_prefix`/include/;
 #./autogen.sh;./configure --prefix=`_install_prefix`/;#do_make; do_make install;
 		shift;;
-		
+
+'libpcap')
+tn='libpcap-libpcap-1.9.0'; url='http://github.com/the-tcpdump-group/libpcap/archive/libpcap-1.9.0.tar.gz';
+set_source 'tar';
+if [ $only_dw == 1 ];then return;fi
+autoreconf -vif;
+`src_path`/configure CXXFLAGS="$ADD_O_FS" CFLAGS="$ADD_O_FS" --enable-shared=yes --prefix=`_install_prefix`; 
+make; make install;
+		shift;;	
+
+'tcptrack')
+tn='tcptrack-1.4.3'; url='http://github.com/bchretien/tcptrack/archive/v1.4.3.tar.gz';
+set_source 'tar';
+if [ $only_dw == 1 ];then return;fi
+sed -i 's/-lncurses/-lncursesw/g' configure;
+`src_path`/configure CXXFLAGS="$ADD_O_FS" CFLAGS="$ADD_O_FS" --prefix=`_install_prefix`; 
+make; make install;
+		shift;;	
+
+
+
+
     *)         echo "Unknown build: $sn";       shift;;
   esac
   
@@ -2157,8 +2177,8 @@ cd $TMP_NAME
 make; 
 make install;
 
-
-
+ 
+ 
 
 
 

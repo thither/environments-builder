@@ -73,6 +73,7 @@ if [ -f 'pypy-c' ]; then
 	./../pip_install.sh pypy josepy acme
 	./../pip_install.sh pypy fontTools
 
+	./../pip_install.sh pypy thrift
 	./../pip_install.sh pypy http://github.com/kashirin-alex/libpyhdfs/archive/master.zip
 	./../pip_install.sh pypy http://github.com/kashirin-alex/PyHelpers/archive/master.zip
 	
