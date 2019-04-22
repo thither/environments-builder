@@ -253,7 +253,7 @@ do_make;do_make install-strip;do_make install;do_make all;
 		shift;;
 
 'libtool')
-tn='libtool-2.4.6'; url='http://ftpmirror.gnu.org/libtool/libtool-2.4.6.tar.gz';
+tn='libtool-2.4.6'; url='http://ftp.gnu.org/gnu/libtool/libtool-2.4.6.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --enable-ltdl-install --prefix=`_install_prefix` --build=`_build`;
@@ -269,7 +269,7 @@ do_make;do_make lib;do_make install-strip;do_make install;do_make all;
 		shift;;
 
 'autoconf-archive')
-tn='autoconf-archive-2019.01.06'; url='http://mirror.rackdc.com/gnu/autoconf-archive/autoconf-archive-2019.01.06.tar.xz';
+tn='autoconf-archive-2019.01.06'; url='http://ftp.gnu.org/gnu/autoconf-archive/autoconf-archive-2019.01.06.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --prefix=`_install_prefix` --build=`_build`;
@@ -293,7 +293,7 @@ do_make;do_make install;do_make all;
 		shift;;
 
 'lz4')
-tn='lz4-1.9.8'; url='http://github.com/lz4/lz4/archive/v1.9.0.tar.gz';
+tn='lz4-1.9.0'; url='http://github.com/lz4/lz4/archive/v1.9.0.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 do_make DESTDIR=`_install_prefix`;do_make install;
@@ -619,7 +619,7 @@ do_make;do_make install-strip;do_make install;do_make all;
 		shift;;
 
 'gnutls')
-tn='gnutls-3.6.7.1'; url='http://www.gnupg.org/ftp/gcrypt/gnutls/v3.6/gnutls-3.6.7.1.tar.xz';
+tn='gnutls-3.6.7'; url='http://www.gnupg.org/ftp/gcrypt/gnutls/v3.6/gnutls-3.6.7.1.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --disable-gtk-doc --enable-openssl-compatibility --prefix=`_install_prefix` --build=`_build`;
@@ -651,7 +651,7 @@ do_make;do_make install-strip;do_make install;do_make all;
 		shift;;
 
 'glib')
-tn='glib-2.57.1'; url='https://download.gnome.org/sources/glib/2.57/glib-2.57.1.tar.xz';
+tn='glib-2.57.1'; url='http://download.gnome.org/sources/glib/2.57/glib-2.57.1.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --with-libiconv=gnu --with-threads=posix --prefix=`_install_prefix` --build=`_build`;
@@ -1550,8 +1550,8 @@ do_make;do_make install;
 		shift;;
 
 'leveldb')
-tn='leveldb-1.21'; url='https://github.com/google/leveldb/archive/1.21.tar.gz';
-set_source 'zip';
+tn='leveldb-1.21'; url='http://github.com/google/leveldb/archive/1.21.tar.gz';
+set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;cmake `src_path` -DBUILD_SHARED_LIBS=ON -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
 do_make;do_make install;
@@ -1626,7 +1626,7 @@ python setup.py install;rm -r build;python3 setup.py install;
 		shift;;	
 	
 'go')
-tn='go'; url='https://dl.google.com/go/go1.12.1.src.tar.gz';
+tn='go'; url='https://dl.google.com/go/go1.12.4.src.tar.gz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 cd src;./all.bash -v
