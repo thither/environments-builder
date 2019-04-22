@@ -6,7 +6,8 @@
 interpreter=$1;
 pkgs=${@:2};
 
-if [ $pkgs != 'pip' ]; then
+
+if [[ ! " ${pkgs[@]} " =~ "pip" ]]; then
 	$interpreter -m pip uninstall -y $pkgs;
 fi;
 
