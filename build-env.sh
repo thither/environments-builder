@@ -878,10 +878,10 @@ do_make;do_make install;do_make all;
 		shift;;
 
 'libgpg-error')
-tn='libgpg-error-1.36'; url='ftp://ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.36.tar.gz';
+tn='libgpg-error-1.36'; url='http://www.gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-1.36.tar.bz2';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --with-pic=PIC --enable-static=yes --enable-threads=posix --prefix=`_install_prefix` --build=`_build`;
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS -I." CPPFLAGS="$ADD_O_FS" --with-pic=PIC --enable-static=yes --enable-threads=posix --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make install-strip;do_make install;do_make all;
 		shift;;	
 
@@ -1185,7 +1185,7 @@ make prefix=`_install_prefix` MANDIR=$CUST_INST_PREFIX/share/man/man1 -f unix/Ma
 		shift;;
 
 'gawk')
-tn='gawk-5.0.0'; url='http://ftp.gnu.org/gnu/gawk/gawk-5.0.0.tar.xz';
+tn='gawk-4.2.1'; url='http://ftp.gnu.org/gnu/gawk/gawk-4.2.1.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --prefix=`_install_prefix` --build=`_build`;
@@ -1468,7 +1468,7 @@ do_make; do_make install;
 		shift;;	
 
 'perl')
-tn='perl-5.29.9'; url='http://www.cpan.org/src/5.0/perl-5.29.9.tar.xz';
+tn='perl-5.28.1'; url='http://www.cpan.org/src/5.0/perl-5.28.1.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 ./Configure -de -A ccflags="$ADD_O_FS" -Duse64bitall -Dusethreads -Dprefix=`_install_prefix`; 
