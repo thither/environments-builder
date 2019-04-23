@@ -1061,6 +1061,7 @@ if [ $only_dw == 1 ];then return;fi
 ./bootstrap.sh;
 sed -i 's/4.4.1/5.4/g' lib/java/gradle/wrapper/gradle-wrapper.properties; 
 sed -i "s/targetCompatibility = '1.6'/targetCompatibility = '1.7'/g" lib/java/gradle/sourceConfiguration.gradle;
+sed -i "s/sourceCompatibility = '1.6'/sourceCompatibility = '1.7'/g" lib/java/gradle/sourceConfiguration.gradle;
 config_dest;cmake `src_path` -D -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_CPP_FLAGS="$ADD_O_FS -fPIC " -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC " -DBUILD_TESTING=ON -DBUILD_CPP=ON -DUSE_STD_THREAD=1 -DWITH_STDTHREADS=ON -DTHRIFT_COMPILER_HS=ON -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
 do_make;do_make install;  #FORCE_BOOST_SMART_PTR=ON
 #cd `src_path`/lib/py/;python setup.py install;pypy setup.py install;
