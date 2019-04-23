@@ -33,42 +33,42 @@ if [ -f $CUST_INST_PREFIX/bin/pip ] && [ $stage -ne 0 ]; then
 	fi
 	rm -rf ~/.cache/pip 
 
-	./../pip_install.sh pythonsetuptools
-	./../pip_install.sh pythonpip
-	./../pip_install.sh pythonsetuptools
+	$PIP_INSTALL python setuptools
+	$PIP_INSTALL python pip
+	$PIP_INSTALL python setuptools
 
-	./../pip_install.sh python cffi 
-	./../pip_install.sh python greenlet
-	./../pip_install.sh python psutil deepdiff
-	./../pip_install.sh python xlrd lxml	
-	./../pip_install.sh python pycrypto 
-	./../pip_install.sh python cryptography
-	./../pip_install.sh python pyopenssl #LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" 
-	./../pip_install.sh python pycryptodomex
-	./../pip_install.sh python pycparser
+	$PIP_INSTALL python cffi 
+	$PIP_INSTALL python greenlet
+	$PIP_INSTALL python psutil deepdiff
+	$PIP_INSTALL python xlrd lxml	
+	$PIP_INSTALL python pycrypto 
+	$PIP_INSTALL python cryptography
+	$PIP_INSTALL python pyopenssl #LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" 
+	$PIP_INSTALL python pycryptodomex
+	$PIP_INSTALL python pycparser
 	
-	./../pip_install.sh python h2 #https://github.com/python-hyper/hyper-h2/archive/master.zip
-	./../pip_install.sh python urllib3 dnspython
-   	./../pip_install.sh pythonlinuxfd http://github.com/kashirin-alex/eventlet/archive/master.zip 
+	$PIP_INSTALL python h2 #https://github.com/python-hyper/hyper-h2/archive/master.zip
+	$PIP_INSTALL python urllib3 dnspython
+   	$PIP_INSTALL python linuxfd http://github.com/kashirin-alex/eventlet/archive/master.zip 
 
-	./../pip_install.sh python msgpack-python
-	./../pip_install.sh python webp Pillow Wand
-	./../pip_install.sh python weasyprint==0.42.3                 
-	./../pip_install.sh python brotli pylzma rarfile  #zipfile pysnappy
-	./../pip_install.sh pythonply slimit
+	$PIP_INSTALL python msgpack-python
+	$PIP_INSTALL python webp Pillow Wand
+	$PIP_INSTALL python weasyprint==0.42.3                 
+	$PIP_INSTALL python brotli pylzma rarfile  #zipfile pysnappy
+	$PIP_INSTALL python ply slimit
 
-	./../pip_install.sh python guess_language
-	./../pip_install.sh python paypalrestsdk #pygeocoder python-google-places
-	./../pip_install.sh python josepy acme
-	./../pip_install.sh pythonfontTools
+	$PIP_INSTALL python guess_language
+	$PIP_INSTALL python paypalrestsdk #pygeocoder python-google-places
+	$PIP_INSTALL python josepy acme
+	$PIP_INSTALL python fontTools
 
-	./../pip_install.sh pythonhttp://github.com/kashirin-alex/libpyhdfs/archive/master.zip
-	./../pip_install.sh pythonhttp://github.com/kashirin-alex/PyHelpers/archive/master.zip
+	$PIP_INSTALL python http://github.com/kashirin-alex/libpyhdfs/archive/master.zip
+	$PIP_INSTALL python http://github.com/kashirin-alex/PyHelpers/archive/master.zip
 
 	
-	#./../pip_install.sh pythonninja;
-	#./../pip_install.sh pythonhttp://chromium.googlesource.com/external/gyp/+archive/master.tar.gz;
-	./../pip_install.sh pythonCython
+	#$PIP_INSTALL pythonninja;
+	#$PIP_INSTALL pythonhttp://chromium.googlesource.com/external/gyp/+archive/master.tar.gz;
+	$PIP_INSTALL pythonCython
 fi
 
 export LDFLAGS=""

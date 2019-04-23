@@ -33,37 +33,37 @@ if [ -f /usr/bin/py3_pip ] && [ $stage -ne 0 ]; then
 	
 	rm -rf ~/.cache/pip 
 
-	./../pip_install.sh python3 setuptools
-	./../pip_install.sh python3 pip
-	./../pip_install.sh python3 setuptools
+	$PIP_INSTALL python3 setuptools
+	$PIP_INSTALL python3 pip
+	$PIP_INSTALL python3 setuptools
 
-	./../pip_install.sh python3 cffi 
-	./../pip_install.sh python3 greenlet
-	./../pip_install.sh python3 psutil deepdiff
-	./../pip_install.sh python3 xlrd lxml	
-	./../pip_install.sh python3 pycrypto 
-	./../pip_install.sh python3 cryptography
-	./../pip_install.sh python3 pyopenssl #LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" 
-	./../pip_install.sh python3 pycryptodomex
+	$PIP_INSTALL python3 cffi 
+	$PIP_INSTALL python3 greenlet
+	$PIP_INSTALL python3 psutil deepdiff
+	$PIP_INSTALL python3 xlrd lxml	
+	$PIP_INSTALL python3 pycrypto 
+	$PIP_INSTALL python3 cryptography
+	$PIP_INSTALL python3 pyopenssl #LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" 
+	$PIP_INSTALL python3 pycryptodomex
 	
-	./../pip_install.sh python3 pycparser
+	$PIP_INSTALL python3 pycparser
 	
-	./../pip_install.sh python3 h2 #https://github.com/python-hyper/hyper-h2/archive/master.zip
-	./../pip_install.sh python3 urllib3 dnspython
-	./../pip_install.sh python3 linuxfd http://github.com/kashirin-alex/eventlet/archive/master.zip 
+	$PIP_INSTALL python3 h2 #https://github.com/python-hyper/hyper-h2/archive/master.zip
+	$PIP_INSTALL python3 urllib3 dnspython
+	$PIP_INSTALL python3 linuxfd http://github.com/kashirin-alex/eventlet/archive/master.zip 
    
-	./../pip_install.sh python3 msgpack-python
-	./../pip_install.sh python3  webp Pillow Wand
-	./../pip_install.sh python3  weasyprint                 
-	./../pip_install.sh python3  brotli pylzma rarfile  #zipfile pysnappy
-	./../pip_install.sh python3 ply slimit
-	./../pip_install.sh python3 guess_language
-	./../pip_install.sh python3 paypalrestsdk #pygeocoder python-google-places
-	./../pip_install.sh python3 josepy acme
-	./../pip_install.sh python3 fontTools
+	$PIP_INSTALL python3 msgpack-python
+	$PIP_INSTALL python3 webp Pillow Wand
+	$PIP_INSTALL python3 weasyprint                 
+	$PIP_INSTALL python3 brotli pylzma rarfile  #zipfile pysnappy
+	$PIP_INSTALL python3 ply slimit
+	$PIP_INSTALL python3 guess_language
+	$PIP_INSTALL python3 paypalrestsdk #pygeocoder python-google-places
+	$PIP_INSTALL python3 josepy acme
+	$PIP_INSTALL python3 fontTools
 
-	./../pip_install.sh python3 http://github.com/kashirin-alex/libpyhdfs/archive/master.zip
-	./../pip_install.sh python3 http://github.com/kashirin-alex/PyHelpers/archive/master.zip
+	$PIP_INSTALL python3 http://github.com/kashirin-alex/libpyhdfs/archive/master.zip
+	$PIP_INSTALL python3 http://github.com/kashirin-alex/PyHelpers/archive/master.zip
 
 fi
 

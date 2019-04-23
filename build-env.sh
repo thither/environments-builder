@@ -22,7 +22,7 @@ ADD_O_FS_from_stage_1="-O3 $ADD_LTO_FS"
 ADD_O_FS_from_stage_2="$ADD_O_FS_from_stage_1"
 ##################################################################
 ADD_O_FS=''
-
+PIP_INSTALL=$SCRIPTS_PATH/../pip_install.sh
 os_r=$(cat /usr/lib/os-release | grep "^ID=" |  sed 's/ID=//g');
 echo $os_r;
 if [[ $os_r == *"ubuntu"* ]]; then 
@@ -881,7 +881,7 @@ do_make;do_make install;do_make all;
 tn='libgpg-error-1.36'; url='http://www.gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-1.36.tar.bz2';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
-config_dest;`src_path`/configure CFLAGS="$ADD_O_FS -I." CPPFLAGS="$ADD_O_FS" --with-pic=PIC --enable-static=yes --enable-threads=posix --prefix=`_install_prefix` --build=`_build`;
+config_dest;`src_path`/configure CFLAGS="$ADD_O_FS" CPPFLAGS="$ADD_O_FS" --with-pic=PIC --enable-static=yes --enable-threads=posix --prefix=`_install_prefix` --build=`_build`;
 do_make;do_make install-strip;do_make install;do_make all;
 		shift;;	
 
@@ -1059,7 +1059,8 @@ tn='thrift-0.12.0'; url='http://archive.apache.org/dist/thrift/0.12.0/thrift-0.1
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 ./bootstrap.sh;
-sed -i 's/4.4.1/5.4/g' lib/java/gradle/wrapper/gradle-wrapper.properties;
+sed -i 's/4.4.1/5.4/g' lib/java/gradle/wrapper/gradle-wrapper.properties; 
+sed -i "s/targetCompatibility = '1.6'/targetCompatibility = '1.7'/g" lib/java/gradle/sourceConfiguration.gradle;
 config_dest;cmake `src_path` -D -DCMAKE_C_FLAGS="$ADD_O_FS -fPIC" -DCMAKE_CPP_FLAGS="$ADD_O_FS -fPIC " -DCMAKE_CXX_FLAGS="$ADD_O_FS -fPIC " -DBUILD_TESTING=ON -DBUILD_CPP=ON -DUSE_STD_THREAD=1 -DWITH_STDTHREADS=ON -DTHRIFT_COMPILER_HS=ON -DCMAKE_INSTALL_PREFIX=`_install_prefix`;
 do_make;do_make install;  #FORCE_BOOST_SMART_PTR=ON
 #cd `src_path`/lib/py/;python setup.py install;pypy setup.py install;
