@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-tn='Python-2.7.15'; url='http://www.python.org/ftp/python/2.7.15/Python-2.7.15.tar.xz';
+tn='Python-2.7.16'; url='http://www.python.org/ftp/python/2.7.16/Python-2.7.16.tar.xz';
 set_source 'tar';
 if [ $only_dw == 1 ];then return;fi
 
@@ -19,6 +19,12 @@ config_dest;`src_path`/configure CFLAGS="-P $ADD_O_FS" CPPFLAGS="-P $ADD_O_FS" \
 do_make build_all;do_make install;
 source /etc/profile;source ~/.bashrc;ldconfig;
 
+export VERBOSE=1;
+export LDFLAGS="-DTCMALLOC_MINIMAL -ltcmalloc_minimal -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free"
+export CFLAGS="$ADD_O_FS $LDFLAGS -DNDEBUG"
+export CPPFLAGS="$ADD_O_FS $LDFLAGS"
+export INCLUDEDIRS="-I$CUST_INST_PREFIX/include"
+
 if [ -f $CUST_INST_PREFIX/bin/pip ] && [ $stage -ne 0 ]; then
 	ln -s $CUST_INST_PREFIX/bin/python /usr/bin/python;
 	if [ $stage -eq 3 ]; then
@@ -27,41 +33,45 @@ if [ -f $CUST_INST_PREFIX/bin/pip ] && [ $stage -ne 0 ]; then
 	fi
 	rm -rf ~/.cache/pip 
 
-	pip install --upgrade setuptools
-	pip install --upgrade pip
-	pip install --upgrade setuptools
+	$PIP_INSTALL python setuptools
+	$PIP_INSTALL python pip
+	$PIP_INSTALL python setuptools
 
-	pip install --upgrade  cffi 
-	pip install --upgrade  greenlet
-	pip install --upgrade  psutil deepdiff
-	pip install --upgrade  xlrd lxml	
-	pip install --upgrade  pycrypto 
-	pip install --upgrade  cryptography
-	pip install --upgrade  pyopenssl #LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" 
-
-	pip install --upgrade  pycparser
+	$PIP_INSTALL python cffi 
+	$PIP_INSTALL python greenlet
+	$PIP_INSTALL python psutil deepdiff
+	$PIP_INSTALL python xlrd lxml	
+	$PIP_INSTALL python pycrypto 
+	$PIP_INSTALL python cryptography
+	$PIP_INSTALL python pyopenssl #LDFLAGS="-L$CUST_INST_PREFIX/ssl/lib" CFLAGS="-I$CUST_INST_PREFIX/ssl/include" 
+	$PIP_INSTALL python pycryptodomex
+	$PIP_INSTALL python pycparser
 	
-	pip install --upgrade  h2 #https://github.com/python-hyper/hyper-h2/archive/master.zip
-	pip install --upgrade  urllib3 dnspython
-	pip install --upgrade  https://github.com/eventlet/eventlet/archive/v0.19.0.zip # https://github.com/eventlet/eventlet/archive/master.zip #eventlet
-	echo '' > "/usr/local/lib/python2.7/site-packages/eventlet/green/OpenSSL/rand.py"
-	sed -i "1s;^;import OpenSSL.SSL\nfor n in dir(OpenSSL.SSL):\n    exec(n+'=getattr(OpenSSL.SSL, \"'+n+'\")')\n;" /usr/local/lib/python2.7/site-packages/eventlet/green/OpenSSL/SSL.py
-	sed -i 's/from OpenSSL.SSL import \*//g' /usr/local/lib/python2.7/site-packages/eventlet/green/OpenSSL/SSL.py;
-	sed -i "1s;^;import OpenSSL.crypto\nfor n in dir(OpenSSL.crypto):\n    exec(n+'=getattr(OpenSSL.crypto, \"'+n+'\")')\n;" /usr/local/lib/python2.7/site-packages/eventlet/green/OpenSSL/crypto.py
+	$PIP_INSTALL python h2 #https://github.com/python-hyper/hyper-h2/archive/master.zip
+	$PIP_INSTALL python urllib3 dnspython
+   	$PIP_INSTALL python linuxfd http://github.com/kashirin-alex/eventlet/archive/master.zip 
 
-   
-	pip install --upgrade  msgpack-python
-	pip install --upgrade  Wand
-	pip install --upgrade  weasyprint                 
-	pip install --upgrade  brotli pylzma rarfile  #zipfile pysnappy
-	pip install --upgrade  guess_language
-	pip install --upgrade  paypalrestsdk #pygeocoder python-google-places
-	pip install --upgrade  josepy acme
+	$PIP_INSTALL python msgpack-python
+	$PIP_INSTALL python webp Pillow Wand
+	$PIP_INSTALL python weasyprint==0.42.3                 
+	$PIP_INSTALL python brotli pylzma rarfile  #zipfile pysnappy
+	$PIP_INSTALL python ply slimit
 
-	pip install --upgrade  https://github.com/kashirin-alex/libpyhdfs/archive/master.zip
+	$PIP_INSTALL python guess_language
+	$PIP_INSTALL python paypalrestsdk #pygeocoder python-google-places
+	$PIP_INSTALL python josepy acme
+	$PIP_INSTALL python fontTools
+
+	$PIP_INSTALL python http://github.com/kashirin-alex/libpyhdfs/archive/master.zip
+	$PIP_INSTALL python http://github.com/kashirin-alex/PyHelpers/archive/master.zip
 
 	
-	#pip install --upgrade ninja;
-	#pip install --upgrade http://chromium.googlesource.com/external/gyp/+archive/master.tar.gz;
-	pip install --upgrade Cython
+	#$PIP_INSTALL pythonninja;
+	#$PIP_INSTALL pythonhttp://chromium.googlesource.com/external/gyp/+archive/master.tar.gz;
+	$PIP_INSTALL pythonCython
 fi
+
+export LDFLAGS=""
+export CFLAGS=""
+export CPPFLAGS=""
+export INCLUDEDIRS=""
